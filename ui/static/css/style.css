@@ -1,0 +1,227 @@
+/**style sheet**/
+/**remove margin**/
+*
+{
+  margin: 0;
+}
+/**clear float attribute**/
+.clear
+{
+  clear: both;
+}
+/**style body**/
+body
+{
+  background-image: url("img/background.jpg");
+  animation: fadein 3s;
+
+}
+
+/* style legend */
+legend
+{
+  font-size: 2em;
+  font-style: normal;
+  font-weight: bold;
+  font-family: monospace;
+  color: ghostwhite;
+}
+/**styling up the labels**/
+label
+{
+  font-size: 1.2em;
+  font-style: normal;
+  font-weight: bold;
+  color: ghostwhite;
+}
+/**edit button**/
+button
+{
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 5px 5px 5px #888888;
+  width: 100%;
+  border-radius: 10px;
+  font-family: monospace;
+  opacity: 0.8;
+}
+
+/* Full-width inputs */
+input[type=text],
+input[type=password],
+input[type=email],
+textarea
+{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display:inline-block;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    opacity: 0.8;
+    font-weight: bold;
+    color: blue;
+    font-weight: bold;
+    font-family: serif;
+
+}
+
+input[type=text]:hover,
+input[type=password]:hover,
+input[type=email]:hover,
+textarea:hover
+{
+    opacity: 1;
+}
+
+/**formaat a**/
+a{
+  text-decoration: none;
+  text-decoration-style: solid;
+  color: #2196F3;
+}
+/**animations**/
+/**fade in animations**/
+
+@keyframes fadein {
+  from{opacity: 0;}
+  to{opacity: 1;}
+}
+
+@-webkit-keyframes fade{
+  from{opacity: 0;}
+  to{opacity: 1;}
+}
+@-moz-keyframes fade{
+  from{opacity: 0;}
+  to{opacity: 1;}
+}
+
+
+
+/***style navigation bar*/
+/**style header**/
+.nav_header
+{
+  height:40px;
+  position: fixed;
+  top: 0;
+  padding: 10px;
+  width: 100%;
+}
+/**format logo class**/
+.logo
+{
+  float: left;
+}
+
+.logo span
+{
+  font-weight: 400;
+  font-size: 2em;
+  align-self: center;
+  text-align: center;
+  float: left;
+}
+
+/**format hambuger icon**/
+
+.logo img
+{
+  width: 2%;
+  height: 2%;
+  opacity: 0.8;
+  float: left;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.logo img:hover
+{
+  opacity: 1;
+}
+
+/**format search field**/
+.search_form input[type=search]
+{
+  width: 55%;
+  border-radius: 5px;
+  opacity: 0.9;
+  margin-bottom: 20px;
+  font-size: 1.4em;
+  background: none;
+  margin-left: 20%;
+}
+/**edit logo search button**/
+#search_btn{
+  opacity: 0.8;
+  width: 10%;
+  margin-top: 10px;
+}
+
+#search_btn:hover{
+  opacity: 1;
+}
+
+.search_form
+{
+  width: 60%;
+  float: left;
+}
+
+.nav_header input[type=search]:hover{
+  opacity: 1;
+}
+
+/**format right_bar**/
+.right_bar
+{
+  float: right;
+  padding: 10px;
+}
+
+.right_bar span{
+  font-size: 1.2em;
+  width: 20%;
+  text-align: center;
+  margin-right: 30px;
+  margin-bottom: 10px
+  padding: 10px;
+  opacity: 0.8;
+  color: ghostwhite;
+}
+
+.right_bar span:hover{
+  opacity: 1;
+}
+
+/**edit signin_content**/
+.signin_content{
+  margin-left: 35%;
+  margin-top: 10%;
+  width: 25%;
+
+}
+/**style signup content**/
+.signin_content button{
+  margin-top: 10px;
+  margin-bottom: 10px
+}
+.signin_content button:hover{
+  opacity: 1;
+}
+.signin_content fieldset{
+  border-radius: 10px;
+
+}
+
+.signin_content a:hover{
+  color: ghostwhite;
+
+}
+.signin_content fieldset:hover{
+    box-shadow: 3px 3px 3px #888888;
+}
