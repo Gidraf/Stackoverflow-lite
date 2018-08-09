@@ -17,6 +17,8 @@ body
   scroll-behavior: smooth;
 }
 
+
+
 /* style legend */
 legend
 {
@@ -590,3 +592,55 @@ h4{
   float: left;
   border-radius: 50px;
 }
+/**format user account**/
+ /**format user image**/
+
+ #user_account_image{
+   width: 80%;
+   float: left;
+   margin-left: 1%;
+   border-radius: 50px;
+   margin-bottom: 3%;
+ }
+
+ #sort_by{
+   display: block;
+   background: none;
+   color: white;
+   opacity: 0.8;
+   font-size: 1.2vw;
+   box-shadow: 1px 1px 1px grey;
+   width: 100%;
+   padding: 5%;
+   margin-top: 10%;
+   background: #5C6BC0;
+   border-radius:10px;
+   opacity: 0.8;
+ }
+
+ #sort_by:hover{
+   opacity: 1;
+ }
+
+ option {
+   color: black;
+   box-shadow: 1px 1px 1px grey;
+   border-radius: 10px;
+ }
+
+ .hide{
+   display: none;
+ }
+
+
+
+
+
+ .head_labels a{
+   padding-left: 1%;
+   padding-right: 1%;
+   margin-left: 1%;
+   color: ghostwhite;
+   box-sizing: border-box;
+   box-shadow: 1px 1px 1px ghostwhite;
+ }
