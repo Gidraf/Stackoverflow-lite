@@ -1,0 +1,706 @@
+/**style sheet**/
+/**rvwove margin**/
+*
+{
+  margin: 0;
+}
+/**clear float attribute**/
+.clear
+{
+  clear: both;
+}
+/**style body**/
+body
+{
+  background-image: url("img/background.jpg");
+  animation: fadein 3s;
+  scroll-behavior: smooth;
+}
+
+
+/* style legend */
+legend
+{
+  font-size: 2vw;
+  font-style: normal;
+  font-weight: bold;
+  font-family: monospace;
+  color: ghostwhite;
+}
+/**styling up the labels**/
+label
+{
+  font-size: 1.2vw;
+  font-style: normal;
+  font-weight: bold;
+  color: ghostwhite;
+}
+/**edit button**/
+button
+{
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 5px 5px 5px #888888;
+  width: 100%;
+  border-radius: 10px;
+  font-family: monospace;
+  opacity: 0.8;
+}
+
+/* Full-width inputs */
+input[type=text],
+input[type=password],
+input[type=email],
+textarea
+{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display:inline-block;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    opacity: 0.8;
+    font-size: 1.2vw;
+    font-weight: bold;
+    color: blue;
+    font-weight: bold;
+    font-family: serif;
+
+}
+
+input[type=text]:hover,
+input[type=password]:hover,
+input[type=email]:hover,
+textarea:hover
+{
+    opacity: 1;
+}
+
+/**formaat a**/
+a
+{
+  text-decoration: none;
+  text-decoration-style: solid;
+  color: #2196F3;
+}
+/**animations**/
+/**fade in animations**/
+
+@keyframes fadein
+{
+  from{opacity: 0;}
+  to{opacity: 1;}
+}
+
+@-webkit-keyframes fade
+{
+  from{opacity: 0;}
+  to{opacity: 1;}
+}
+@-moz-keyframes fade
+{
+  from{opacity: 0;}
+  to{opacity: 1;}
+}
+
+
+
+/***style navigation bar*/
+/**style header**/
+.nav_header
+{
+  height:40px;
+  position: fixed;
+  top: 0;
+  padding: 10px;
+  width: 100%;
+  transition: top 3s;
+}
+/**format logo class**/
+.logo
+{
+  float: left;
+}
+
+.logo span
+{
+  font-weight: 400;
+  font-size: 2vw;
+  align-self: center;
+  text-align: center;
+  float: left;
+}
+
+/**format hambuger icon**/
+
+.logo img
+{
+  width: 2%;
+  height: 2%;
+  opacity: 0.8;
+  float: left;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.logo img:hover
+{
+  opacity: 1;
+}
+
+/
+.right_bar img
+{
+  width: 5%;
+}
+.search_form
+{
+  width: 60%;
+  float: left;
+}
+
+
+/**format right_bar**/
+.right_bar
+{
+  float: right;
+  padding: 10px;
+}
+
+.right_bar span
+{
+  font-size: 1.2vw;
+  width: 20%;
+  text-align: center;
+  margin-right: 50px;
+  margin-bottom: 10px
+  padding: 10px;
+  opacity: 0.8;
+  color: ghostwhite;
+}
+
+.right_bar span:hover
+{
+  opacity: 1;
+}
+
+/**edit signin_content**/
+.signin_content
+{
+  margin-left: 35%;
+  margin-top: 10%;
+  width: 25%;
+}
+/**style signup content**/
+.signin_content button
+{
+  margin-top: 10px;
+  margin-bottom: 10px
+}
+
+.signin_form
+{
+  width: 90%;
+}
+.signin_content button:hover
+{
+  opacity: 1;
+}
+
+.signin_content fieldset
+{
+  border-radius: 10px;
+}
+
+.signin_content a:hover
+{
+  color: ghostwhite;
+
+}
+.signin_content fieldset:hover
+{
+    box-shadow: 3px 3px 3px #888888;
+}
+
+/**style ask question and side nav bar**/
+.side_navbar
+{
+  float: left;
+  width: 10%;
+  margin-left: 1%;
+  padding: 2%;
+  box-shadow: 1px 1px 1px ghostwhite;
+  border-width: thin;
+  border-color: cyan;
+  height: 100vh;
+}
+/**style ask question button**/
+/**format search field**/
+.search_form input[type=search]
+{
+  width: 50%;
+  border-radius: 5px;
+  opacity: 0.9;
+  float: left;
+  color: ghostwhite;
+  margin-bottom: 20px;
+  font-size: 1.4vw;
+  background: none;
+  margin-left: 25%;
+  margin-top: 9%;
+}
+
+.nav_header input[type=search]:hover
+{
+  opacity: 1;
+}
+/**edit logo search button**/
+#search_btn
+{
+  opacity: 0.8;
+  width: 12%;
+  margin-top: 9%;
+  margin-left: 0.5%;
+}
+
+#search_btn:hover
+{
+  opacity: 1;
+}
+/**styling create button**/
+#ask_question
+{
+  float: left;
+  margin-top: 5%;
+  margin-bottom: 20px;
+  width:10%;
+  margin-left: 2%;
+  border-radius: 50px;
+  box-shadow: 5px 5px 5px ghostwhite;
+  color: ghostwhite;
+  background: none;
+  font-size: 1vw;
+  font-style: oblique;
+  font-weight: bold;
+  opacity: 0.8;
+}
+
+#ask_question:hover
+{
+  opacity: 1;
+}
+/**styling sidebar**/
+.side_navbar img
+{
+  width: 10%;
+  margin-left: 45%;
+  margin-top: 5%;
+}
+
+.side_navbar span
+{
+  font-size: 1.2vw;
+  color: ghostwhite
+}
+
+.side_navbar a{
+  padding: 10px;
+  display: block;
+  opacity: 0.8;
+}
+.side_navbar a:hover{
+  box-shadow: 2px 1px 1px ghostwhite;
+  opacity: 1;
+}
+
+/**style question holder**/
+.question_holder
+{
+
+  float: left;
+  width: 100%;
+  margin-bottom: 1%;
+  background-color: #9FA8DA;
+  box-shadow: 2px 2px 2px ghostwhite;
+  border-radius: 10px;
+  padding: 1%;
+}
+
+/**format answers user_holder**/
+.question_description
+{
+  float: left;
+  width: 100%;
+  margin-bottom: 1%;
+  background-color: #C5CAE9;
+  box-shadow: 2px 2px 2px ghostwhite;
+  border-radius: 10px;
+  padding: 2%;
+  font-size: 1.2vw;
+}
+
+/**answer_labels**/
+
+/**style answer_holder**/
+.answer_holder
+{
+  float: left;
+  width: 100%;
+  margin-bottom: 1%;
+  background-color: #E8EAF6;
+  box-shadow: 2px 2px 2px ghostwhite;
+  border-radius: 10px;
+  padding: 1%;
+  font-size: 1.2vw;
+}
+
+.answer_holder img
+{
+  width: 2%;
+  float: left;
+}
+
+.answer_holder a
+{
+  color: black;
+  font-size: 1vw;
+  opacity: 0.8;
+}
+
+.answer_holder a:hover{
+  opacity: 1;
+}
+
+/***styling upvote and downvote***/
+
+.votes
+{
+  float:right;
+  padding-left: 15%;
+}
+
+.votes span
+{
+  margin-right: 2%;
+}
+
+/**styling answers textarea**/
+
+.answer_form h3{
+  color: ghostwhite;
+}
+
+.answer_form button{
+  float: right;
+  width: 20%;
+  opacity: 0.8;
+}
+.answer_form button:hover{
+  opacity: 1;
+}
+.answer_holder textarea
+{
+  float: left;
+  width: 85%;
+  padding-left: 1%;
+  padding-right: 1%;
+}
+/***styling commnet***/
+#answer
+{
+  box-shadow: 1px 1px 1px #607D8B;
+  background-color: #CFD8DC;
+  padding: 1%;
+  font-size: 1.2vw;
+  margin-bottom: 1%;
+  border-radius: 10px;
+}
+/**styling answers labels i.e votes, username**/
+
+.answers_labels{
+  background-color: white;
+  height: 2%;
+  width: 100%;
+  border-radius: 10px;
+}
+
+
+#answer_username{
+  margin-left: 1%;
+}
+/**styling comment button**/
+.answer_holder button{
+  float: left;
+  width: 10%;
+  margin-left: 1%;
+  padding: 1%;
+  margin-top: 3%;
+  font-size: 1vw;
+  opacity: 0.8;
+}
+.answer_holder button:hover{
+  opacity: 1;
+}
+
+
+/**styling forum content**/
+.forum_content
+{
+  float: left;
+  margin-left: 1%;
+  border-radius: 10px;
+  width: 60%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 110vh;
+  padding: 1%;
+}
+
+/** styling comeholder **/
+
+.comment_holder span{
+  float: right;
+}
+.comment_labels{
+  margin-bottom: 1%;
+  box-shadow: 1px 1px 1px #B0BEC5;
+  border-radius: 10px
+}
+/**style forum_title**/
+#forum_title
+{
+padding-left: 3%;
+margin-left: 35%;
+font-size: 2vw;
+font-style: oblique;
+font-family: monospace;
+}
+
+h4{
+  font-size: 1.5vw;
+}
+
+/**style question_title**/
+
+#question_title{
+  margin-bottom: 1%;
+  margin-left: 16%;
+  font-size: 2vw;
+}
+
+/**style labels**/
+.username{
+  font-size: 1.5vw;
+  color: ghostwhite;
+  opacity: 0.8;
+}
+
+.username:hover{
+  opacity: 1;
+}
+
+.question_header
+{
+  float: left;
+  color: black;
+  margin-left: 1%;
+  font-size: 1.2vw;
+  opacity:0.8;
+}
+
+.question_header:hover{
+  opacity: 1;
+}
+
+.question_numbers
+{
+  margin-right: 1%;
+  font-size: 1vw;
+  color: ghostwhite;
+  opacity: 0.8;
+}
+
+.numbers_labels
+{
+  font-size: 1vw;
+  color: ghostwhite;
+  opacity: 0.8;
+}
+
+.time{
+  font-size: 1vw;
+  color: ghostwhite;
+  opacity: 0.8;
+}
+
+/*style profile pic*/
+.user_image img{
+  width: 8%;
+  height:8%;
+  border-radius: 50px;
+  float: left;
+  margin-right: 1%;
+}
+
+
+/**style right_navbar**/
+.users{
+  float: left;
+  width: 20%;
+  padding: 1%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 110vh;
+}
+
+.user_holder{
+  margin-bottom: 1%;
+  box-shadow: 1px 1px 1px #CFD8DC;
+  border-radius: 20px;
+  padding: 3%;
+}
+.users a{
+  display: block;
+  margin-left: 22%;
+  margin-bottom: 1%;
+  font-size: 1.2vw;
+  opacity: 0.8;
+  color: ghostwhite;
+}
+
+.users a:hover{
+  opacity: 1;
+}
+
+.users span{
+  display: block;
+  font-size: 1.2vw;
+  margin-bottom: 1%;
+  color: ghostwhite;
+  margin-left: 22%;
+  opacity: 0.8;
+}
+.right_bar_container img{
+  width: 5%;
+  margin-left: 1%;
+}
+.users img{
+  width: 20%;
+  float: left;
+  border-radius: 50px;
+}
+/**format user account**/
+ /**format user image**/
+
+ #user_account_image{
+   width: 80%;
+   float: left;
+   margin-left: 1%;
+   border-radius: 50px;
+   margin-bottom: 3%;
+ }
+
+ #sort_by{
+   display: block;
+   background: none;
+   color: white;
+   opacity: 0.8;
+   font-size: 1.2vw;
+   box-shadow: 1px 1px 1px grey;
+   width: 100%;
+   padding: 5%;
+   margin-top: 10%;
+   background: #5C6BC0;
+   border-radius:10px;
+   opacity: 0.8;
+ }
+
+ #sort_by:hover{
+   opacity: 1;
+ }
+
+ option {
+   color: black;
+   box-shadow: 1px 1px 1px grey;
+   border-radius: 10px;
+ }
+
+ .hide{
+   display: none;
+ }
+/**styling head_labels***/
+ .head_labels a
+ {
+   padding-left: 1%;
+   padding-right: 1%;
+   margin-left: 1%;
+   color: ghostwhite;
+   box-sizing: border-box;
+   box-shadow: 1px 1px 1px ghostwhite;
+ }
+
+ /**style the question modal**/
+ .question_modal{
+   display: block;
+    position: fixed;
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    animation: fadein 1s;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+ }
+/**format textarea***/
+ textarea{
+   font-size: 1.2v
+ }
+
+ .question_modal form{
+   width: 40%;
+   font-size: 1.2vw;
+   border-radius: 10px;
+   margin-left: 25%;
+   margin-top: 10%;
+ }
+ .question_modal fieldset{
+   border-radius: 10px;
+   font-size: 1.2vh;
+ }
+ #ask{
+   width: 30%;
+   float: right;
+   font-size: 1.2vw;
+ }
+
+ #cancel{
+   width: 30%;
+   float: left;
+   background-color: red;
+   font-size: 1.2vw;
+ }
+ .show{
+   display: block;
+ }
+.home_content{
+  color: white;
+  width: 50%;
+  margin-top: 15%;
+  margin-left: 25%;
+  font-size: 1.2vw;
+}
+
+.home_content p{
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.home_content button{
+  width: 40%;
+  float: right;
+}
