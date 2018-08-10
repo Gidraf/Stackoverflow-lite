@@ -12,7 +12,7 @@
 /**style body**/
 body
 {
-  background-image: url("img/background.jpg");
+  background-color: #7986CB;
   animation: fadein 3s;
   scroll-behavior: smooth;
 }
@@ -113,6 +113,8 @@ a
 /**style header**/
 .nav_header
 {
+  background-color: #3949AB;
+  z-index: 1;
   height:40px;
   position: fixed;
   top: 0;
