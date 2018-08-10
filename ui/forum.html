@@ -32,9 +32,9 @@
       </div>
     </header>
     <div class="">
-      
+
       <a href="#">
-        <button id="ask_question" type="button" name="ask_questin">Ask Question</button>
+        <button id="ask_question" onclick="open_model()" type="button" name="ask_questin">Ask Question</button>
       </a>
       <!-- search bar field-->
       <div class="search_form">
@@ -91,143 +91,15 @@
 
         </div>
         <a href="question.html">
-        <h3 class="question_header">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h3>
+        <h3 class="question_header">I am a question click me to see my details</h3>
       </a>
       </div>
       <div class="clear">
 
       </div>
-      <div class="question_holder">
-      <a href="#">
-        <div class="user_image">
-          <img src="static/css/img/avatar.png" alt="">
-        </div>
-      </a>
-      <a href="#">
-        <span class="username">username</span>
-        <br>
-        <span class="question_numbers">0</span>
-        <span class="numbers_labels">votes</span>
-        <br>
-        <span class="time">2/2/2018 @ 11:00 am</span>
-        <div class="clear">
-
-        </div>
-        <h3 class="question_header">This is my first question asked at  stackoverflow-light nothing to hide</h3>
-      </a>
-      </div>
-      <div class="clear">
 
       </div>
-      <div class="question_holder">
-      <a href="#">
-        <div class="user_image">
-          <img src="static/css/img/avatar.png" alt="">
-        </div>
-      </a>
-      <a href="#">
-        <span class="username">username</span>
-        <br>
-        <span class="question_numbers">0</span>
-        <span class="numbers_labels">votes</span>
-        <br>
-        <span class="time">2/2/2018 @ 11:00 am</span>
-        <div class="clear">
 
-        </div>
-        <h3 class="question_header">This is my first question asked at  stackoverflow-light nothing to hide</h3>
-      </a>
-      </div>
-      <div class="clear">
-
-      </div>
-      <div class="question_holder">
-      <a href="#">
-        <div class="user_image">
-          <img src="static/css/img/avatar.png" alt="">
-        </div>
-      </a>
-      <a href="#">
-        <span class="username">username</span>
-        <br>
-        <span class="question_numbers">0</span>
-        <span class="numbers_labels">votes</span>
-        <br>
-        <span class="time">2/2/2018 @ 11:00 am</span>
-        <div class="clear">
-
-        </div>
-        <h3 class="question_header">This is my first question asked at  stackoverflow-light nothing to hide</h3>
-      </a>
-      </div>
-      <div class="clear">
-
-      </div>
-      <div class="question_holder">
-      <a href="#">
-        <div class="user_image">
-          <img src="static/css/img/avatar.png" alt="">
-        </div>
-      </a>
-      <a href="#">
-        <span class="username">username</span>
-        <br>
-        <span class="question_numbers">0</span>
-        <span class="numbers_labels">votes</span>
-        <br>
-        <span class="time">2/2/2018 @ 11:00 am</span>
-        <div class="clear">
-
-        </div>
-        <h3 class="question_header">This is my first question asked at  stackoverflow-light nothing to hide</h3>
-      </a>
-      </div>
-      <div class="clear">
-
-      </div>
-      <div class="question_holder">
-      <a href="#">
-        <div class="user_image">
-          <img src="static/css/img/avatar.png" alt="">
-        </div>
-      </a>
-      <a href="#">
-        <span class="username">username</span>
-        <br>
-        <span class="question_numbers">0</span>
-        <span class="numbers_labels">votes</span>
-        <br>
-        <span class="time">2/2/2018 @ 11:00 am</span>
-        <div class="clear">
-
-        </div>
-        <h3 class="question_header">This is my first question asked at  stackoverflow-light nothing to hide</h3>
-      </a>
-      </div>
-      <div class="clear">
-
-      </div>
-      <div class="question_holder">
-      <a href="#">
-        <div class="user_image">
-          <img src="static/css/img/avatar.png" alt="">
-        </div>
-      </a>
-      <a href="#">
-        <span class="username">username</span>
-        <br>
-        <span class="question_numbers">0</span>
-        <span class="numbers_labels">votes</span>
-        <br>
-        <span class="time">2/2/2018 @ 11:00 am</span>
-        <div class="clear">
-
-        </div>
-        <h3 class="question_header">This is my first question asked at  stackoverflow-light nothing to hide</h3>
-      </a>
-      </div>
-      </div>
       <!--impliment this to question details page-->
       <!--
       <p>question description this is a place where
@@ -345,5 +217,19 @@
       </div>
     </div>
     </div>
+    <div id="question_modal" class="hide">
+      <form class="" action="index.html" method="post">
+        <fieldset>
+          <legend>Ask Question</legend>
+          <input type="text" name="title" placeholder="Questin title" value="">
+          <br>
+          <textarea name="name" rows="10" placeholder="Question description" cols="80"></textarea>
+        </fieldset>
+        <button id="ask" type="button" name="button">Ask</button>
+        <button id="cancel" onclick="close_modal()"  type="button" name="button">Cancel</button>
+      </form>
+    </div>
+    <script type="text/javascript" src="static/js/script.js">
+  </script>
   </body>
 </html>
