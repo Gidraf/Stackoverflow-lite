@@ -65,6 +65,7 @@ textarea
     border: 1px solid #ccc;
     box-sizing: border-box;
     opacity: 0.8;
+    font-size: 1.2vw;
     font-weight: bold;
     color: blue;
     font-weight: bold;
@@ -631,16 +632,59 @@ h4{
  .hide{
    display: none;
  }
-
-
-
-
-
- .head_labels a{
+/**styling head_labels***/
+ .head_labels a
+ {
    padding-left: 1%;
    padding-right: 1%;
    margin-left: 1%;
    color: ghostwhite;
    box-sizing: border-box;
    box-shadow: 1px 1px 1px ghostwhite;
+ }
+
+ /**style the question modal**/
+ .question_modal{
+   display: block;
+    position: fixed;
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    animation: fadein 1s;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+ }
+/**format textarea***/
+ textarea{
+   font-size: 1.2v
+ }
+
+ .question_modal form{
+   width: 40%;
+   font-size: 1.2vw;
+   border-radius: 10px;
+   margin-left: 25%;
+   margin-top: 10%;
+ }
+ .question_modal fieldset{
+   border-radius: 10px;
+   font-size: 1.2vh;
+ }
+ #ask{
+   width: 30%;
+   float: right;
+   font-size: 1.2vw;
+ }
+
+ #cancel{
+   width: 30%;
+   float: left;
+   background-color: red;
+   font-size: 1.2vw;
+ }
+ .show{
+   display: block;
  }

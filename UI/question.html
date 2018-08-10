@@ -5,6 +5,7 @@
     <title>Stackoverflow-Lite|Question_details</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="static/css/style.css">
+
   </head>
   <body>
     <!--Navigation bar-->
@@ -32,9 +33,9 @@
       </div>
     </header>
     <div class="">
-      <a href="#">
-        <button id="ask_question" type="button" name="ask_questin">Ask Question</button>
-      </a>
+
+        <button id="ask_question" onclick="open_model()" type="button" name="ask_question">Ask Question</button>
+
 
       <!-- search bar field-->
       <div class="search_form">
@@ -86,6 +87,9 @@
           <span id="answer_username">Username</span>
         </a>
           <span>0 votes</span>
+          <div class="clear">
+
+          </div>
           <span>22  Aug 2017 @ 11:000 am</span>
           <div class="votes">
               <a id="upvote" href="#">Upvote</a> <a id="downvote" href="#">Downvote</a>
@@ -129,6 +133,8 @@
           <span id="answer_username">Username</span>
         </a>
           <span>0 votes</span>
+          <div class="clear">
+          </div>
           <span>22  Aug 2017 @ 11:000 am</span>
           <div class="votes">
               <a id="upvote" href="#">Upvote</a> <a id="downvote" href="#">Downvote</a>
@@ -297,5 +303,20 @@
       </div>
     </div>
     </div>
+    <!--ask question form-->
+    <div id="question_modal" class="hide">
+      <form class="" action="index.html" method="post">
+        <fieldset>
+          <legend>Ask Question</legend>
+          <input type="text" name="title" placeholder="Questin title" value="">
+          <br>
+          <textarea name="name" rows="10" placeholder="Question description" cols="80"></textarea>
+        </fieldset>
+        <button id="ask" type="button" name="button">Ask</button>
+        <button id="cancel" onclick="close_modal()"  type="button" name="button">Cancel</button>
+      </form>
+    </div>
+    <script type="text/javascript" src="static/js/script.js">
+  </script>
   </body>
 </html>
