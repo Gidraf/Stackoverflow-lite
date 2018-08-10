@@ -18,7 +18,6 @@ body
 }
 
 
-
 /* style legend */
 legend
 {
@@ -688,3 +687,20 @@ h4{
  .show{
    display: block;
  }
+.home_content{
+  color: white;
+  width: 50%;
+  margin-top: 15%;
+  margin-left: 25%;
+  font-size: 1.2vw;
+}
+
+.home_content p{
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.home_content button{
+  width: 40%;
+  float: right;
+}
