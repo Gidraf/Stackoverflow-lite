@@ -7,9 +7,6 @@ install:
   - python setup.py develop
   - pip install coveralls
 
-before_script:
-  - coverage report -m
-
 script:
   - py.test
 
