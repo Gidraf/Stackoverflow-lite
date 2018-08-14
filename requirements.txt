@@ -5,6 +5,7 @@ backports.functools-lru-cache==1.5
 click==6.7
 colorama==0.3.9
 configparser==3.5.0
+coverage==4.5.1
 enum34==1.1.6
 Flask==1.0.2
 funcsigs==1.0.2
@@ -21,6 +22,7 @@ pluggy==0.7.1
 py==1.5.4
 pylint==1.9.3
 pytest==3.7.1
+pytest-cov==2.5.1
 scandir==1.9.0
 singledispatch==3.4.0.3
 six==1.11.0
