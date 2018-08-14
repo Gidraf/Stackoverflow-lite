@@ -9,7 +9,7 @@ install:
 
 script:
   - py.test
-  - cd .
+  - cd Stackoverflow-lite
   - coverage report -m
 
 after_success:
