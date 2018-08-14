@@ -10,8 +10,8 @@ before_script:
   - source stackoverflow/.travis.sh
 
 script:
-  - cd stackoverflow/
-  - py.test --cov= test/
+  - cd test/
+  - py.test
 
 after_success:
   - coveralls
