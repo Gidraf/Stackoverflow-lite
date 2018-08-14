@@ -8,7 +8,8 @@ install:
   - pip install coveralls
 
 script:
-  - py.test --cov=Stackoverflow-lite/
+  - py.test
+  -coverage report -m
 
 after_success:
   - coveralls
