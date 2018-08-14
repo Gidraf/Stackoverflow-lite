@@ -3,3 +3,14 @@ language: python
     - "3.6"
   script:
     - pytest
+# blocklist
+branches:
+  except:
+  - legacy
+  - experimental
+
+# safelist
+branches:
+  only:
+  - master
+  - get_questions
