@@ -5,13 +5,14 @@ python:
 install:
   - pip install -r requirements.txt
   - python run.py get_question
+  - pip install coveralls
 
 before_script:
   - source stackoverflow/.travis.sh
 
 script:
   - cd test/
-  - py.test
+  - py.test --cov=test/
 
 after_success:
   - coveralls
