@@ -9,6 +9,7 @@ install:
 
 script:
   - py.test
+  - cd .
   - coverage report -m
 
 after_success:
