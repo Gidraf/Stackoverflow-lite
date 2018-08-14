@@ -10,7 +10,7 @@ before_script:
   - source stackoverflow/.travis.sh
 
 script:
-  - cd stackoverflow/tests
+  - cd stackoverflow
   - py.test --cov= test/
 
 after_success:
