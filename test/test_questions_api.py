@@ -66,3 +66,20 @@ def test_get_specific_question(client):
         }
     ]
 }
+
+def test_post_question(client):
+    '''test if a question has been posted'''
+    data_type = 'application/json'
+    headers = {
+        'Content-Type': data_type,
+        'Accept': data_type
+    }
+    data = {
+        'title':' this is my last question',
+        'description': "come on this is just a question",
+    }
+    url = 'http://localhost:5000/api/v1/add_questions'
+
+    response = client.post(url, data=json.dumps(data), headers=headers)
+
+    assert response.content_type == data_type
