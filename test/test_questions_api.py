@@ -19,7 +19,7 @@ def test_app(client):
 
 def test_get_question(client):
     res = client.get(url_for("questions.home"))
-    assert res.json == {
+    assert res.json =={
     "questions": [
         {
             "answer": 0,
@@ -31,23 +31,38 @@ def test_get_question(client):
         {
             "answer": 1,
             "description": "this iis my second description",
-            "id": 1,
+            "id": 2,
             "time": "11:50 am",
             "title": "this is my second question?"
         },
         {
             "answer": 2,
             "description": "this iis my third description",
-            "id": 1,
+            "id": 3,
             "time": "11:50 am",
             "title": "this is my third question?"
         },
         {
             "answer": 3,
             "description": "this iis my fourth description",
-            "id": 1,
+            "id": 4,
             "time": "11:30 am",
             "title": "this is my fourth question?"
+        }
+    ]
+}
+
+def test_get_specific_question(client):
+    """test get a specific question"""
+    res=client.get('http://localhost:5000/api/v1/questions/1')
+    assert res.json == {
+    "question": [
+        {
+            "answer": 0,
+            "description": "this iis my first description",
+            "id": 1,
+            "time": "11:27 am",
+            "title": "this is my first question?"
         }
     ]
 }
