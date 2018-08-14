@@ -1,3 +1,4 @@
+apipkg==1.5
 astroid==1.6.5
 atomicwrites==1.1.5
 attrs==18.1.0
@@ -7,6 +8,7 @@ colorama==0.3.9
 configparser==3.5.0
 coverage==4.5.1
 enum34==1.1.6
+execnet==1.5.0
 Flask==1.0.2
 funcsigs==1.0.2
 futures==3.2.0
@@ -23,6 +25,9 @@ py==1.5.4
 pylint==1.9.3
 pytest==3.7.1
 pytest-cov==2.5.1
+pytest-flask==0.10.0
+pytest-forked==0.2
+pytest-xdist==1.22.5
 scandir==1.9.0
 singledispatch==3.4.0.3
 six==1.11.0
