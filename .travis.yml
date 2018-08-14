@@ -4,11 +4,8 @@ python:
 
 install:
   - pip install -r requirements.txt
-  - python setup.py get_question
+  - python setup.py develop
   - pip install coveralls
-
-before_script:
-  - source stackoverflow/.travis.sh
 
 script:
   - py.test --cov= test/
