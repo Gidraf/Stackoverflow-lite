@@ -6,7 +6,7 @@ class Question(object):
         """init the question receiveed"""
         self.question_list = question_list
 
-    def show_questions(self,):
+    def show_questions(self):
         """show the questions"""
         return self.question_list
 
