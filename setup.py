@@ -2,7 +2,7 @@ from setuptools import setup
 from setuptools import find_packages
 
 setup(
-    name='StackOverflow-Lite',
+    name='Stackoverflow-lite',
     version='1.0',
     description='StackOverflow-lite platform API where people can ask questions and provide answers.',
     url='https://github.com/Gidraf/Stackoverflow-lite',
