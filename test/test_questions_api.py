@@ -9,34 +9,9 @@ from app import create_app
 @pytest.fixture
 def app():
     """init app"""
-    app=create_app("development")
+    app=create_app("testing")
     client = app.test_client()
     return app
-
-@pytest.fixture
-def question_list():
-    question_list=[{
-        "id": 1,
-        "title": "this is my first question?",
-        "description": "this iis my first description",
-        "answer": 0,
-        "time": "11:27 am"}, {
-            "id": 1,
-            "title": "this is my second question?",
-            "description": "this iis my second description",
-            "answer": 1,
-            "time": "11:50 am"}, {
-                "id": 1,
-                "title": "this is my third question?",
-                "description": "this iis my third description",
-                "answer": 2,
-                "time": "11:50 am"}, {
-                    "id": 1,
-                    "title": "this is my fourth question?",
-                    "description": "this iis my fourth description",
-                    "answer": 3,
-                    "time": "11:30 am"}]
-    return question_list
 
 def test_app(client):
     """test home page"""
