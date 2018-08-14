@@ -11,8 +11,7 @@ before_script:
   - source stackoverflow/.travis.sh
 
 script:
-  - cd test/
-  - py.test --cov=test/
+  - py.test --cov= test/
 
 after_success:
   - coveralls
