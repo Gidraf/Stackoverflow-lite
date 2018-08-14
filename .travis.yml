@@ -4,7 +4,7 @@ python:
 
 install:
   - pip install -r requirements.txt
-  - python run.py get_question
+  - python setup.py get_question
   - pip install coveralls
 
 before_script:
