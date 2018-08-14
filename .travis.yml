@@ -1,16 +1,17 @@
 language: python
-  python:
-    - "3.6"
-  script:
-    - pytest
-# blocklist
-branches:
-  except:
-  - legacy
-  - experimental
+python:
+  - "3.6"
 
-# safelist
-branches:
-  only:
-  - master
-  - get_questions
+install:
+  - pip install -r requirements.txt
+  - python run.py get_question
+
+before_script:
+  - source stackoverflow/.travis.sh
+
+script:
+  - cd stackoverflow/tests/
+  - py.test --cov=stackoverflow tests/
+
+after_success:
+  - coveralls
