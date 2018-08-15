@@ -19,12 +19,12 @@ def not_found(error):
 @QUESTION.errorhandler(400)
 def bad_request(error):
     '''return customed bad format'''
-    return make_response(jsonify({"error":"the format you have providedd is not allowed"}))
+    return make_response(jsonify({"error":"the number or request you have entered is not accepted"}))
 
 @QUESTION.errorhandler(405)
 def method_not_allowed(error):
     '''return customed method not allowed'''
-    return make_response(jsonify({"error":"the fthe method not allwed"}))
+    return make_response(jsonify({"error":"the fthe method not allowed"}))
 
 @QUESTION.errorhandler(410)
 def deleted_nofound(error):
@@ -42,6 +42,8 @@ def home():
 @QUESTION.route('/api/v1/questions/<int:question_id>', methods=["GET"])
 def get_question(question_id):
     '''get a specific question'''
+    if not isinstance(question_id, int):
+        abort(400)
     question_list = question.show_questions()
     my_question=[my_question for my_question in question_list if my_question["id"] == question_id]
     if my_question:
@@ -65,6 +67,8 @@ def post_question():
 @QUESTION.route('/api/v1/update_question/<int:question_id>', methods=["PUT"])
 def update_question(question_id):
       '''edit question'''
+      if not isinstance(question_id, int):
+          abort(400)
       question_list=question.show_questions()
       new_question=[new_question for new_question in question_list if new_question["id"] == question_id]
       if not request.json:
@@ -78,3 +82,14 @@ def update_question(question_id):
           new_question[0]['description'] = request.json.get('description', new_question[0]['description'])
           new_question[0]["time"] = "time.time()"
       return jsonify({"question": new_question[0]})
+
+@QUESTION.route('/api/v1/delete_question/<int:question_id>', methods=["DELETE"])
+def delete_question(question_id):
+    """delete question"""
+    if not isinstance(question_id, int):
+        abort(400)
+    del_question=[del_question for del_question in question_list if del_question["id"]==question_id]
+    if del_question:
+        question_list.remove(del_question[0])
+        return jsonify({"result": "deleted"})
+    abort(404)
