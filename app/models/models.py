@@ -32,10 +32,4 @@ class Question(object):
             return True
         return False
 
-
-class Answer(object):
-    """questions answers"""
-
-    def  __init__(self, answer_list):
-        """initialized question list"""
-        self.answer_list = answer_list
+    
