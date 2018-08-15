@@ -78,8 +78,41 @@ def test_post_question(client):
         'title':' this is my last question',
         'description': "come on this is just a question",
     }
-    url = 'http://localhost:5000/api/v1/add_questions'
-
+    url = 'http://localhost:5000/api/v1/add_question'
     response = client.post(url, data=json.dumps(data), headers=headers)
+    assert response.json == {
+  "question": {
+    "answer": 0,
+    "description": "come on this is just a question",
+    "id": 5,
+    "time": "time.time()",
+    "title": " this is my last question"
+  }
+}
 
-    assert response.content_type == data_type
+    #assert response.content_type == data_type
+
+def test_update_question(client):
+        '''test if a question has been updated'''
+        data_type = 'application/json'
+        headers = {
+            'Content-Type': data_type,
+            'Accept': data_type
+        }
+        data = {
+            'title': 'this is my edited question',
+            'description': "come on this is just a question"
+        }
+        url = 'http://localhost:5000/api/v1/update_question/1'
+        response = client.put(url, data=json.dumps(data), headers=headers)
+        assert response.json == {
+          "question": {
+            "answer": 0,
+            "description": "come on this is just a question",
+            "id": 1,
+            "time": "time.time()",
+            "title": "this is my edited question"
+          }
+        }
+
+        # client.get("http://localhost:5000/api/v1/update_question/1").status_code ==200
