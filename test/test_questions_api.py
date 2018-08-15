@@ -115,6 +115,7 @@ def test_update_question(client):
           }
         }
 
+
 def test_delete_question(client):
     """test if a question has been deleted"""
     res=client.delete("http://localhost:5000/api/v1/delete_question/1")

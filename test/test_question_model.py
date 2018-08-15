@@ -10,13 +10,13 @@ def questions_list():
     question = [{
         "id": 1,
         "title": "what is my name",
-        "descriptions": " i have been thinking about my name but i have not find it",
+        "description": " i have been thinking about my name but i have not find it",
         "time": " 11:00 am",
         "answers":0
         }, {
-            "id": 1,
+            "id": 2,
             "title": "what is my name",
-            "descriptions": " i have been thinking about my name but i have not find it",
+            "description": " i have been thinking about my name but i have not find it",
             "time": " 11:00 am",
             "answers":0}]
     return question
@@ -31,7 +31,7 @@ def test_question_post():
     question_update = {
         "id": 1,
         "title": "I have been update",
-        "descriptions": " i have been thinking about my name but i have not find it",
+        "description": " i have been thinking about my name but i have not find it",
         "time": " 11:00 am",
         "answers":0}
 
@@ -42,18 +42,21 @@ def test_question_post():
 def test_update_question():
     """update the question if exists"""
     question_update = {
-        "id": 1,
+        "id": 2,
         "title": "I have been update",
-        "descriptions": " i have been thinking about my name but i have not find it",
+        "description": " i have been thinking about my name but i have not find it",
         "time": " 11:00 am",
         "answers":0}
 
+    title = "I have been update"
+    description = " i have been thinking about my name but i have not find it"
+    time = " 11:00 am"
     quiz = Question(questions_list())
-    quiz.update_questions(0, question_update)
-    assert quiz.question_list[0] == question_update
+    question =quiz.update_questions(2, title, description, time)
+    assert question_update == question
 
 def test_delete_question():
     """check if the question has been deleted"""
     quiz = Question(questions_list())
-    quiz.delete_question(0)
+    deleted = quiz.delete_question(1)
     assert len(quiz.question_list) == 1
