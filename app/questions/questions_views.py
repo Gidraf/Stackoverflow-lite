@@ -58,38 +58,37 @@ def post_question():
     new_question = {
     'id': question_list[-1]['id'] + 1,
     'title': request.json['title'],
-    'description': request.json.get('description', ""),
+    'description': request.json['description'],
     'time': "time.time()",
     "answer": 0}
-    question_list.append(new_question)
+    question.add_question(new_question)
     return jsonify({'question': new_question})
 
 @QUESTION.route('/api/v1/update_question/<int:question_id>', methods=["PUT"])
 def update_question(question_id):
-      '''edit question'''
-      if not isinstance(question_id, int):
+    '''edit question'''
+    if not isinstance(question_id, int):
           abort(400)
-      question_list=question.show_questions()
-      new_question=[new_question for new_question in question_list if new_question["id"] == question_id]
-      if not request.json:
+    if not request.json:
           abort(400)
-      if 'title' in request.json and type(request.json['title']) != unicode:
-        abort(400)
-      if 'description' in request.json and type(request.json['description']) is not unicode:
-        abort(400)
-      if new_question:
-          new_question[0]['title'] = request.json.get('title', new_question[0]['title'])
-          new_question[0]['description'] = request.json.get('description', new_question[0]['description'])
-          new_question[0]["time"] = "time.time()"
-      return jsonify({"question": new_question[0]})
+    if 'title' in request.json and type(request.json['title']) != unicode:
+         abort(400)
+    if 'description' in request.json and type(request.json['description']) is not unicode:
+         abort(400)
+    current_question=[current_question for current_question in question_list if current_question["id"]==question_id]
+    if current_question:
+        title = request.json.get('title', current_question[0]["title"])
+        description= request.json.get('description', current_question[0]['description'])
+        time = "time.time()"
+        new_question=question.update_questions(question_id, title, description, time)
+        return jsonify({"question": new_question})
+    abort (404)
 
 @QUESTION.route('/api/v1/delete_question/<int:question_id>', methods=["DELETE"])
 def delete_question(question_id):
     """delete question"""
     if not isinstance(question_id, int):
         abort(400)
-    del_question=[del_question for del_question in question_list if del_question["id"]==question_id]
-    if del_question:
-        question_list.remove(del_question[0])
+    if question.delete_question(question_id):
         return jsonify({"result": "deleted"})
     abort(404)
