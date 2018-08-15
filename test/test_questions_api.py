@@ -115,4 +115,9 @@ def test_update_question(client):
           }
         }
 
-        # client.get("http://localhost:5000/api/v1/update_question/1").status_code ==200
+def test_delete_question(client):
+    """test if a question has been deleted"""
+    res=client.delete("http://localhost:5000/api/v1/delete_question/1")
+    assert res.json == {
+  "result": "deleted"
+}
