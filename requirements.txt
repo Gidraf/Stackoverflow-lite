@@ -17,6 +17,7 @@ execnet==1.5.0
 Flask==1.0.2
 funcsigs==1.0.2
 futures==3.2.0
+gunicorn==19.9.0
 idna==2.7
 imagesize==1.0.0
 isort==4.3.4
@@ -48,7 +49,7 @@ six==1.11.0
 snowballstemmer==1.2.1
 Sphinx==1.7.6
 sphinxcontrib-websupport==1.1.0
--e git+https://github.com/Gidraf/Stackoverflow-lite.git@cb3e43b5b1c2c3484786f84d02c0647d96a99be6#egg=StackOverflow_Lite
+-e git+https://github.com/Gidraf/Stackoverflow-lite.git@2ddd3fcb14a819b2bc004a972bc9157a105cda6a#egg=StackOverflow_Lite
 typing==3.6.4
 urllib3==1.23
 Werkzeug==0.14.1
