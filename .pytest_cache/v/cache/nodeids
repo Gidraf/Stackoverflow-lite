@@ -1,0 +1,17 @@
+[
+  "test/test_naswer_model.py::test_answer_init", 
+  "test/test_naswer_model.py::test_answer_post", 
+  "test/test_naswer_model.py::test_update_answer", 
+  "test/test_naswer_model.py::test_delete_answer", 
+  "test/test_question_model.py::test_question_init", 
+  "test/test_question_model.py::test_question_post", 
+  "test/test_question_model.py::test_update_question", 
+  "test/test_question_model.py::test_delete_question", 
+  "test/test_questions_api.py::test_app", 
+  "test/test_questions_api.py::test_get_question", 
+  "test/test_questions_api.py::test_get_specific_question", 
+  "test/test_questions_api.py::test_post_question", 
+  "test/test_questions_api.py::test_update_question", 
+  "test/test_questions_api.py::test_delete_question", 
+  "test/test_questions_api.py::test_post_answer"
+]
