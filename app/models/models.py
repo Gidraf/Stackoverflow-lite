@@ -30,7 +30,6 @@ class Question(object):
         if del_question:
             self.question_list.remove(del_question[0])
             return True
-        return False
 
 
 class Answer(object):
@@ -45,7 +44,6 @@ class Answer(object):
         answers = [answers for answers in self.answer_list if answers["question_id"] == question_id]
         if answers:
             return answers
-        return False
 
     def add_answer(self, answer):
         '''and answer to the list'''
@@ -58,7 +56,6 @@ class Answer(object):
         if answer:
             answer[0]["answer_text"]=answer_text
             return answer[0]
-        return False
 
     def delete_answer(self, id):
         """delete answer"""
@@ -66,4 +63,3 @@ class Answer(object):
         if answer:
             self.answer_list.remove(answer[0])
             return True
-        return False

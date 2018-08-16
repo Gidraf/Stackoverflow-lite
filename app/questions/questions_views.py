@@ -23,17 +23,6 @@ def bad_request(error):
     '''return customed bad format'''
     return make_response(jsonify({"error":"the number or request you have entered is not accepted"}))
 
-@QUESTION.errorhandler(405)
-def method_not_allowed(error):
-    '''return customed method not allowed'''
-    return make_response(jsonify({"error":"the fthe method not allowed"}))
-
-@QUESTION.errorhandler(410)
-def deleted_nofound(error):
-    '''return customed method not allowed'''
-    return make_response(jsonify({"error":"the value you were lookng for has been deleted"}))
-
-
 @QUESTION.route("/api/v1/questions", methods=["GET","POST"])
 def home():
     """show all questions"""
@@ -48,8 +37,6 @@ def home():
 def get_question(question_id):
     '''get a specific question'''
     if request.method == 'GET':
-        if not isinstance(question_id, int):
-            abort(400)
         question_list = question.show_questions()
         my_question=[my_question for my_question in question_list if my_question["id"] == question_id]
         if my_question:
@@ -87,8 +74,6 @@ def post_question():
 @QUESTION.route('/api/v1/update_question/<int:question_id>', methods=["PUT"])
 def update_question(question_id):
     '''edit question'''
-    if not isinstance(question_id, int):
-          abort(400)
     if not request.json:
           abort(400)
     if 'title' in request.json and type(request.json['title']) != unicode:
@@ -107,8 +92,6 @@ def update_question(question_id):
 @QUESTION.route('/api/v1/delete_question/<int:question_id>', methods=["DELETE"])
 def delete_question(question_id):
     """delete question"""
-    if not isinstance(question_id, int):
-        abort(400)
     if question.delete_question(question_id):
         return jsonify({"result": "deleted"})
     abort(404)
