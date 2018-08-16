@@ -5,11 +5,13 @@ from flask import jsonify
 from flask import abort
 from flask import make_response
 from app.models.models import Question
+from app.models.models import Answer
 from . import QUESTION
 from . import question_list
-
+from . import answer_list
 
 question = Question(question_list)
+answer=Answer (answer_list)
 
 @QUESTION.errorhandler(404)
 def not_found(error):
@@ -36,19 +38,37 @@ def deleted_nofound(error):
 def home():
     """show all questions"""
     if question:
+        for q in question.show_questions():
+            #get number of answers
+            q["answer"]=len(answer.show_answers(q["id"]))
         return jsonify({"questions": question.show_questions()})
     abort(404)
 
-@QUESTION.route('/api/v1/questions/<int:question_id>', methods=["GET"])
+@QUESTION.route('/api/v1/questions/<int:question_id>', methods=["GET","POST","PUT","DELETE"])
 def get_question(question_id):
     '''get a specific question'''
-    if not isinstance(question_id, int):
-        abort(400)
-    question_list = question.show_questions()
-    my_question=[my_question for my_question in question_list if my_question["id"] == question_id]
-    if my_question:
-        return jsonify({"question": my_question})
-    abort(404)
+    if request.method == 'GET':
+        if not isinstance(question_id, int):
+            abort(400)
+        question_list = question.show_questions()
+        my_question=[my_question for my_question in question_list if my_question["id"] == question_id]
+        if my_question:
+            question_answers=answer.show_answers(my_question[0]["id"])
+            my_question[0]["answers"]=question_answers
+            return jsonify({"question": my_question})
+        abort(404)
+    elif request.method == "POST":
+        if not request.json or not "answer_text" in request.json:
+            abort(404)
+        new_answer = {
+        "id": answer_list[-1]["id"]+1,
+        "answer_text": request.json["answer_text"],
+        "time":" 11:00 am",
+        "votes":0,
+        "question_id": question_id
+        }
+        answer.add_answer(new_answer)
+        return jsonify({"answer":new_answer})
 
 @QUESTION.route('/api/v1/add_question', methods=["POST"])
 def post_question():
