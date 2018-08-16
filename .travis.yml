@@ -8,7 +8,6 @@ install:
   - pip install coveralls
 
 script:
-  - py.test -v
-
+  - py.test --cov=app
 after_success:
   - coveralls
