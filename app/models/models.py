@@ -32,4 +32,38 @@ class Question(object):
             return True
         return False
 
-    
+
+class Answer(object):
+    """questions answers"""
+
+    def  __init__(self, answer_list):
+        """initialized question list"""
+        self.answer_list = answer_list
+
+    def show_answers(self, question_id):
+        '''show question answers'''
+        answers = [answers for answers in self.answer_list if answers["question_id"] == question_id]
+        if answers:
+            return answers
+        return False
+
+    def add_answer(self, answer):
+        '''and answer to the list'''
+        self.answer_list.append(answer);
+        return answer
+
+    def update_answer(self, answer_id, answer_text):
+        '''update an existing answer'''
+        answer=[answer for answer in self.answer_list if answer["id"] == answer_id]
+        if answer:
+            answer[0]["answer_text"]=answer_text
+            return answer[0]
+        return False
+
+    def delete_answer(self, id):
+        """delete answer"""
+        answer= [answer for answer in self.answer_list if answer["id"] == id]
+        if answer:
+            self.answer_list.remove(answer[0])
+            return True
+        return False
