@@ -1,13 +1,7 @@
 [![Build Status](https://travis-ci.org/Gidraf/Stackoverflow-lite.svg?branch=get_questions)](https://travis-ci.org/Gidraf/Stackoverflow-lite)
-<<<<<<< HEAD
 [![Coverage Status](https://coveralls.io/repos/github/Gidraf/Stackoverflow-lite/badge.svg?branch=development)](https://coveralls.io/github/Gidraf/Stackoverflow-lite?branch=development)
-
 [![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
-
 [![Maintainability](https://api.codeclimate.com/v1/badges/e01c4acdf982d57d2cfa/maintainability)](https://codeclimate.com/github/Gidraf/Stackoverflow-lite/maintainability)
-=======
-[![Coverage Status](https://coveralls.io/repos/github/Gidraf/Stackoverflow-lite/badge.svg?branch=master)](https://coveralls.io/github/Gidraf/Stackoverflow-lite?branch=development)
->>>>>>> b4ecf303fd940471809bdc7401d71e83e4b8230d
 
 # Stackoverflow-lite
 StackOverflow-lite is a platform where people can ask questions and provide answers
