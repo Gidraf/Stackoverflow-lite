@@ -1,16 +1,13 @@
 language: python
-  python:
-    - "3.6"
-  script:
-    - pytest
-# blocklist
-branches:
-  except:
-  - legacy
-  - experimental
+python:
+  - "2.7"
 
-# safelist
-branches:
-  only:
-  - master
-  - get_question
+install:
+  - pip install -r requirements.txt
+  - python setup.py develop
+  - pip install coveralls
+
+script:
+  - py.test --cov=app
+after_success:
+  - coveralls
