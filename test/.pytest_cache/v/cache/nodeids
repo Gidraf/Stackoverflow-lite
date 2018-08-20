@@ -1,8 +1,0 @@
-[
-  "test_question_model.py::test_question_init", 
-  "test_question_model.py::test_question_post", 
-  "test_question_model.py::test_update_question", 
-  "test_question_model.py::test_delete_question", 
-  "test_questions_api.py::test_app", 
-  "test_questions_api.py::test_get_question"
-]
