@@ -1,6 +1,6 @@
 """parent file for the app"""
 from flask import Flask
-from questions import QUESTION
+from .questions import QUESTION
 from instance.config import app_config
 
 
