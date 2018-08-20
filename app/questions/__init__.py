@@ -116,4 +116,4 @@ answer_list = [{
                                                             },]
 
 
-from . import questions_views
+from . import resources
