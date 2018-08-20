@@ -76,9 +76,9 @@ def update_question(question_id):
     '''edit question'''
     if not request.json:
           abort(400)
-    if 'title' in request.json and type(request.json['title']) != unicode:
+    if 'title' in request.json and type(request.json['title']) != str:
          abort(400)
-    if 'description' in request.json and type(request.json['description']) is not unicode:
+    if 'description' in request.json and type(request.json['description']) is not str:
          abort(400)
     current_question=[current_question for current_question in question_list if current_question["id"]==question_id]
     if current_question:
