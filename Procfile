@@ -1,4 +1,4 @@
 [requires]
-python_version = "2.7"
+python_version = "3.7"
 
 web: gunicorn run:APP
