@@ -13,6 +13,7 @@ idna==2.7
 itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
+modernize==0.6.1
 more-itertools==4.3.0
 pluggy==0.7.1
 py==1.5.4
@@ -20,5 +21,7 @@ pytest==3.7.2
 pytest-flask==0.10.0
 requests==2.19.1
 six==1.11.0
+tox==3.2.1
 urllib3==1.23
+virtualenv==16.0.0
 Werkzeug==0.14.1
