@@ -16,6 +16,7 @@ install:
 
 script:
   - sudo pytest --cov=app
+  - sudo coverage report -m
 
 after_success:
   - sudo coveralls
