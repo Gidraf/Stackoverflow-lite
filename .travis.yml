@@ -9,11 +9,12 @@ python:
 
 install:
   - sudo pip install requests[security]
-  - sudo pip install -r requirements.txt
+  - sudo pip install -r requirements.txt --use-mirrors
   - sudo pip install coveralls
+  - sudo pip install -e . --use-mirrors
 
 script:
-  - sudo py.test
+  - sudo py.test --cov=app
 
 after_success:
   - sudo coveralls
