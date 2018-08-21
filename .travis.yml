@@ -6,27 +6,32 @@ python:
   - "3.5"
   - "3.6"
   - "3.7"
+env:
+  global:
+    - CC_TEST_REPORTER_ID=c24700d0ab7c6cab1279b92b871929c1ea575893
 
-before_script:
-- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-- chmod +x ./cc-test-reporter
+services:
+  - redis-server
 
+addons:
+  postgresql: "9.6"
+  # chrome: stable # Re-enable for functional tests
+services:
+  - postgresql
 
 install:
   - sudo pip install requests[security]
   - sudo pip install -r requirements.txt
   - sudo pip install coveralls
-services:
-  - redis-server
 
-env:
-  global:
-    - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
-    - CODECLIMATE_REPO_TOKEN=[c24700d0ab7c6cab1279b92b871929c1ea575893]
-    - CC_TEST_REPORTER_ID=[a2a3e6dcf3fba0e0e5e1dc29e45c63413dab61df356289745179742a91755f9f]
+before_script:
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+- chmod +x ./cc-test-reporter
+
 script:
   - sudo pytest --cov=app
   - sudo coverage report -m
 
 after_success:
   - sudo coveralls
+  - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_PYTHON_VERSION" == "3.6" ]]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
