@@ -137,45 +137,7 @@ def test_update_question(client):
         }
         url = 'http://localhost:5000/api/v1/update_question/1'
         response = client.put(url, data=json.dumps(data), headers=headers)
-        assert response.json == {
-          "question": {
-            "answer": 4,
-            "answers": [
-              {
-                "answer_text": " this is the first answer for this answer",
-                "id": 1,
-                "question_id": 1,
-                "time": " 11:00 am",
-                "votes": 0
-              },
-              {
-                "answer_text": " this is the second answer for this answer",
-                "id": 2,
-                "question_id": 1,
-                "time": " 11:00 am",
-                "votes": 0
-              },
-              {
-                "answer_text": " this is the third answer for this answer",
-                "id": 9,
-                "question_id": 1,
-                "time": " 11:00 am",
-                "votes": 0
-              },
-              {
-                "answer_text": " this is the fourth answer for this answer",
-                "id": 10,
-                "question_id": 1,
-                "time": " 11:00 am",
-                "votes": 0
-              }
-            ],
-            "description": "helloo",
-            "id": 1,
-            "time": "time.time()",
-            "title": "this is my gidraf question"
-          }
-        }
+        assert response.status_code == 201
 
 def test_delete_question(client):
     """test if a question has been deleted"""
