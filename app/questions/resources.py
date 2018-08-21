@@ -30,7 +30,7 @@ def home():
         for q in question.show_questions():
             #get number of answers
             q["answer"]=len(answer.show_answers(q["id"]))
-        return jsonify({"questions": question.show_questions()})
+        return jsonify({"questions": question.show_questions()}),200
     abort(404)
 
 @QUESTION.route('/api/v1/questions/<int:question_id>', methods=["GET","POST","PUT","DELETE"])
@@ -42,7 +42,7 @@ def get_question(question_id):
         if my_question:
             question_answers=answer.show_answers(my_question[0]["id"])
             my_question[0]["answers"]=question_answers
-            return jsonify({"question": my_question})
+            return jsonify({"question": my_question}),200
         abort(404)
     elif request.method == "POST":
         if not request.json or not "answer_text" in request.json:
@@ -69,7 +69,7 @@ def post_question():
     'time': "time.time()",
     "answer": 0}
     question.add_question(new_question)
-    return jsonify({'question': new_question})
+    return jsonify({'question': new_question}),201
 
 @QUESTION.route('/api/v1/update_question/<int:question_id>', methods=["PUT"])
 def update_question(question_id):
@@ -86,12 +86,12 @@ def update_question(question_id):
         description= request.json.get('description', current_question[0]['description'])
         time = "time.time()"
         new_question=question.update_questions(question_id, title, description, time)
-        return jsonify({"question": new_question})
+        return jsonify({"question": new_question}),201
     abort (404)
 
 @QUESTION.route('/api/v1/delete_question/<int:question_id>', methods=["DELETE"])
 def delete_question(question_id):
     """delete question"""
     if question.delete_question(question_id):
-        return jsonify({"result": "deleted"})
+        return jsonify({"result": "deleted"}),200
     abort(404)
