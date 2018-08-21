@@ -31,7 +31,6 @@ before_script:
 script:
   - sudo pytest --cov=app
   - sudo coverage report -m
-  - flake8 tabbycat
 
 after_success:
   - coverage xml
