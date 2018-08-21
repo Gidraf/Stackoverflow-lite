@@ -9,8 +9,7 @@ python:
 
 install:
   - pip install requests[security]
-  - pip install -r requirements.txt
-  - python setup.py develop
+  - sudo pip install -r requirements.txt
   - pip install coveralls
 
 script:
