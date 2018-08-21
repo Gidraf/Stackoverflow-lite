@@ -8,7 +8,7 @@ python:
   - "3.7"
 
 install:
-  -  pip pip install urllib3[secure] --upgrade
+  - pip install urllib3[secure] --upgrade
   - pip install -r requirements.txt
   - python setup.py develop
   - pip install coveralls
