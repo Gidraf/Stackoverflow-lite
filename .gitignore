@@ -5,3 +5,4 @@ app/models/__pycache__
 app/questions/__pycache__
 instance/__pycache__
 test/__pycache__
+setup.py
