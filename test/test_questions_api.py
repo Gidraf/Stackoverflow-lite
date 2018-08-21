@@ -122,23 +122,6 @@ def test_post_question(client):
   }
 }
 
-    #assert response.content_type == data_type
-
-def test_update_question(client):
-        '''test if a question has been updated'''
-        data_type = 'application/json'
-        headers = {
-            'Content-Type': data_type,
-            'Accept': data_type
-        }
-        data = {
-        "title": "this is my gidraf question",
-	    "description": "helloo"
-        }
-        url = 'http://localhost:5000/api/v1/update_question/1'
-        response = client.put(url, data=json.dumps(data), headers=headers)
-        assert response.status_code == 201
-
 def test_delete_question(client):
     """test if a question has been deleted"""
     res=client.delete("http://localhost:5000/api/v1/delete_question/1")
