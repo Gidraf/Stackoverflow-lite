@@ -14,7 +14,8 @@ install:
 
 
 script:
-  - sudo py.test --cov=app
+  - sudo pytest --cov=app
+  -sudo py.test -v
 
 after_success:
   - sudo coveralls
