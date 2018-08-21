@@ -25,7 +25,7 @@ install:
 script:
   - sudo pytest --cov=app
   - sudo coverage report -m
-   - bundle exec rspec
+  - bundle exec rspec
 
 after_success:
   - sudo coveralls
