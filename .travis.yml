@@ -31,7 +31,10 @@ before_script:
 script:
   - sudo pytest --cov=app
   - sudo coverage report -m
+  - flake8 tabbycat
+  - coverage run tabbycat/manage.py test -v 2 --exclude-tag=selenium
 
 after_success:
+  - coverage xml
   - sudo coveralls
   - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_PYTHON_VERSION" == "3.6" ]]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
