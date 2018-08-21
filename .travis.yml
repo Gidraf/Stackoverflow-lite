@@ -13,7 +13,7 @@ install:
   - sudo pip install coveralls
 
 script:
-  - py.test --cov=app
+  - sudo py.test --cov=app
 
 after_success:
-  - coveralls
+  - sudo coveralls
