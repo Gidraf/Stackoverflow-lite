@@ -7,3 +7,6 @@ instance/__pycache__
 test/__pycache__
 setup.py
 htmlcov
+instance\config.py
+app/resources/questions/__pycache__
+app/resources/users/__pycache__
