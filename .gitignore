@@ -2,7 +2,8 @@
 app/_pycache_
 app/__pycache__
 app/models/__pycache__
-app/questions/__pycache__
+app/resources/__pycache__
 instance/__pycache__
 test/__pycache__
 setup.py
+htmlcov
