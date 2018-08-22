@@ -6,8 +6,6 @@
 # Stackoverflow-lite
 StackOverflow-lite is a platform where people can ask questions and provide answers
 
-## link
-https://stackoverflowgidraf.herokuapp.com
 
 ## Required Features
     1. Users can create an account and log in.
