@@ -16,7 +16,7 @@ class Questions(object):
         description VARCHAR(120) NOT NULL,
         time_created TEXT NOT NULL,
         userid INTEGER NOT NULL,
-        FOREIGN KEY (userid) REFERENCES users ON UPDATE CASCADE ON DELETE CASCADE
+        FOREIGN KEY (userid) REFERENCES users(userid) ON UPDATE CASCADE ON DELETE CASCADE
         )"""
         self.cursor.execute(sql)
         self.database_connection.commit()
