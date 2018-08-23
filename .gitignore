@@ -10,3 +10,4 @@ htmlcov
 instance\config.py
 app/resources/questions/__pycache__
 app/resources/users/__pycache__
+app/resources/answers/__pycache__
