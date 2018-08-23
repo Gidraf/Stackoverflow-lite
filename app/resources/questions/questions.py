@@ -9,15 +9,12 @@ from flask import jsonify
 from flask import abort
 from flask import make_response
 from app.models.questions_model import Questions
-from app.models.models import Answer
+from app.models.answers_model import Answers
 from . import QUESTION
-from . import question_list
-from . import answer_list
 
 
 question=Questions()
-answer=Answer (answer_list)
-
+answer=Answers()
 @QUESTION.errorhandler(404)
 def not_found(error):
     """customed error handler"""
@@ -39,28 +36,29 @@ def home():
     except (Exception, psycopg2.DatabaseError) as error:
         return jsonify({"error":str(error)})
 
-@QUESTION.route('/api/v1/questions/<int:question_id>', methods=["GET","POST","PUT","DELETE"])
+@QUESTION.route('/api/v1/questions/<int:question_id>', methods=["GET","POST"])
 def get_question(question_id):
     '''get a specific question'''
     if request.method == 'GET':
         try:
             new_question=question.search_question_by_questionid(question_id)
-            return jsonify({"question":new_question}),200
+            return jsonify({"question":dic(new_question)}),200
         except (Exception, psycopg2.DatabaseError) as error:
             return jsonify({"error":str(error)})
         abort(404)
     elif request.method == "POST":
         if not request.json or not "answer_text" in request.json:
             abort(404)
-        new_answer = {
-        "id": answer_list[-1]["id"]+1,
-        "answer_text": request.json["answer_text"],
-        "time":" 11:00 am",
-        "votes":0,
-        "question_id": question_id
-        }
-        answer.add_answer(new_answer)
-        return jsonify({"answer":new_answer})
+        now=time.time()
+        time_created=datetime.datetime.fromtimestamp(now).strftime("%D-%M-%Y %HH:%MM:%SS")
+        answer_text=request.json["answer_text"]
+        userid=request.json["userid"]
+        try:
+            answer.create_answer_table()
+            answer.add_answer(answer_text,time_created,userid,question_id)
+            return redirect(url_for("question_view"))
+        except (Exception,psycopg2.DatabaseError) as error:
+            return jsonify({"error":str(error)})
 
 @QUESTION.route('/api/v1/add_question', methods=["POST"])
 def post_question():
