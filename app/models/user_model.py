@@ -38,9 +38,7 @@ class Users(object):
         "delete user by Id"
         sql="DELETE FROM users WHERE userid = %s"
         self.cursor.execute(sql,(userid))
-        self.cursor.close()
         self.database_connection.commit()
-        self.database_connection.close()
 
     def search_user_by_username(self,username):
         "search user by username"
