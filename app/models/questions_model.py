@@ -67,3 +67,9 @@ class Questions(object):
         self.cursor.execute(sql)
         questions = self.cursor.fetchall()
         return questions
+
+    def clear_question_table(self):
+        "clear user table"
+        sql="""DELETE FROM questions"""
+        self.cursor.execute(sql)
+        self.connection.commit()

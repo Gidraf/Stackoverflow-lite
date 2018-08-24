@@ -53,3 +53,9 @@ class Users(object):
         self.cursor.execute(sql,(useremail,))
         user = self.cursor.fetchall()
         return user
+
+    def clear_user_table(self):
+        "clear everything in user table"
+        sql="""DELETE FROM users"""
+        self.cursor.execute(sql)
+        self.database_connection.commit()

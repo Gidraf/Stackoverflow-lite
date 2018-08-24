@@ -34,8 +34,8 @@ class Answers(object):
 
     def update_answer(self, answer_text, answerid):
         "update answer details in the database"
-        sql="UPDATE answers SET  answer_text=%s WHERE answerid=%s;"
-        self.cursor.execute(sql,(answer_text, answerid))
+        sql="UPDATE answers SET  answer_text=%s WHERE answerid=%s"
+        self.cursor.execute(sql,(answer_text, answerid,))
         self.database_connection.commit()
 
     def delete_answer(self,answerid):
@@ -48,13 +48,13 @@ class Answers(object):
     def search_answer_by_questionid(self,questionid):
         "search answer by questionid"
         sql="SELECT * FROM answers WHERE questionid = %s"
-        self.cursor.execute(sql,(answerid,))
+        self.cursor.execute(sql,(questionid,))
         answer=self.cursor.fetchall()
         return answer
 
-    def vote_answer(self, answerid, vote):
+    def down_vote_answer(self, answerid, vote):
         """donvote answers"""
-        sql="UPDATE answers SET votes=%s WHERE answerid =%s"
+        sql="UPDATE answers SET votes+=1 WHERE answerid =%s"
         self.cursor.execute(sql,(vote,))
         self.database_connection.commit()
 
@@ -64,9 +64,15 @@ class Answers(object):
         self.cursor.execute(sql,(is_answer,))
         self.database_connection.commit()
 
-    def search_answer_by_user(self,userid):
+    def search_answer_by_user(self, userid):
         """search answers user asked"""
         sql="SELECT * FROM answers WHERE userid = %s"
         self.cursor.execute(sql,(userid,))
         answer=self.cursor.fetchall()
         return answer
+
+    def clear_answer_table(self):
+        "clear answer table"
+        sql="DELETE * FROM answers"
+        self.cursor.execute(sql)
+        self.connection.commmit()
