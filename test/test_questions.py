@@ -16,7 +16,7 @@ class TestQUestion(unittest.TestCase):
 
     def setUp(self):
         """setup database"""
-        init_app=create_app("development")
+        init_app=create_app("testing")
         init_app.config["LOGIN_DISABLED"]=True
         self.app=init_app.test_client()
         self.connection = database_connection("test")

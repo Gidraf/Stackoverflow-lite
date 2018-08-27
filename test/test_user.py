@@ -11,7 +11,7 @@ class TestUser(unittest.TestCase):
     """
 
     def setUp(self):
-        init_app=create_app("development")
+        init_app=create_app("testing")
         self.app=init_app.test_client()
         self.connection=database_connection("test")
         self.user=Users()
