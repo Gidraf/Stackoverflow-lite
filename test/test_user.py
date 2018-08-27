@@ -47,21 +47,22 @@ class TestUser(unittest.TestCase):
         response=self.app.post(url,data=json.dumps(self.current_user),headers=self.headers)
         self.assertEqual(response.status_code,200)
 
-    def test_login_of_user(self):
-        """
-        test if user can login and authenticated
-        """
-        self.user.register_user(self.current_user["username"],self.current_user["useremail"],
-                                self.current_user["password"],self.connection.cursor())
-        cursor=self.user.search_user_by_username(self.current_user["username"],self.connection.cursor())
-        reg_username=cursor.fetchall()
-        url="/auth/login"
-        credentials ={
-                "username": self.current_user["username"],
-                "password": self.current_user["password"]
-                }
-        response=self.app.post(url,data=json.dumps(credentials),headers=self.headers)
-        data=dict(response.get_json("success"))
-        success=data["success"]
-        self.assertEqual(success,"your access token is")
-        self.assertEqual(response.status_code,200)
+        """def test_login_of_user(self):
+
+            test if user can login and authenticated
+    
+            self.user.register_user(self.current_user["username"],self.current_user["useremail"],
+                                    self.current_user["password"],self.connection.cursor())
+            cursor=self.user.search_user_by_username(self.current_user["username"],self.connection.cursor())
+            reg_username=cursor.fetchall()
+            url="/auth/login"
+            credentials ={
+                    "username": self.current_user["username"],
+                    "password": self.current_user["password"]
+                    }
+            response=self.app.post(url,data=json.dumps(credentials),headers=self.headers)
+            data=dict(response.get_json("success"))
+            success=data["success"]
+            self.assertEqual(success,"your access token is")
+            self.assertEqual(response.status_code,200)
+            """
