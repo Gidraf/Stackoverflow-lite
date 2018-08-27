@@ -5,7 +5,9 @@ class Questions(object):
     """question table class"""
 
     def create_question_table(self,connection):
-        "create question table"
+        """
+        create question table
+        """
         sql="""CREATE TABLE IF NOT EXISTS questions(
         questionid SERIAL PRIMARY KEY UNIQUE NOT NULL,
         title VARCHAR(60) NOT NULL,
@@ -25,7 +27,9 @@ class Questions(object):
         return cursor
 
     def update_question(self, title, description, questionid, cursor):
-        "update question details in the database"
+        """
+        update question details in the database
+        """
         sql="UPDATE questions SET title=%s, description=%s WHERE questionid=%s;"
         cursor.execute(sql,(title,description,questionid))
         return cursor
