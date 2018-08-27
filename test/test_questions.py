@@ -18,7 +18,6 @@ class TestQUestion(unittest.TestCase):
         """setup database"""
         init_app=create_app("testing")
         init_app.config["TESTING"]=True
-        init_app.config["LOGIN_DISABLED"]=True
         self.app=init_app.test_client()
         self.connection = database_connection("test")
         self.user = Users()
@@ -142,4 +141,3 @@ class TestQUestion(unittest.TestCase):
         url="/api/v1/questions/1"
         response=self.app.get(url)
         self.assertEqual(response.status_code,401)
-    
