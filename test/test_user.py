@@ -12,6 +12,7 @@ class TestUser(unittest.TestCase):
 
     def setUp(self):
         init_app=create_app("testing")
+        init_app.config["TESTING"]=True
         self.app=init_app.test_client()
         self.connection=database_connection("test")
         self.user=Users()
@@ -50,7 +51,8 @@ class TestUser(unittest.TestCase):
         """
         test if user can login and authenticated
         """
-        self.user.register_user(self.current_user["username"],self.current_user["useremail"],self.current_user["password"],self.connection.cursor())
+        self.user.register_user(self.current_user["username"],self.current_user["useremail"],
+                                self.current_user["password"],self.connection.cursor())
         cursor=self.user.search_user_by_username(self.current_user["username"],self.connection.cursor())
         reg_username=cursor.fetchall()
         url="/auth/login"
