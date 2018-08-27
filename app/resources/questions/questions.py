@@ -41,8 +41,8 @@ def home():
         except (Exception, psycopg2.DatabaseError) as error:
             return jsonify({"error":str(error)}),500
         connection.close()
-    except Exception as e:
-        return jsonify({"error":"database connection error"})
+    except (Exception, psycopg2.DatabaseError) as e:
+        return jsonify({"error":str(e)}),500
 
 @QUESTION.route('/api/v1/questions/<int:question_id>', methods=["GET","POST"])
 @jwt_required
@@ -85,8 +85,8 @@ def get_question(question_id):
             except (Exception,psycopg2.DatabaseError) as error:
                 return jsonify({"error":str(error)}),500
             connection.close()
-        except Exception as e:
-            return jsonify({"error":"database connection error"}),500
+        except (Exception, psycopg2.DatabaseError) as e:
+            return jsonify({"error":str(e)}),500
 
 
 @QUESTION.route('/api/v1/add_question', methods=["POST"])
@@ -109,8 +109,8 @@ def post_question():
             return jsonify({"info":"added"}),201
         except (Exception, psycopg2.DatabaseError) as error:
             return jsonify({"error":str(error)}),500
-    except Exception as e:
-        return jsonify({"error":"database connection error"}),500
+    except (Exception, psycopg2.DatabaseError) as e:
+        return jsonify({"error":str(e)}),500
 
 @QUESTION.route('/api/v1/update_question/<int:question_id>', methods=["PUT"])
 @jwt_required
@@ -137,8 +137,8 @@ def update_question(question_id):
                 return jsonify({"question":new_question[0]}),200
         except Exception as error:
             return jsonify({"error":str(error)}),500
-    except Exception as e:
-        return jsonify({"error":"database connection error"}),500
+    except (Exception, psycopg2.DatabaseError) as e:
+        return jsonify({"error":str(e)}),500
 
 @QUESTION.route('/api/v1/delete_question/<int:question_id>', methods=["DELETE"])
 @jwt_required
@@ -157,8 +157,8 @@ def delete_question(question_id):
         except (Exception,psycopg2.DatabaseError) as error:
             return jsonify({"error": str(error)}),500
         connection.close()
-    except Exception as e:
-        return jsonify({"error":"database connection error"}),500
+    except (Exception, psycopg2.DatabaseError) as e:
+        return jsonify({"error":str(e)}),500
 
 @QUESTION.route('/api/v1/search', methods=["POST"])
 def search_question():
@@ -180,5 +180,5 @@ def search_question():
         except (Exception,psycopg2.DatabaseError) as error:
             return jsonify({"error": str(error)})
         connection.close()
-    except Exception as e:
-        return jsonify({"error":"database connection error"}),500
+    except (Exception, psycopg2.DatabaseError) as e:
+        return jsonify({"error":str(e)}),500
