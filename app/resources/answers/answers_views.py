@@ -46,8 +46,8 @@ def question_view(questionid):
         except (Exception, psycopg2.DatabaseError) as error:
             return jsonify({"error":str(error)}),500
         connection.close()
-    except Exception as e:
-        return jsonify({"error":"database connection error"}),500
+    except (Exception, psycopg2.DatabaseError) as e:
+        return jsonify({"error":str(e)}),500
 
 @ANSWERS.route('/api/v1/update_answer/<int:answerid>', methods=["PUT"])
 @jwt_required
@@ -64,8 +64,8 @@ def update_answer(answerid):
             return jsonify({"info":"answer updated"}),200
         except Exception as error:
             return jsonify({"error": str(error)}),500
-    except Exception as e:
-        return jsonify({"error":"database connection error"}),500
+    except (Exception, psycopg2.DatabaseError) as e:
+        return jsonify({"error":str(e)}),500
 
 @ANSWERS.route('/api/v1/delete_answer/<int:answerid>', methods=["DELETE"])
 @jwt_required
@@ -79,8 +79,8 @@ def delete_answer(answerid):
             return jsonify({"info":"deleted"}),200
         except (Exception, psycopg2.DatabaseError) as error:
             return jsonify({"error":str(error)}),500
-    except Exception as e:
-        return jsonify({"error":"database connection error"}),500
+    except (Exception, psycopg2.DatabaseError) as e:
+        return jsonify({"error":str(e)}),500
 
 @ANSWERS.route('/api/v1/down_vote_answer/<int:answerid>', methods=["PUT"])
 @jwt_required
@@ -99,8 +99,8 @@ def down_vote_answer(answerid):
             except Exception as error:
                 return jsonify({"error": str(error)}),500
         abort(400)
-    except Exception as e:
-        return jsonify({"error":"database connection error"}),500
+    except (Exception, psycopg2.DatabaseError) as e:
+        return jsonify({"error":str(e)}),500
 
 @ANSWERS.route('/api/v1/prefered_answer/<int:answerid>', methods=["GET"])
 @jwt_required
@@ -117,5 +117,5 @@ def mark_prefered(answerid):
             return redirect (url_for("question_view"))
         except (Exception,psycopg2.DatabaseError) as error:
             return jsonify({"error": str(error)})
-    except Exception as e:
-        return jsonify({"error":"database connection error"}),200
+    except (Exception, psycopg2.DatabaseError) as e:
+        return jsonify({"error":str(e)}),500
