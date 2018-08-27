@@ -26,9 +26,9 @@ install:
   - sudo pip install coveralls
 
 before_script:
-- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-- chmod +x ./cc-test-reporter
-- psql -c 'CREATE DATABASE test;' -U postgres
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - psql -c 'CREATE DATABASE test;' -U postgres
 
 script:
   - sudo pytest --cov=app
