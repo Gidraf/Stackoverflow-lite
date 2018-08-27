@@ -97,42 +97,39 @@ class TestQUestion(unittest.TestCase):
         length_two = cursor.fetchall()
         self.assertEqual(len(length_one)-1,len(length_two))
 
-    def test_fetch_all_question_api(self):
-        """
-        fetch all question from the database
-        """
-        response=self.app.get("/api/v1/questions")
-        data = response.get_json("questions")
-        title = data["questions"][0][1]
-        self.assertEqual(response.status_code,200)
-        self.assertEqual(title,self.question_sample["title"])
 
-    def test_ask_question_api(self):
-        """
-        userr post question api endpoints test
-        """
-        url= "/api/v1/add_question"
-        response=self.app.post(url,data = json.dumps(self.question_sample), headers = self.headers)
-        self.assertEqual(response.status_code,401)
+        """def test_ask_question_api(self):
 
-    def test_update_question_api(self):
-        """
-        should forbid unauthorized user when posting question
-        """
-        url = "api/v1/update_question/1"
-        update_question = {
-        "title":self.question_sample["title"],
-        "description":self.question_sample["description"]
-        }
-        response = self.app.put(url,data = json.dumps(update_question),headers = self.headers)
-        self.assertEqual(response.status_code,401)
+            #userr post question api endpoints test
 
-    def test_delete_question_api(self):
-        """
-        should forbid unauthorized user from deleting question
-        """
-        url = "/api/v1/delete_question/1"
-        response = self.app.delete(url)
-        self.assertEqual(response.status_code,401)
+            url= "/api/v1/add_question"
+            response=self.app.post(url,data = json.dumps(self.question_sample), headers = self.headers)
+            self.assertEqual(response.status_code,401)
 
-    #def test_question_search
+        def test_update_question_api(self):
+
+            #should forbid unauthorized user when posting question
+
+            url = "api/v1/update_question/1"
+            update_question = {
+            "title":self.question_sample["title"],
+            "description":self.question_sample["description"]
+            }
+            response = self.app.put(url,data = json.dumps(update_question),headers = self.headers)
+            self.assertEqual(response.status_code,401)
+
+        def test_delete_question_api(self):
+
+            #should forbid unauthorized user from deleting question
+
+            url = "/api/v1/delete_question/1"
+            response = self.app.delete(url)
+            self.assertEqual(response.status_code,401)
+
+        def test_fetch_a_specific_question(self):
+
+            #should fetch a specific question
+    
+            url="/api/v1/questions/1"
+            response=self.app.get(url)
+            self.assertEqual(response.status_code,401)"""
