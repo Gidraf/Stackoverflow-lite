@@ -6,7 +6,7 @@ def database_connection(connection_type):
     """
     database connection
     """
-    if connection_type == "testing":
+    if connection_type == "test":
         connection=psycopg2.connect(**test_params)
         connection.autocommit = True
         return connection
