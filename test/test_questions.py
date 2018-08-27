@@ -101,7 +101,7 @@ class TestQUestion(unittest.TestCase):
         fetch all question from the database
         """
         response=self.app.get("/api/v1/questions")
-        data = json.loads(json.dumps(response.json))
+        data = response.get_json("questions")
         title = data["questions"][0][1]
         self.assertEqual(response.status_code,200)
         self.assertEqual(title,self.question_sample["title"])

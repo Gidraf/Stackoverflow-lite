@@ -59,7 +59,7 @@ class TestUser(unittest.TestCase):
                 "password": self.current_user["password"]
                 }
         response=self.app.post(url,data=json.dumps(credentials),headers=self.headers)
-        data=json.loads(json.dumps(response.json))
+        data=response.get_json("success")
         success=data["success"]
         self.assertEqual(success,"your access token is")
         self.assertEqual(response.status_code,200)
