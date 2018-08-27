@@ -54,8 +54,8 @@ def register():
         except (Exception, psycopg2.DatabaseError) as error:
             return jsonify({"error":str(error)}),500
         connection.close
-    except Exception as e:
-        return jsonify({"error":"database connection error"}),500
+    except (Exception, psycopg2.DatabaseError) as e:
+        return jsonify({"error":str(e)}),500
 
 @users.route ("/auth/login", methods=["POST"])
 def login():
@@ -89,5 +89,5 @@ def login():
                 jsonify({"eror": error}),500
         return jsonify({"error":"username must be a character"})
         connection.close()
-    except Exception as e:
-        return ({"error": "database connection error"}),500
+    except (Exception, psycopg2.DatabaseError) as e:
+        return jsonify({"error":str(e)}),500
