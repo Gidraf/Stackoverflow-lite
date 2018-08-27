@@ -42,7 +42,7 @@ class TestUser(unittest.TestCase):
         """
         test if the response is 201
         """
-        url="http://localhost:5000/auth/register"
+        url="/auth/register"
         response=self.app.post(url,data=json.dumps(self.current_user),headers=self.headers)
         self.assertEqual(response.status_code,200)
 
@@ -53,7 +53,7 @@ class TestUser(unittest.TestCase):
         self.user.register_user(self.current_user["username"],self.current_user["useremail"],self.current_user["password"],self.connection.cursor())
         cursor=self.user.search_user_by_username(self.current_user["username"],self.connection.cursor())
         reg_username=cursor.fetchall()
-        url="http://localhost:5000/auth/login"
+        url="/auth/login"
         credentials ={
                 "username": self.current_user["username"],
                 "password": self.current_user["password"]
