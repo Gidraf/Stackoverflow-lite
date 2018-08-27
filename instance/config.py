@@ -8,7 +8,7 @@ test_params={
 "host":"localhost",
 "database":"test",
 "user":"postgres",
-"password":"postgres"
+"password":""
 }
 
 params={
