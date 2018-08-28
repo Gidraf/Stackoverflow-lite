@@ -33,7 +33,7 @@ class Answers(object):
         sql="""INSERT INTO answers(answer_text,time_created,userid, questionid,votes,is_answer) VALUES(%s,%s,%s,%s,%s,%s)
         """
         cursor.execute(sql,(answer_text,time_created,userid, questionid,vote,is_answer))
-        return cursor
+
 
     def update_answer(self, answer_text, answerid, cursor):
         """
@@ -41,7 +41,7 @@ class Answers(object):
         """
         sql="UPDATE answers SET  answer_text=%s WHERE answerid=%s"
         self.cursor.execute(sql,(answer_text, answerid,))
-        return cursor
+
 
     def delete_answer(self,answerid, cursor):
         """
@@ -72,7 +72,15 @@ class Answers(object):
         mark as answer
         """
         sql="UPDATE answers SET is_answer = %s WHERE answerid = %s"
-        cursor.execute(sql,(is_answer,))
+        cursor.execute(sql,(is_answer,answerid))
+        return cursor
+
+    def search_answer_by_id(self,answerid, cursor):
+        """
+        search answer equal to the answer id
+        """
+        sql="SELECT * FROM answers WHERE answerid = %s"
+        cursor.execute(sql, (answerid,))
         return cursor
 
     def search_answer_by_user(self, userid, cursor):
@@ -87,6 +95,6 @@ class Answers(object):
         """
         clear answer table
         """
-        sql="DELETE * FROM answers"
+        sql="DROP TABLE IF EXISTS answers"
         cursor = connection.cursor()
         cursor.execute(sql)
