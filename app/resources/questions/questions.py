@@ -49,7 +49,6 @@ def home():
 def get_question(question_id):
     '''get a specific question'''
     current_user = get_jwt_identity()
-
     if request.method == 'GET':
         try:
             connection=database_connection("development")
@@ -87,7 +86,6 @@ def get_question(question_id):
             connection.close()
         except (Exception, psycopg2.DatabaseError) as e:
             return jsonify({"error":str(e)}),500
-
 
 @QUESTION.route('/api/v1/add_question', methods=["POST"])
 @jwt_required
