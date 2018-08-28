@@ -63,6 +63,6 @@ class Users(object):
         """
         clear everything in user table
         """
-        sql="""DROP TABLE users  CASCADE"""
+        sql="""DROP TABLE IF EXISTS users  CASCADE"""
         cursor = connection.cursor()
         cursor.execute(sql)
