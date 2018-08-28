@@ -18,16 +18,8 @@ from . import QUESTION
 
 question=Questions()
 answer=Answers()
-@QUESTION.errorhandler(404)
-def not_found(error):
-    """customed error handler"""
-    return make_response(jsonify({"error": "no item found"}),404)
-@QUESTION.errorhandler(400)
-def bad_request(error):
-    '''return customed bad format'''
-    return make_response(jsonify({"error":"the number or request you have entered is not accepted"}))
-
 @QUESTION.route("/api/v1/questions", methods=["GET"])
+@jwt_required
 def home():
     """show all questions"""
     try:
@@ -132,6 +124,7 @@ def update_question(question_id):
                 cursor=question.search_question_by_questionid(question_id,connection.cursor())
                 new_question=cursor.fetchall()
                 return jsonify({"question":new_question[0]}),200
+            abort(404)
         except Exception as error:
             return jsonify({"error":str(error)}),500
     except (Exception, psycopg2.DatabaseError) as e:
