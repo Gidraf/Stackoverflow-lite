@@ -17,38 +17,38 @@ class TestQUestion(unittest.TestCase):
     def setUp(self):
         """setup database"""
         init_app=create_app("testing")
-        with init_app.app_context():
-            self.app=init_app.test_client()
-            self.connection = database_connection("test")
-            self.user = Users()
-            self.user.create_user_table(self.connection)
-            self.question = Questions()
-            self.question.create_question_table(self.connection)
-            self.question_sample = {
-            "title":"my question",
-            "description":"this is my descriotion",
-            "time_created":time.time(),
-            "userid":1
-            }
-            self.user_sample={
-            "username":"gidraf",
-            "useremail":"orenjagidraf@gmal.com",
-            "password":"Winners11"
-            }
+        init_app.config["TESTING"]=True
+        self.app=init_app.test_client()
+        self.connection = database_connection("test")
+        self.user = Users()
+        self.user.create_user_table(self.connection)
+        self.question = Questions()
+        self.question.create_question_table(self.connection)
+        self.question_sample = {
+        "title":"my question",
+        "description":"this is my descriotion",
+        "time_created":time.time(),
+        "userid":1
+        }
+        self.user_sample={
+        "username":"gidraf",
+        "useremail":"orenjagidraf@gmal.com",
+        "password":"Winners11"
+        }
 
-            self.user.register_user(self.user_sample["username"],self.user_sample["useremail"],
-                                    self.user_sample["password"],self.connection.cursor())
-            self.question.add_question(self.question_sample["title"],self.question_sample["description"],
-                                        self.question_sample["time_created"],self.question_sample["userid"],
-                                        self.connection.cursor())
-            self.question.add_question(self.question_sample["title"],self.question_sample["description"],
-                                        self.question_sample["time_created"],self.question_sample["userid"],
-                                        self.connection.cursor())
+        self.user.register_user(self.user_sample["username"],self.user_sample["useremail"],
+                                self.user_sample["password"],self.connection.cursor())
+        self.question.add_question(self.question_sample["title"],self.question_sample["description"],
+                                    self.question_sample["time_created"],self.question_sample["userid"],
+                                    self.connection.cursor())
+        self.question.add_question(self.question_sample["title"],self.question_sample["description"],
+                                    self.question_sample["time_created"],self.question_sample["userid"],
+                                    self.connection.cursor())
 
-            self.data_type = "application/json"
-            self.headers = {
-                'Content-Type': self.data_type,
-                'Accept': self.data_type}
+        data_type = "application/json"
+        self.headers = {
+            'Content-Type': data_type,
+            'Accept': data_type}
 
     def tearDown(self):
         """
@@ -102,9 +102,7 @@ class TestQUestion(unittest.TestCase):
         """
         response=self.app.get("/api/v1/questions")
         data = response.get_json()
-        title = data["questions"][0][1]
-        self.assertEqual(response.status_code,200)
-        self.assertEqual(title,self.question_sample["title"])
+        self.assertEqual(response.status_code,401)
 
     def test_ask_question_api_without_login(self):
         """
@@ -140,4 +138,12 @@ class TestQUestion(unittest.TestCase):
         """
         url="/api/v1/questions/1"
         response=self.app.get(url)
+        self.assertEqual(response.status_code,401)
+
+    def test_ask_question_with_login(self):
+        """
+        userr post question api endpoints test
+        """
+        url= "/api/v1/add_question"
+        response=self.app.post(url,data = json.dumps(self.question_sample), headers = self.headers)
         self.assertEqual(response.status_code,401)

@@ -1,9 +1,10 @@
 '''this module is intented to do all the routing in question api'''
-import datetime
+from datetime import datetime
 import time
 import psycopg2
 from flask import redirect
 from flask import url_for
+import re
 from flask import request
 from flask import jsonify
 from flask import abort
@@ -25,7 +26,7 @@ def home():
     try:
         connection=database_connection("development")
         try:
-            cursor = question.fetch_all_question(connection.cursor())
+            cursor = question.fetch_all_question(connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             questions_list=cursor.fetchall()
             if questions_list:
                 return jsonify({"questions": questions_list}),200
@@ -45,7 +46,7 @@ def get_question(question_id):
         try:
             connection=database_connection("development")
             try:
-                cursor=question.search_question_by_questionid(question_id,connection.cursor())
+                cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 new_question=cursor.fetchall()
                 return jsonify({"question":new_question[0]}),200
             except (Exception, psycopg2.DatabaseError) as error:
@@ -66,10 +67,10 @@ def get_question(question_id):
             answer_text=request.json["answer_text"]
             userid=request.json["userid"]
             try:
-                answer.add_answer(answer_text,time_created,userid,question_id,0,False,connection.cursor())
-                answer_cursor = answer.search_answer_by_questionid(question_id,connection.cursor())
+                answer.add_answer(answer_text,time_created,userid,question_id,0,False,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                answer_cursor = answer.search_answer_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 question_answer=answer_cursor.fetchall()
-                question_cursor=question.search_question_by_questionid(question_id,connection.cursor())
+                question_cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 new_question=question_cursor.fetchall()
                 return jsonify({"question":new_question[0],"answers":question_answer}),200
             except (Exception,psycopg2.DatabaseError) as error:
@@ -85,21 +86,23 @@ def post_question():
     try:
         current_user = get_jwt_identity()
         connection = database_connection("development")
-        if not request.json or not 'title' in request.json:
-            abort(400)
-        now=time.time()
-        userid=request.json["userid"]
+        if not request.json:
+             return jsonify({"error":"your the content you send is empty"}),400
+        if not 'title' in request.json and type(request.json['title']) != str:
+             return jsonify({"error":"key error 'title' in your request"})
+        if not "description" in request.json:
+            return jsonify({"error":"key error 'description' in your request"})
+        userid=current_user[0]
         title= request.json['title'],
         description = request.json['description'],
-        time_created = now
+        time_created = datetime.utcnow()
         try:
-            question.create_question_table(connection)
-            question.add_question(title,description,time_created,userid,connection.cursor())
+            question.add_question(title,description,time_created,userid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             return jsonify({"info":"added"}),201
         except (Exception, psycopg2.DatabaseError) as error:
             return jsonify({"error":str(error)}),500
     except (Exception, psycopg2.DatabaseError) as e:
-        return jsonify({"error":str(e)}),500
+        return jsonify({"error":str(e) + "not found"}),500
 
 @QUESTION.route('/api/v1/update_question/<int:question_id>', methods=["PUT"])
 @jwt_required
@@ -109,21 +112,21 @@ def update_question(question_id):
     try:
         connection=database_connection("development")
         if not request.json:
-              abort(400)
-        if not 'title' in request.json and type(request.json['title']) is not str:
-             abort(400)
+             return jsonify({"error":"your the content you send is empty"}),400
+        if not 'title' in request.json and type(request.json['title']) != str:
+             return jsonify({"error":"key error 'title' in your request"}),400
         if not 'description' in request.json and type(request.json['description']) is not str:
-             abort(400)
+              return jsonify({"error":"key error 'description' in your request"}),400
         try:
-            cursor=question.search_question_by_questionid(question_id,connection.cursor())
+            cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             current_question=cursor.fetchall()
             if current_question:
                 title = request.json.get('title')
                 description= request.json.get('description')
-                question.update_question(title, description, question_id,connection.cursor())
-                cursor=question.search_question_by_questionid(question_id,connection.cursor())
+                question.update_question(title, description, question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 new_question=cursor.fetchall()
-                return jsonify({"question":new_question[0]}),200
+                return jsonify({"question":new_question}),200
             abort(404)
         except Exception as error:
             return jsonify({"error":str(error)}),500
@@ -138,10 +141,10 @@ def delete_question(question_id):
     try:
         connection=database_connection("development")
         try:
-            cursor=question.search_question_by_questionid(question_id,database_connection.cursor())
+            cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             delete_question=cursor.fetchall()
             if delete_question:
-                if question.delete_question(question_id):
+                if question.delete_question(question_id,connection.cursor()):
                     return jsonify({"result": "deleted"}),200
             return jsonify({"error": "no question found"})
         except (Exception,psycopg2.DatabaseError) as error:
@@ -157,12 +160,13 @@ def search_question():
     try:
         connection=database_connection("development")
         if not request.json:
-              abort(400)
+             return jsonify({"error":"your the content you send is empty"}),400
         if not 'title' in request.json and type(request.json['title']) != str:
-             abort(400)
+             return jsonify({"error":"key error 'title' in your request"}),400
         key=request.json["title"]
+
         try:
-            cursor = question.search_question_by_title(key,connection.cursor())
+            cursor = question.search_question_by_title(key,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             questions = cursor.fetchall()
             if questions:
                     return jsonify({"questions": questions}),200

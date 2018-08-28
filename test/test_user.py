@@ -13,19 +13,20 @@ class TestUser(unittest.TestCase):
     def setUp(self):
         init_app=create_app("testing")
         init_app.config["TESTING"]=True
-        self.app=init_app.test_client()
-        self.connection=database_connection("test")
-        self.user=Users()
-        self.user.create_user_table(self.connection)
-        self.current_user={
-        "username":"gidraf",
-        "useremail":"username@gmail.com",
-        "password":"test"
-        }
-        self.data_type = "application/json"
-        self.headers = {
-            'Content-Type': self.data_type,
-            'Accept': self.data_type}
+        with init_app.app_context():
+            self.app=init_app.test_client()
+            self.connection=database_connection("test")
+            self.user=Users()
+            self.user.create_user_table(self.connection)
+            self.current_user={
+            "username":"gidraf",
+            "useremail":"username@gmail.com",
+            "password":"test"
+            }
+            self.data_type = "application/json"
+            self.headers = {
+                'Content-Type': self.data_type,
+                'Accept': self.data_type}
 
     def tearDown(self):
         self.user.clear_user_table(self.connection)
