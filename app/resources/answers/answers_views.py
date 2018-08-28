@@ -12,7 +12,7 @@ from app.models.answers_model import Answers
 from app.models.questions_model import Questions
 from app.models import database_connection
 from . import ANSWERS
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required,get_jwt_identity
 
 answers=Answers()
 queston=Questions()
@@ -30,14 +30,13 @@ def bad_request(error):
 @ANSWERS.route("/api/v1/answers/<int:questionid>", methods=["GET","POST"])
 def question_view(questionid):
     """show all answer of a question"""
-    current_user = get_jwt_identity()
     try:
         connection=database_connection("development")
         try:
             cursor = answers.search_answer_by_questionid(questionid, connection.cursor())
             answer = cursor.fetchall()
             if answer:
-                quiz=queston.search_question_by_questionid(questionid)
+                quiz=queston.search_question_by_questionid(questionid,connection.cursor())
                 result={}
                 result["question"]=quiz[0]
                 result["answers"]=answers
@@ -102,19 +101,21 @@ def down_vote_answer(answerid):
     except (Exception, psycopg2.DatabaseError) as e:
         return jsonify({"error":str(e)}),500
 
-@ANSWERS.route('/api/v1/prefered_answer/<int:answerid>', methods=["GET"])
+@ANSWERS.route('/api/v1/prefered_answer/<int:answerid>', methods=["PATCH"])
 @jwt_required
 def mark_prefered(answerid):
     """ mark answer as prefered"""
     current_user = get_jwt_identity()
     try:
         connection=database_connection("development")
-        if not request.json or not "vote" in request.json:
+        if not request.json:
             abort(400)
-        is_answer=request.json["is_answer"]
         try:
-            answers.mark_prefered(answerid, True)
-            return redirect (url_for("question_view"))
+            cursor=answers.search_answer_by_id(answerid, connection.cursor())
+            answer_list=cursor.fetchall()
+            if answer_list:
+                answers.mark_prefered(answerid, True, connection.cursor())
+                return jsonify({"info":"success"}),200
         except (Exception,psycopg2.DatabaseError) as error:
             return jsonify({"error": str(error)})
     except (Exception, psycopg2.DatabaseError) as e:
