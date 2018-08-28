@@ -2,6 +2,7 @@
 import datetime
 import time
 import psycopg2
+import psycopg2.extras
 from flask import redirect
 from flask import url_for
 from flask import request
@@ -23,10 +24,10 @@ def question_view(questionid):
     try:
         connection=database_connection("development")
         try:
-            cursor = answers.search_answer_by_questionid(questionid, connection.cursor())
+            cursor = answers.search_answer_by_questionid(questionid, connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             answer = cursor.fetchall()
             if answer:
-                quiz=queston.search_question_by_questionid(questionid,connection.cursor())
+                quiz=queston.search_question_by_questionid(questionid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 result={}
                 result["question"]=quiz[0]
                 result["answers"]=answers
@@ -49,10 +50,10 @@ def update_answer(answerid):
             abort(404)
         answer_text = request.json["answer_text"]
         try:
-            cursor=answers.search_answer_by_id(answerid,connection.cursor())
+            cursor=answers.search_answer_by_id(answerid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             answer_list=cursor.fetchall()
             if answer_list:
-                answers.update_answer(answer_text,answerid,connection.cursor())
+                answers.update_answer(answer_text,answerid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 return jsonify({"info":"answer updated"}),200
         except Exception as error:
             return jsonify({"error": str(error)}),500
@@ -67,7 +68,8 @@ def delete_answer(answerid):
     try:
         connection=database_connection("development")
         try:
-            answers.delete_answer(answerid,connection.cursor())
+            cursor=answers.search_answer_by_id(answerid, connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+            answers.delete_answer(answerid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             return jsonify({"info":"deleted"}),200
         except (Exception, psycopg2.DatabaseError) as error:
             return jsonify({"error":str(error)}),500
@@ -86,13 +88,13 @@ def mark_prefered(answerid):
         if not "is_answer" in request.json:
             abort(400)
         try:
-            cursor=answers.search_answer_by_id(answerid, connection.cursor())
+            cursor=answers.search_answer_by_id(answerid, connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             answer_list=cursor.fetchall()
             if answer_list:
-                answers.mark_prefered(answerid, True, connection.cursor())
-                answer_cursor = answer.search_answer_by_questionid(question_id,connection.cursor())
+                answers.mark_prefered(answerid, True, connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                answer_cursor = answer.search_answer_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 question_answer=answer_cursor.fetchall()
-                question_cursor=question.search_question_by_questionid(question_id,connection.cursor())
+                question_cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 new_question=question_cursor.fetchall()
                 return jsonify({"question":new_question[0],"answers":question_answer}),200
             abort(404)
