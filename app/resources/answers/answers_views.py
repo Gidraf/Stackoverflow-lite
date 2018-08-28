@@ -110,12 +110,18 @@ def mark_prefered(answerid):
         connection=database_connection("development")
         if not request.json:
             abort(400)
+        if not "is_answer" in request.json:
+            abort(400)
         try:
             cursor=answers.search_answer_by_id(answerid, connection.cursor())
             answer_list=cursor.fetchall()
             if answer_list:
                 answers.mark_prefered(answerid, True, connection.cursor())
-                return jsonify({"info":"success"}),200
+                answer_cursor = answer.search_answer_by_questionid(question_id,connection.cursor())
+                question_answer=answer_cursor.fetchall()
+                question_cursor=question.search_question_by_questionid(question_id,connection.cursor())
+                new_question=question_cursor.fetchall()
+                return jsonify({"question":new_question[0],"answers":question_answer}),200
         except (Exception,psycopg2.DatabaseError) as error:
             return jsonify({"error": str(error)})
     except (Exception, psycopg2.DatabaseError) as e:

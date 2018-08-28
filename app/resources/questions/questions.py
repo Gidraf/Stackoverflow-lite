@@ -74,7 +74,6 @@ def get_question(question_id):
             answer_text=request.json["answer_text"]
             userid=request.json["userid"]
             try:
-                answer.create_answer_table(connection)
                 answer.add_answer(answer_text,time_created,userid,question_id,0,False,connection.cursor())
                 answer_cursor = answer.search_answer_by_questionid(question_id,connection.cursor())
                 question_answer=answer_cursor.fetchall()

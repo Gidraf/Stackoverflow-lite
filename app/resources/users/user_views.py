@@ -40,7 +40,6 @@ def register():
         email=request.json["useremail"]
         password=request.json["password"]
         try:
-            user.create_user_table(connection)
             email_cursor = user.search_user_by_email(email,cursor=connection.cursor())
             username_cursor = user.search_user_by_username(name,cursor=connection.cursor())
             current_user_email=email_cursor.fetchall()
