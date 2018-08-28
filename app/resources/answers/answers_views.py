@@ -16,18 +16,8 @@ from flask_jwt_extended import jwt_required,get_jwt_identity
 
 answers=Answers()
 queston=Questions()
-
-@ANSWERS.errorhandler(404)
-def not_found(error):
-    """customed error handler"""
-    return make_response(jsonify({"error": "no item found"}),404)
-
-@ANSWERS.errorhandler(400)
-def bad_request(error):
-    '''return customed bad format'''
-    return make_response(jsonify({"error":"the number or request you have entered is not accepted"}))
-
 @ANSWERS.route("/api/v1/answers/<int:questionid>", methods=["GET","POST"])
+@jwt_required
 def question_view(questionid):
     """show all answer of a question"""
     try:
@@ -59,8 +49,11 @@ def update_answer(answerid):
             abort(404)
         answer_text = request.json["answer_text"]
         try:
-            answers.update_answer(answer_text,answerid,connection.cursor())
-            return jsonify({"info":"answer updated"}),200
+            cursor=answers.search_answer_by_id(answerid,connection.cursor())
+            answer_list=cursor.fetchall()
+            if answer_list:
+                answers.update_answer(answer_text,answerid,connection.cursor())
+                return jsonify({"info":"answer updated"}),200
         except Exception as error:
             return jsonify({"error": str(error)}),500
     except (Exception, psycopg2.DatabaseError) as e:
@@ -78,26 +71,6 @@ def delete_answer(answerid):
             return jsonify({"info":"deleted"}),200
         except (Exception, psycopg2.DatabaseError) as error:
             return jsonify({"error":str(error)}),500
-    except (Exception, psycopg2.DatabaseError) as e:
-        return jsonify({"error":str(e)}),500
-
-@ANSWERS.route('/api/v1/down_vote_answer/<int:answerid>', methods=["PUT"])
-@jwt_required
-def down_vote_answer(answerid):
-    """update answer"""
-    current_user = get_jwt_identity()
-    try:
-        connection=database_connection("development")
-        if not request.json or not "vote" in request.json:
-            abort(404)
-        vote=request.json["vote"]
-        if isinstance(vote, int):
-            try:
-                answers.vote_answer(answerid,vote, connection.cursor())
-                return jsonify({"info":"voted"}),200
-            except Exception as error:
-                return jsonify({"error": str(error)}),500
-        abort(400)
     except (Exception, psycopg2.DatabaseError) as e:
         return jsonify({"error":str(e)}),500
 
@@ -122,6 +95,7 @@ def mark_prefered(answerid):
                 question_cursor=question.search_question_by_questionid(question_id,connection.cursor())
                 new_question=question_cursor.fetchall()
                 return jsonify({"question":new_question[0],"answers":question_answer}),200
+            abort(404)
         except (Exception,psycopg2.DatabaseError) as error:
             return jsonify({"error": str(error)})
     except (Exception, psycopg2.DatabaseError) as e:
