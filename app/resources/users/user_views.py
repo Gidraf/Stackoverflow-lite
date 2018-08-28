@@ -1,5 +1,6 @@
 """this module is itended to do all the user function login"""
 import psycopg2
+import psycopg2.extras
 from flask import abort
 from flask import redirect
 from flask import make_response
@@ -21,12 +22,12 @@ def register():
     try:
         connection=database_connection("development")
         "register user route"
-        if not request.json or not "useremail" in request.json:
-            abort(400)
+        if not request.json:
+             return jsonify({"error":"your request is empty"}),400
         if not "username" in request.json:
-            abort(400)
+             return jsonify({"error":"key error 'username' in your request"}),400
         if not "password" in request.json:
-            abort(400)
+            return jsonify({"error":"key error 'password' in your request"}),400
         username= request.json["username"]
         email=request.json["useremail"]
         password=request.json["password"]
@@ -59,7 +60,7 @@ def login():
         connection=database_connection("development")
         """login users to the database"""
         if not request.json:
-            abort(400)
+            return jsonify({"error":"json object is empty"}),400
         if not "username" in request.json:
             abort(400)
         if not "password" in request.json:
@@ -71,19 +72,18 @@ def login():
             character=string.punctuation
             if any(char in character  for char in username):
                 return jsonify({"error":"invalid username"}),400
-        return jsonify({"error":"invalid username"}),400
         try:
             cursor = user.search_user_by_username(username,cursor=connection.cursor())
             current_user = cursor.fetchall()
             if current_user:
                 set_password=current_user[0][3]
                 if str(password) == set_password:
-                    token=create_access_token(identity=username)
+                    token=create_access_token(identity=current_user)
                     return jsonify({"success":"your access token is","token":token}),200
                 return jsonify({"error":"wrong password"}),400
             return jsonify({"info":"no account found"}),404
         except (Exception,psycopg2.DatabaseError) as error:
-            jsonify({"eror": error}),500
+            jsonify({"error": error}),500
         connection.close()
     except (Exception, psycopg2.DatabaseError) as e:
         return jsonify({"error":str(e)}),500
