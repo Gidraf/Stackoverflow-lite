@@ -11,6 +11,7 @@ class TestAnswer(unittest.TestCase):
     """test answers"""
 
     def setUp(self):
+<<<<<<< HEAD
         """setup database"""
         init_app=create_app("testing")
         with init_app.app_context():
@@ -56,3 +57,6 @@ class TestAnswer(unittest.TestCase):
         """
         self.question.clear_question_table(self.connection)
         self.user.clear_user_table(self.connection)
+=======
+        pass
+>>>>>>> f0e1d11b5ec2ece78305fbcca7b608c9c7206ce8
