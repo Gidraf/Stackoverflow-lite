@@ -52,11 +52,6 @@ class Questions(object):
         cursor.execute(sql,(questionid,))
         return cursor
 
-    def search_question_by_user(self,userid, cursor):
-        sql="SELECT * FROM questions WHERE userid = %s"
-        cursor.execute(sql,(userid,))
-        return cursor
-
     def fetch_all_question(self, cursor):
         "fetchall questions"
         sql = "SELECT * FROM questions"
