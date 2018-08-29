@@ -59,54 +59,6 @@ def question_view(questionid):
     except (Exception, psycopg2.DatabaseError) as e:
         return jsonify({"error": "request error please check your request body"}),400
 
-@ANSWERS.route('/api/v1/update_answer/<int:answerid>', methods=["PUT"])
-@jwt_required
-def update_answer(answerid):
-    """update answer"""
-    current_user = get_jwt_identity()
-    try:
-        connection=database_connection("development")
-        if not request.json or not "answer_text" in request.json:
-            abort(404)
-        answer_text = request.json["answer_text"]
-        try:
-            cursor=answers.search_answer_by_id(answerid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-            answer_list=cursor.fetchall()
-            if answer_list:
-                answer=answer_list[0]
-                question_cursor=question.search_question_by_questionid(answer["questionid"],connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                questions_list=question_cursor.fetchall()
-                if current_user[0]["userid"]==questions_list[0]["userid"]:
-                    answers.update_answer(answer_text,answerid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                    return jsonify({"info":"answer updated"}),200
-        except Exception as error:
-            return jsonify({"error": "request error please check your request body"}),400
-    except (Exception, psycopg2.DatabaseError) as e:
-        return jsonify({"error": "request error please check your request body"}),400
-
-@ANSWERS.route('/api/v1/delete_answer/<int:answerid>', methods=["DELETE"])
-@jwt_required
-def delete_answer(answerid):
-    '''delete answer'''
-    current_user = get_jwt_identity()
-    try:
-        connection=database_connection("development")
-        try:
-            cursor=answers.search_answer_by_id(answerid, connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-            answers_list=cursor.fetchall()
-            if answers_list:
-                answer=answers_list[0]
-                question_cursor=question.search_question_by_questionid(answer["questionid"],connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                questions_list=question_cursor.fetchall()
-                if current_user[0]["userid"]==questions_list[0]["userid"]:
-                    answers.delete_answer(answerid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                    return jsonify({"info":"deleted"}),200
-                abort(403)
-        except (Exception, psycopg2.DatabaseError) as error:
-            return jsonify({"error": "request error please check your request body"}),400
-    except (Exception, psycopg2.DatabaseError) as e:
-        return jsonify({"error": "request error please check your request body"}),400
-
 @ANSWERS.route('/api/v1/prefered_answer/<int:answerid>', methods=["PATCH"])
 @jwt_required
 def mark_prefered(answerid):

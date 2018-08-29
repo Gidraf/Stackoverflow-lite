@@ -58,15 +58,6 @@ class TestQUestion(unittest.TestCase):
         self.user.clear_user_table(self.connection)
 
 
-    def test_question_add_question_searched(self):
-        """
-        test if queston has been saved to database
-        """
-        cursor=self.question.search_question_by_title(self.question_sample["title"],self.connection.cursor())
-        searched_question=cursor.fetchall()
-        title=searched_question[0][1]
-        self.assertEqual(title,self.question_sample["title"])
-
     def test_question_update(self):
         """
         update question test
@@ -112,7 +103,7 @@ class TestQUestion(unittest.TestCase):
         response=self.app.post(url,data = json.dumps(self.question_sample), headers = self.headers)
         self.assertEqual(response.status_code,401)
 
-    def test_update_question_api(self):
+    def test_update_question_api_without_login(self):
         """
         should forbid unauthorized user when posting question
         """
@@ -132,20 +123,14 @@ class TestQUestion(unittest.TestCase):
         response = self.app.delete(url)
         self.assertEqual(response.status_code,401)
 
-    def test_fetch_a_specific_question(self):
-        """
-        should fetch a specific question
-        """
-        url="/api/v1/questions/1"
-        response=self.app.get(url)
-        self.assertEqual(response.status_code,401)
+    #403 Forbidden: You don't have the permission to access the requested resource. It is either read-protected or not readable by the server."
 
-    @staticmetho
-    def create_auth():
-        """create authentication token"""
+    def test_ask_question_with_login(self):
+        """
+        userr post question api endpoints test
+        """
         url= "/api/v1/add_question"
         login_url="/auth/login"
-
         login_response=self.app.post(login_url, data=json.dumps({
                 "username": "gidraf",
                 "password": "test"
@@ -153,15 +138,64 @@ class TestQUestion(unittest.TestCase):
         question_data={"title":"this is my first question",
             "description":"this is just a description"}
         token=login_response.json
-        return token["token"]
+        head={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
 
-    def test_ask_question_with_login(self):
-        """
-        userr post question api endpoints test
-        """
-        head={"Authorization":"Bearer "+create_auth(),'Content-Type': "application/json"}
         response=self.app.post(url,data = json.dumps(question_data), headers =head)
         print("*"*10)
         print(response.json)
         print('*'*10)
         self.assertEqual(response.status_code,201)
+
+    def test_update_question_with_login(self):
+        """update question with login"""
+
+        url = "api/v1/update_question/6"
+        update_question = {
+        "title":self.question_sample["title"],
+        "description":self.question_sample["description"]
+        }
+        login_url="/auth/login"
+        login_response=self.app.post(login_url, data=json.dumps({
+                "username": "gidraf",
+                "password": "test"
+                }),headers=self.headers)
+        question_data={"title":"this is my first question",
+            "description":"this is just a description"}
+        token=login_response.json
+        head={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
+        response = self.app.put(url,data = json.dumps(question_data),headers = head)
+        print("*"*10)
+        print(response.json)
+        print("*"*10)
+
+    def test_fetch_all_question_api_with_login(self):
+        """
+        fetch all question from the database
+        """
+        login_url="/auth/login"
+        login_response=self.app.post(login_url, data=json.dumps({
+                "username": "gidraf",
+                "password": "test"
+                }),headers=self.headers)
+        question_data={"title":"this is my first question",
+            "description":"this is just a description"}
+        token=login_response.json
+        head={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
+        response=self.app.get("/api/v1/questions",headers=head)
+        data = response.get_json()
+        self.assertEqual(response.status_code,200)
+
+    def test_fetch_specific_question(self):
+        """fetch a specific question with login"""
+        login_url="/auth/login"
+        login_response=self.app.post(login_url, data=json.dumps({
+                "username": "gidraf",
+                "password": "test"
+                }),headers=self.headers)
+        question_data={"title":"this is my first question",
+            "description":"this is just a description"}
+        token=login_response.json
+        head={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
+        url ="/api/v1/questions"
+        response=self.app.get(url,headers=head)
+        self.assertEqual(response.status_code,200)

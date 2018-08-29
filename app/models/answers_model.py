@@ -43,28 +43,12 @@ class Answers(object):
         self.cursor.execute(sql,(answer_text, answerid,))
 
 
-    def delete_answer(self,answerid, cursor):
-        """
-        delete answer by id
-        """
-        sql="DELETE FROM answers WHERE answers.answerid = %s"
-        cursor.execute(sql,(answerid,))
-        return cursor
-
     def search_answer_by_questionid(self,questionid, cursor):
         """
         search answer by questionid
         """
         sql="SELECT * FROM answers WHERE questionid = %s"
         cursor.execute(sql,(questionid,))
-        return cursor
-
-    def down_vote_answer(self, answerid, vote, cursor):
-        """
-        donvote answers
-        """
-        sql="UPDATE answers SET votes+=1 WHERE answerid =%s"
-        cursor.execute(sql,(vote,))
         return cursor
 
     def mark_prefered(self, answerid, is_answer, cursor):
@@ -81,14 +65,6 @@ class Answers(object):
         """
         sql="SELECT * FROM answers WHERE answerid = %s"
         cursor.execute(sql, (answerid,))
-        return cursor
-
-    def search_answer_by_user(self, userid, cursor):
-        """
-        search answers user asked
-        """
-        sql="SELECT * FROM answers WHERE userid = %s"
-        cursor.execute(sql,(userid,))
         return cursor
 
     def clear_answer_table(self, connection):

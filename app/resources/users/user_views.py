@@ -48,11 +48,11 @@ def register():
                 user.register_user(username,email,password,cursor=connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 return jsonify({"info":"user registered"}),201
             except (Exception, psycopg2.DatabaseError) as error:
-                return jsonify({"error": "request error please check your request body"}),400
+                return jsonify({"error": str(error)}),400
         return jsonify({"error":"invalid username or email"}),400
         connection.close
     except (Exception, psycopg2.DatabaseError) as e:
-        return jsonify({"error": "request error please check your request body"}),400
+        return jsonify({"error": str(e)}),400
 
 @users.route ("/auth/login", methods=["POST"])
 def login():
@@ -72,7 +72,6 @@ def login():
             character=string.punctuation
             if any(char in character  for char in username):
                 return jsonify({"error":"invalid username"}),400
-        try:
             cursor = user.search_user_by_username(username,cursor=connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             current_user = cursor.fetchall()
             if current_user:
@@ -83,8 +82,6 @@ def login():
                     return jsonify({"success":"your access token is","token":token}),200
                 return jsonify({"error":"wrong password"}),401
             return jsonify({"info":"no account found"}),404
-        except (Exception,psycopg2.DatabaseError) as error:
-            return jsonify({"error": "request error please check your request body"}),400
         connection.close()
     except (Exception, psycopg2.DatabaseError) as e:
         return jsonify({"error": "request error please check your request body"}),400

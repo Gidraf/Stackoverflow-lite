@@ -40,11 +40,6 @@ class Questions(object):
         cursor.execute(sql,(questionid,))
         return cursor
 
-    def search_question_by_title(self,title,cursor):
-        "search question by title"
-        sql="SELECT * FROM questions WHERE title Like %s"
-        cursor.execute(sql,(title,))
-        return cursor
 
     def search_question_by_questionid(self,questionid,cursor):
         "search question by id"

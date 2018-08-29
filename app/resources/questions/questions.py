@@ -89,78 +89,47 @@ def post_question():
 def update_question(question_id):
     '''edit question'''
     current_user = get_jwt_identity()
+    connection=database_connection("development")
+    if not request.json:
+         return jsonify({"error":"your the content you send is empty"}),400
+    if not 'title' in request.json and type(request.json['title']) != str:
+         return jsonify({"error":"key error 'title' in your request"}),400
+    if not 'description' in request.json and type(request.json['description']) is not str:
+          return jsonify({"error":"key error 'description' in your request"}),400
     try:
-        connection=database_connection("development")
-        if not request.json:
-             return jsonify({"error":"your the content you send is empty"}),400
-        if not 'title' in request.json and type(request.json['title']) != str:
-             return jsonify({"error":"key error 'title' in your request"}),400
-        if not 'description' in request.json and type(request.json['description']) is not str:
-              return jsonify({"error":"key error 'description' in your request"}),400
-        try:
-            cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-            current_question=cursor.fetchall()
-            if current_question:
-                if current_user[0]["userid"]==current_question[0]["userid"]:
-                    title = request.json.get('title')
-                    description= request.json.get('description')
-                    if title.strip() and description.strip():
-                        question.update_question(title, description, question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                        cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                        new_question=cursor.fetchall()
-                        return jsonify({"question":new_question}),200
-                    return jsonify({"error":"you have an empty key value in you body"}),400
-                abort(403)
-            return jsonify({"error":"no question found"}),404
-        except Exception as error:
-            return jsonify({"error": "request error please check your request body"}),400
-    except (Exception, psycopg2.DatabaseError) as e:
-        return jsonify({"request error":"request error please check your request body"}),400
+        cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+        current_question=cursor.fetchall()
+        if current_question:
+            #if current_user[0]["userid"]==current_question[0]["userid"]:
+            title = request.json.get('title')
+            description= request.json.get('description')
+            if title.strip() and description.strip():
+                question.update_question(title, description, question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                new_question=cursor.fetchall()
+                return jsonify({"question":new_question}),200
+            return jsonify({"error":"you have an empty key value in you body"}),400
+            #abort(403)
+        return jsonify({"error":"no question found"}),404
+    except Exception as error:
+        return jsonify({"error":str(error)}),400
 
 @QUESTION.route('/api/v1/delete_question/<int:question_id>', methods=["DELETE"])
 @jwt_required
 def delete_question(question_id):
     """delete question"""
     current_user = get_jwt_identity()
+    connection=database_connection("development")
     try:
-        connection=database_connection("development")
-        try:
-            cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-            delete_question=cursor.fetchall()
-            if delete_question:
-                if current_user[0]["userid"] == delete_question[0]["userid"]:
-                    if question.delete_question(question_id,connection.cursor()):
-                        return jsonify({"result": " question deleted"}),200
-                    return jsonify({"error": "no question found"})
-                abort(403)
-            return jsonify({"error":"no question found"}),404
-        except (Exception,psycopg2.DatabaseError) as error:
-            return jsonify({"error": "request error please check your request body"}),400
-        connection.close()
-    except (Exception, psycopg2.DatabaseError) as e:
+        cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+        delete_question=cursor.fetchall()
+        if delete_question:
+            #if current_user[0]["userid"] == delete_question[0]["userid"]:
+                if question.delete_question(question_id,connection.cursor()):
+                    return jsonify({"result": " question deleted"}),200
+                return jsonify({"error": "no question found"})
+            #abort(403)
+        return jsonify({"error":"no question found"}),404
+    except (Exception,psycopg2.DatabaseError) as error:
         return jsonify({"error": "request error please check your request body"}),400
-
-@QUESTION.route('/api/v1/search', methods=["POST"])
-@jwt_required
-def search_question():
-    """search question question"""
-    current_user = get_jwt_identity()
-    try:
-        connection=database_connection("development")
-        if not request.json:
-             return jsonify({"error":"your the content you send is empty"}),400
-        if not 'title' in request.json and type(request.json['title']) != str:
-             return jsonify({"error":"key error 'title' in your request"}),400
-        key=request.json["title"]
-
-        try:
-            cursor = question.search_question_by_title(key,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-            questions = cursor.fetchall()
-            if questions:
-                    return jsonify({"questions": questions}),200
-            return jsonify({"error": "no question found"}),404
-        except (Exception,psycopg2.DatabaseError) as error:
-            return jsonify({"error": str(error)})
-        connection.close()
-    except (Exception, psycopg2.DatabaseError) as e:
-        return jsonify({"error":str(e)}),400
+    connection.close()
