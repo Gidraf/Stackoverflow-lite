@@ -14,10 +14,12 @@ APP=create_app('development')
 def not_found(error):
     """customed error handler"""
     return make_response(jsonify({"error": "no item found"}),404)
+
 @APP.errorhandler(401)
 def unauthorized(error):
     """customed error handler"""
     return make_response(jsonify({"error": "Please Login first"}),401)
+
 @APP.errorhandler(405)
 def bad_method(error):
     """customed error handler"""

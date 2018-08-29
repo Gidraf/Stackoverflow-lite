@@ -33,7 +33,7 @@ class TestQUestion(unittest.TestCase):
         self.user_sample={
         "username":"gidraf",
         "useremail":"orenjagidraf@gmal.com",
-        "password":"Winners11"
+        "password":"winners"
         }
 
         self.user.register_user(self.user_sample["username"],self.user_sample["useremail"],
@@ -140,10 +140,28 @@ class TestQUestion(unittest.TestCase):
         response=self.app.get(url)
         self.assertEqual(response.status_code,401)
 
+    @staticmetho
+    def create_auth():
+        """create authentication token"""
+        url= "/api/v1/add_question"
+        login_url="/auth/login"
+
+        login_response=self.app.post(login_url, data=json.dumps({
+                "username": "gidraf",
+                "password": "test"
+                }),headers=self.headers)
+        question_data={"title":"this is my first question",
+            "description":"this is just a description"}
+        token=login_response.json
+        return token["token"]
+
     def test_ask_question_with_login(self):
         """
         userr post question api endpoints test
         """
-        url= "/api/v1/add_question"
-        response=self.app.post(url,data = json.dumps(self.question_sample), headers = self.headers)
-        self.assertEqual(response.status_code,401)
+        head={"Authorization":"Bearer "+create_auth(),'Content-Type': "application/json"}
+        response=self.app.post(url,data = json.dumps(question_data), headers =head)
+        print("*"*10)
+        print(response.json)
+        print('*'*10)
+        self.assertEqual(response.status_code,201)

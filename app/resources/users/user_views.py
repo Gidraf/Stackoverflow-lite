@@ -37,15 +37,15 @@ def register():
             if any(char in character  for char in username) or not username.strip():
                 return jsonify({"error":"invalid username"}),400
             try:
-                email_cursor = user.search_user_by_email(email,cursor=connection.cursor())
-                username_cursor = user.search_user_by_username(username,cursor=connection.cursor())
+                email_cursor = user.search_user_by_email(email,cursor=connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                username_cursor = user.search_user_by_username(username,cursor=connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 current_user_email=email_cursor.fetchall()
                 current_user_username=username_cursor.fetchall()
                 if current_user_email:
                     return jsonify({"info":"email in use"}),200
                 elif current_user_username:
                     return jsonify({"info": "username in use"}),200
-                user.register_user(username,email,password,cursor=connection.cursor())
+                user.register_user(username,email,password,cursor=connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 return jsonify({"info":"user registered"}),201
             except (Exception, psycopg2.DatabaseError) as error:
                 return jsonify({"error":str(error)}),500
@@ -62,9 +62,9 @@ def login():
         if not request.json:
             return jsonify({"error":"json object is empty"}),400
         if not "username" in request.json:
-            abort(400)
+            return jsonify({"error":"'username' key not found"}),400
         if not "password" in request.json:
-            abort(400)
+            return jsonify({"error":"'password' key not found"}),400
 
         username=request.json["username"]
         password=request.json["password"]
@@ -73,14 +73,14 @@ def login():
             if any(char in character  for char in username):
                 return jsonify({"error":"invalid username"}),400
         try:
-            cursor = user.search_user_by_username(username,cursor=connection.cursor())
+            cursor = user.search_user_by_username(username,cursor=connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             current_user = cursor.fetchall()
             if current_user:
-                set_password=current_user[0][3]
-                if str(password) == set_password:
+                set_password=current_user[0]["password"]
+                if password == set_password:
                     token=create_access_token(identity=current_user)
                     return jsonify({"success":"your access token is","token":token}),200
-                return jsonify({"error":"wrong password"}),400
+                return jsonify({"error":"wrong password"}),401
             return jsonify({"info":"no account found"}),404
         except (Exception,psycopg2.DatabaseError) as error:
             jsonify({"error": error}),500

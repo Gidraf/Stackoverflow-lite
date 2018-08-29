@@ -92,7 +92,7 @@ def post_question():
              return jsonify({"error":"key error 'title' in your request"})
         if not "description" in request.json:
             return jsonify({"error":"key error 'description' in your request"})
-        userid=current_user[0]
+        userid=current_user[0]["userid"]
         title= request.json['title'],
         description = request.json['description'],
         time_created = datetime.utcnow()
