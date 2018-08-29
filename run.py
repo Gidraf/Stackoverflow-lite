@@ -34,6 +34,12 @@ def internal_server(error):
 def bad_request(error):
     '''return customed bad format'''
     return make_response(jsonify({"error":"the number or request you have entered is not accepted"}))
+
+@APP.errorhandler(403)
+def bad_request(error):
+    '''return customed bad format'''
+    return make_response(jsonify({"error":"Permission denied"}))
+
 def Ini_init_database():
     """create database table when the app starts when the app """
     connection=database_connection("development")

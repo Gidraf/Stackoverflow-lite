@@ -1,5 +1,6 @@
 """this module is itended to do all the user function login"""
 import psycopg2
+import datetime
 import psycopg2.extras
 from flask import abort
 from flask import redirect
@@ -9,13 +10,12 @@ from flask import request
 from validate_email import validate_email
 import string
 from flask_jwt_extended import (create_access_token,
-    get_jwt_identity
-)
+    get_jwt_identity)
 from . import users
 from app.models.user_model import Users
 from app.models import database_connection
-user = Users()
 
+user = Users()
 
 @users.route("/auth/register", methods=["POST"])
 def register():
@@ -48,11 +48,11 @@ def register():
                 user.register_user(username,email,password,cursor=connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 return jsonify({"info":"user registered"}),201
             except (Exception, psycopg2.DatabaseError) as error:
-                return jsonify({"error":str(error)}),500
+                return jsonify({"error": "request error please check your request body"}),400
         return jsonify({"error":"invalid username or email"}),400
         connection.close
     except (Exception, psycopg2.DatabaseError) as e:
-        return jsonify({"error":str(e)}),500
+        return jsonify({"error": "request error please check your request body"}),400
 
 @users.route ("/auth/login", methods=["POST"])
 def login():
@@ -78,12 +78,13 @@ def login():
             if current_user:
                 set_password=current_user[0]["password"]
                 if password == set_password:
-                    token=create_access_token(identity=current_user)
+                    expires = datetime.timedelta(days=1)
+                    token=create_access_token(identity=current_user, expires_delta=expires)
                     return jsonify({"success":"your access token is","token":token}),200
                 return jsonify({"error":"wrong password"}),401
             return jsonify({"info":"no account found"}),404
         except (Exception,psycopg2.DatabaseError) as error:
-            jsonify({"error": error}),500
+            return jsonify({"error": "request error please check your request body"}),400
         connection.close()
     except (Exception, psycopg2.DatabaseError) as e:
-        return jsonify({"error":str(e)}),500
+        return jsonify({"error": "request error please check your request body"}),400
