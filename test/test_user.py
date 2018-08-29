@@ -48,6 +48,46 @@ class TestUser(unittest.TestCase):
         response=self.app.post(url,data=json.dumps(self.current_user),headers=self.headers)
         self.assertEqual(response.status_code,200)
 
+    def test_registration_of_user_with_error(self):
+        """
+        test if the response is 201
+        """
+        url="/auth/register"
+        current_user={
+        "username":"gidraf/",
+        "useremail":"username@gmail.com",
+        "password":"test"
+        }
+        response=self.app.post(url,data=json.dumps(current_user),headers=self.headers)
+        self.assertEqual(response.status_code,400)
+
+    def test_registration_of_user_with_error_email(self):
+        """
+        test if the response is 201
+        """
+        url="/auth/register"
+        current_user={
+        "username":"gidraf/",
+        "useremail":"usernamegmail.com",
+        "password":"test"
+        }
+        response=self.app.post(url,data=json.dumps(current_user),headers=self.headers)
+        self.assertEqual(response.status_code,400)
+
+    def test_registration_of_user_with_empty(self):
+        """
+        test if the response is 201
+        """
+        url="/auth/register"
+        current_user={
+        "username":"",
+        "useremail":"usernamegmail.com",
+        "password":"test"
+        }
+        response=self.app.post(url,data=json.dumps(current_user),headers=self.headers)
+        self.assertEqual(response.status_code,400)
+
+
     def test_login_of_user(self):
         """
         test if user can login and authenticated
@@ -66,3 +106,36 @@ class TestUser(unittest.TestCase):
         success=data["success"]
         self.assertEqual(success,"your access token is")
         self.assertEqual(response.status_code,200)
+
+
+    def test_login_of_user_wth_error(self):
+        """
+        test if user can login and authenticated
+        """
+        self.user.register_user(self.current_user["username"],self.current_user["useremail"],
+                                self.current_user["password"],self.connection.cursor())
+        cursor=self.user.search_user_by_username(self.current_user["username"],self.connection.cursor())
+        reg_username=cursor.fetchall()
+        url="/auth/login"
+        credentials ={
+                "username": "",
+                "password": ""
+                }
+        response=self.app.post(url,data=json.dumps(credentials),headers=self.headers)
+        self.assertEqual(response.status_code,404)
+
+    def test_login_of_user_username_error(self):
+        """
+        test if user can login and authenticated
+        """
+        self.user.register_user(self.current_user["username"],self.current_user["useremail"],
+                                self.current_user["password"],self.connection.cursor())
+        cursor=self.user.search_user_by_username(self.current_user["username"],self.connection.cursor())
+        reg_username=cursor.fetchall()
+        url="/auth/login"
+        credentials ={
+                "username": self.current_user["username"],
+                "password": "hgghg"
+                }
+        response=self.app.post(url,data=json.dumps(credentials),headers=self.headers)
+        self.assertEqual(response.status_code,401)

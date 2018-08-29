@@ -82,6 +82,15 @@ class TestAnswer(unittest.TestCase):
                 "username": "gidraf",
                 "password": "test"
                 }),headers=self.headers)
+        """test if answer """
+        answer_text="hello"
+        time="now"
+        vote=0
+        is_answer=False
+        questionid=1
+        userid=1
+        self.answers.add_answer(answer_text,time,1,1,0,is_answer,self.connection.cursor())
+        answer_list = self.answers.search_answer_by_questionid(questionid,self.connection.cursor())
         question_data={"title":"this is my first question",
             "description":"this is just a description"}
         token=login_response.json
@@ -93,7 +102,6 @@ class TestAnswer(unittest.TestCase):
     def test_mark_answer_as_prefered(self):
         """test if user can answer"""
         empty={}
-
         login_url="/auth/login"
         login_response=self.app.post(login_url, data=json.dumps({
                 "username": "gidraf",
@@ -103,6 +111,26 @@ class TestAnswer(unittest.TestCase):
             "description":"this is just a description"}
         token=login_response.json
         head={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
-        url="/api/v1/prefered_answer/2"
-        response=self.app.post(url,data = json.dumps(empty), headers =head)
+        url="/api/v1/prefered_answer/6"
+        response=self.app.patch(url,data = json.dumps(empty), headers =head)
         self.assertEqual(response.status_code,200)
+
+    def test_display_error_message_when_posting_empty_body(self):
+        """test if user can answer"""
+        answer_text="hello"
+        login_url="/auth/login"
+        login_response=self.app.post(login_url, data=json.dumps({
+                "username": "gidraf",
+                "password": "test"
+                }),headers=self.headers)
+        """test if answer """
+        answer_text=""
+        question_data={"title":"this is my first question",
+            "description":"this is just a description"}
+        token=login_response.json
+        head={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
+        url="/api/v1/answers/1"
+        response=self.app.post(url, headers =head)
+        self.assertEqual(response.status_code,200)
+
+    

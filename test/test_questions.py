@@ -146,7 +146,50 @@ class TestQUestion(unittest.TestCase):
         print('*'*10)
         self.assertEqual(response.status_code,201)
 
+    def test_ask_question_with_login_error(self):
+        """
+        userr post question api endpoints test
+        """
+        url= "/api/v1/add_question"
+        login_url="/auth/login"
+        login_response=self.app.post(login_url, data=json.dumps({
+                "username": "gidraf",
+                "password": "test"
+                }),headers=self.headers)
+        question_data={"title":"",
+            "description":""}
+        token=login_response.json
+        head={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
+
+        response=self.app.post(url,data = json.dumps(question_data), headers =head)
+        print("*"*10)
+        print(response.json)
+        print('*'*10)
+        self.assertEqual(response.status_code,400)
+
     def test_update_question_with_login(self):
+        """update question with login"""
+
+        url = "api/v1/update_question/6"
+        update_question = {
+        "title":self.question_sample["title"],
+        "description":self.question_sample["description"]
+        }
+        login_url="/auth/login"
+        login_response=self.app.post(login_url, data=json.dumps({
+                "username": "gidraf",
+                "password": "test"
+                }),headers=self.headers)
+        question_data={"title":"this is my first question",
+            "description":"this is just a description"}
+        token=login_response.json
+        head={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
+        response = self.app.put(url,data = json.dumps(question_data),headers = head)
+        print("*"*10)
+        print(response.json)
+        print("*"*10)
+
+    def test_update_question_with_login_error(self):
         """update question with login"""
 
         url = "api/v1/update_question/6"
@@ -196,6 +239,44 @@ class TestQUestion(unittest.TestCase):
             "description":"this is just a description"}
         token=login_response.json
         head={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
-        url ="/api/v1/questions"
+        url ="/api/v1/questions/1"
         response=self.app.get(url,headers=head)
         self.assertEqual(response.status_code,200)
+
+    def test_fetch_specific_question_with_error(self):
+        """fetch a specific question with login"""
+        login_url="/auth/login"
+        login_response=self.app.post(login_url, data=json.dumps({
+                "username": "gidraf",
+                "password": "test"
+                }),headers=self.headers)
+        question_data={"title":"",
+            "description":"this is just a description"}
+        token=login_response.json
+        head={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
+        url ="/api/v1/questions/66666"
+        response=self.app.get(url,headers=head)
+        self.assertEqual(response.status_code,200)
+
+    def test_update_question_with_empty_body(self):
+        """update question with login"""
+
+        url = "api/v1/update_question/6"
+        update_question = {
+        "title":self.question_sample["title"],
+        "description":self.question_sample["description"]
+        }
+        login_url="/auth/login"
+        login_response=self.app.post(login_url, data=json.dumps({
+                "username": "gidraf",
+                "password": "test"
+                }),headers=self.headers)
+        question_data={"title":"",
+            "description":"this is just a description"}
+        token=login_response.json
+        head={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
+        response = self.app.put(url,data = json.dumps(question_data),headers = head)
+        print("*"*10)
+        print(response.json)
+        print("*"*10)
+        self.assertEqual(response.status_code,400)

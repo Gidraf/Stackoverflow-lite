@@ -77,9 +77,9 @@ def post_question():
             if title.strip() and description.strip():
                 question.add_question(title,description,time_created,userid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 return jsonify({"info":"question asked"}),201
-            return jsonify({"error":"you have an empty key value in you body"})
+            return jsonify({"error":"you have an empty key value in you body"}),400
         except (Exception, psycopg2.DatabaseError) as error:
-            return jsonify({"error":str(error)}) #jsonify({"error": "request error please check your request body"}),400
+            return jsonify({"error":str(error)}),400#jsonify({"error": "request error please check your request body"}),400
 
     except (Exception, psycopg2.DatabaseError) as e:
         return jsonify({"error": "request error please check your request body"}),400

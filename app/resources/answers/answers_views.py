@@ -24,7 +24,6 @@ def question_view(questionid):
     current_user=get_jwt_identity()
     try:
         connection=database_connection("development")
-
         try:
             cursor=question.search_question_by_questionid(questionid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             quiz=cursor.fetchall()
@@ -82,4 +81,4 @@ def mark_prefered(answerid):
             abort(403)
         return jsonify({"error":"answer not found"})
     except (Exception, psycopg2.DatabaseError) as e:
-        return jsonify({"error":str(e)})#jsonify({"error": "request error please check your request body"}),400
+        return jsonify({"error":str(e)}),400#jsonify({"error": "request error please check your request body"}),400
