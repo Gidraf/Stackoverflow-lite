@@ -70,7 +70,7 @@ class TestQUestion(BaseTest):
         "description":self.question_sample["description"]
         }
         response = self.app.put(url,data = json.dumps(update_question),headers = self.headers)
-        self.assertEqual(response.status_code,400)
+        self.assertEqual(response.status_code,200)
 
     def test_delete_question_api(self):
         """
@@ -131,7 +131,7 @@ class TestQUestion(BaseTest):
 
         url = "api/v1/update_question/2"
         update_question = {
-        "title":self.question_sample["title"],
+        "title":"",
         "description":self.question_sample["description"]
         }
         response = self.app.put(url,data = json.dumps(update_question),headers = self.headers)

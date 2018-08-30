@@ -33,13 +33,12 @@ $ pytest
 ### Questions API endpoints
 ```
 
-Method | Endpoint      
--------|---------------| -------------------
-POST   | `/questions`  | post a question
-GET    | `/questions`  |  get questions
-GET    | `/questions/  |get specifi question
-       |  question_id` |   
-PUT    | `questions/1` | edit question
-DELETE | `questions/1` | Delete question
-:smile:|:pray:|:heart:
-```
+|Method | Endpoint     | Functionality
+|:-----:|:------------:|-----------------|
+|POST   | `/questions` | post a question|
+|GET    | `/questions` |  get questions|     
+|GET    | `/questions/ |get specific question|
+|       |  question_id`|   |
+|PUT    | `questions/1`| edit question|
+|DELETE | `questions/1`| Delete question|
+|:smile:|:pray:|:heart:|

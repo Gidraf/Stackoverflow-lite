@@ -87,7 +87,6 @@ class TestUser(unittest.TestCase):
         response=self.app.post(url,data=json.dumps(current_user),headers=self.headers)
         self.assertEqual(response.status_code,400)
 
-
     def test_login_of_user(self):
         """
         test if user can login and authenticated
@@ -102,9 +101,6 @@ class TestUser(unittest.TestCase):
                 "password": self.current_user["password"]
                 }
         response=self.app.post(url,data=json.dumps(credentials),headers=self.headers)
-        data=dict(response.get_json("success"))
-        success=data["success"]
-        self.assertEqual(success,"your access token is")
         self.assertEqual(response.status_code,200)
 
 
@@ -122,7 +118,7 @@ class TestUser(unittest.TestCase):
                 "password": ""
                 }
         response=self.app.post(url,data=json.dumps(credentials),headers=self.headers)
-        self.assertEqual(response.status_code,404)
+        self.assertEqual(response.status_code,400)
 
     def test_login_of_user_username_error(self):
         """

@@ -33,7 +33,7 @@ def internal_server(error):
 @APP.errorhandler(400)
 def bad_request(error):
     '''return customed bad format'''
-    return make_response(jsonify({"error":"the number or request you have entered is not accepted"}))
+    return make_response(jsonify({"error":"bad request format"}))
 
 @APP.errorhandler(403)
 def bad_request(error):
