@@ -170,7 +170,7 @@ class TestQUestion(unittest.TestCase):
     def test_update_question_with_login(self):
         """update question with login"""
 
-        url = "api/v1/update_question/6"
+        url = "api/v1/update_question/1"
         update_question = {
         "title":self.question_sample["title"],
         "description":self.question_sample["description"]
@@ -192,7 +192,7 @@ class TestQUestion(unittest.TestCase):
     def test_update_question_with_login_error(self):
         """update question with login"""
 
-        url = "api/v1/update_question/6"
+        url = "api/v1/update_question/1"
         update_question = {
         "title":self.question_sample["title"],
         "description":self.question_sample["description"]
@@ -261,7 +261,7 @@ class TestQUestion(unittest.TestCase):
     def test_update_question_with_empty_body(self):
         """update question with login"""
 
-        url = "api/v1/update_question/6"
+        url = "api/v1/update_question/2"
         update_question = {
         "title":self.question_sample["title"],
         "description":self.question_sample["description"]
