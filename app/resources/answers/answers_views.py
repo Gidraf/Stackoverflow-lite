@@ -17,7 +17,7 @@ from flask_jwt_extended import jwt_required,get_jwt_identity
 
 answers=Answers()
 question=Questions()
-@ANSWERS.route("/api/v1/answers/<int:questionid>", methods=["GET","POST"])
+@ANSWERS.route("/api/v1/answers/<int:questionid>", methods=["POST"])
 @jwt_required
 def question_view(questionid):
     """show all answer of a question"""
@@ -28,15 +28,8 @@ def question_view(questionid):
             cursor=question.search_question_by_questionid(questionid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             quiz=cursor.fetchall()
             if quiz:
-                if request.method=="GET":
-                    result={}
-                    result["question"]=quiz[0]
-                    result["answers"]=answers
-                    return jsonify({"answers": result}),200
                 if not request.json:
-                    return jsonify({"error":"empty body"})
-                if not "answer_text" in request.json:
-                    return jsonify({"error":"answer_text key not found"})
+                    return ({"error":"request cannot be empty"})
                 answer_text=request.json["answer_text"]
                 if answer_text.strip():
                     time_created=datetime.utcnow()
@@ -49,7 +42,7 @@ def question_view(questionid):
                     result={}
                     result["question"]=quiz[0]
                     result["answers"]=answers_list
-                    return jsonify({"answers": result}),200
+                    return jsonify(result),200
                 return jsonify({"error":"answer cannot be empty"}),400
             return jsonify({"error":"question you are trying to answer is not available"}),404
         except (Exception, psycopg2.DatabaseError) as error:
