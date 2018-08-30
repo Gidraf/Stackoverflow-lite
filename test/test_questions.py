@@ -185,9 +185,7 @@ class TestQUestion(unittest.TestCase):
         token=login_response.json
         head={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
         response = self.app.put(url,data = json.dumps(question_data),headers = head)
-        print("*"*10)
         print(response.json)
-        print("*"*10)
 
     def test_update_question_with_login_error(self):
         """update question with login"""

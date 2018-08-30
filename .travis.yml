@@ -20,6 +20,7 @@ before_script:
   - psql -c 'CREATE DATABASE stackoverflow;' -U postgres
 
 script:
+  - sudo pytest -s -v
   - sudo pytest --cov=app
   - sudo coverage report -m
 
