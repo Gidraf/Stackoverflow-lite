@@ -29,13 +29,17 @@ python run.py (run app)
 $ pytest
 ```
 
-## Api Endpoints
+## Api Endpoints(api/v1)
 ### Questions API endpoints
 ```
-/api/v1/questions (get all questions)
-/api/v1/add_question (post a question)
-/api/v1/questions/1 (get specific question and add answer to that question)
-/api/v1/update_question/<int:question_id> (update question)
-/api/v1/delete_question/<int:question_id> (delete question)
 
+Method | Endpoint      
+-------|---------------| -------------------
+POST   | `/questions`  | post a question
+GET    | `/questions`  |  get questions
+GET    | `/questions/  |get specifi question
+       |  question_id` |   
+PUT    | `questions/1` | edit question
+DELETE | `questions/1` | Delete question
+:smile:|:pray:|:heart:
 ```

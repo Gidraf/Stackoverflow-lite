@@ -83,7 +83,7 @@ class TestQUestion(unittest.TestCase):
         cursor=self.question.fetch_all_question(self.connection.cursor())
         length_one = cursor.fetchall()
         self.question.delete_question(2,self.connection.cursor())
-        cursor=self.question.fetch_all_question(self.connection.cursor())
+        cursor = self.question.fetch_all_question(self.connection.cursor())
         length_two = cursor.fetchall()
         self.assertEqual(len(length_one)-1,len(length_two))
 
@@ -91,7 +91,7 @@ class TestQUestion(unittest.TestCase):
         """
         fetch all question from the database
         """
-        response=self.app.get("/api/v1/questions")
+        response = self.app.get("/api/v1/questions")
         data = response.get_json()
         self.assertEqual(response.status_code,401)
 
@@ -99,8 +99,8 @@ class TestQUestion(unittest.TestCase):
         """
         userr post question api endpoints test
         """
-        url= "/api/v1/add_question"
-        response=self.app.post(url,data = json.dumps(self.question_sample), headers = self.headers)
+        url = "/api/v1/add_question"
+        response = self.app.post(url,data = json.dumps(self.question_sample), headers = self.headers)
         self.assertEqual(response.status_code,401)
 
     def test_update_question_api_without_login(self):
@@ -130,12 +130,12 @@ class TestQUestion(unittest.TestCase):
         userr post question api endpoints test
         """
         url= "/api/v1/add_question"
-        login_url="/auth/login"
-        login_response=self.app.post(login_url, data=json.dumps({
+        login_url = "/auth/login"
+        login_response = self.app.post(login_url, data=json.dumps({
                 "username": "gidraf",
                 "password": "test"
                 }),headers=self.headers)
-        question_data={"title":"this is my first question",
+        question_data = {"title":"this is my first question",
             "description":"this is just a description"}
         token=login_response.json
         head={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
