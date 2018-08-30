@@ -111,7 +111,7 @@ class TestAnswer(unittest.TestCase):
             "description":"this is just a description"}
         token=login_response.json
         head={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
-        url="/api/v1/prefered_answer/6"
+        url="/api/v1/prefered_answer/1"
         response=self.app.patch(url,data = json.dumps(empty), headers =head)
         self.assertEqual(response.status_code,200)
 
@@ -132,5 +132,3 @@ class TestAnswer(unittest.TestCase):
         url="/api/v1/answers/1"
         response=self.app.post(url, headers =head)
         self.assertEqual(response.status_code,200)
-
-    
