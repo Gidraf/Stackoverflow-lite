@@ -93,7 +93,7 @@ def update_question(question_id):
                     cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                     new_question=cursor.fetchall()
                     return jsonify({"question":new_question}),200
-                return jsonify({"Warning":"permission denied"})
+                return jsonify({"warning":"your action cannot be completed because you don't have the right permission"})
             return jsonify({"error":"bad request format"}),400
         return jsonify({"error":"no question found"}),404
     except Exception as error:
@@ -113,7 +113,7 @@ def delete_question(question_id):
                 if question.delete_question(question_id,connection.cursor()):
                     return jsonify({"success": " question deleted"}),200
                 return jsonify({"error": "no question found"})
-            return jsonify({"Warning":"permission denied"})
+            return jsonify({"warning":"your action cannot be completed because you don't have the right permission"})
         return jsonify({"error":"no question found"}),404
     except (Exception,psycopg2.DatabaseError) as error:
         return jsonify({"error": str(error)}),400
