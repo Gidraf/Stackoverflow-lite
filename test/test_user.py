@@ -19,8 +19,8 @@ class TestUser(unittest.TestCase):
             self.user=Users()
             self.user.create_user_table(self.connection)
             self.current_user={
-            "username":"gidraf",
-            "useremail":"username@gmail.com",
+            "username":"someoneeee",
+            "useremail":"usernameeeee@gmail.com",
             "password":"test"
             }
             self.data_type = "application/json"
