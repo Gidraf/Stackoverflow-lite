@@ -31,14 +31,6 @@ class TestUser(unittest.TestCase):
     def tearDown(self):
         self.user.clear_user_table(self.connection)
 
-    def test_test_registration(self):
-        """
-        test if user has been registered successfully
-        """
-        self.user.register_user(self.current_user["username"],self.current_user["useremail"],self.current_user["password"],self.connection.cursor())
-        cursor=self.user.search_user_by_username(self.current_user["username"],self.connection.cursor())
-        reg_username=cursor.fetchall()
-        self.assertEqual(self.current_user["username"],reg_username[0][1])
 
     def test_registration_of_user_api(self):
         """
