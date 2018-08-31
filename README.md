@@ -31,14 +31,14 @@ $ pytest
 
 ## Api Endpoints(api/v1)
 ### Questions API endpoints
-```
 
-|Method | Endpoint     | Functionality
-|:-----:|:------------:|-----------------|
-|POST   | `/questions` | post a question|
-|GET    | `/questions` |  get questions|     
+
+|Method | Endpoint     | Functionality       |
+|:-----:|:------------:|---------------------|
+|POST   | `/questions` | post a question     |
+|GET    | `/questions` |  get questions      |     
 |GET    | `/questions/ |get specific question|
-|       |  question_id`|   |
-|PUT    | `questions/1`| edit question|
-|DELETE | `questions/1`| Delete question|
-|:smile:|:pray:|:heart:|
+|       |  question_id`|                     |
+|PUT    | `questions/1`| edit question       |
+|DELETE | `questions/1`| Delete question     |
+|       |              |                     |
