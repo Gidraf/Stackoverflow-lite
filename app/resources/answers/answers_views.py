@@ -44,7 +44,7 @@ def question_view(questionid):
                     result["answers"]=answers_list
                     return jsonify(result),200
                 return jsonify({"error":"answer cannot be empty"}),400
-            return jsonify({"error":"question you are trying to answer is not available"}),404
+            return jsonify({"error":"no question found"}),404
         except (Exception, psycopg2.DatabaseError) as error:
             return jsonify({"error":str(error)})#jsonify({"error": "request error please check your request body"}),400
         connection.close()
@@ -61,17 +61,18 @@ def mark_prefered(answerid):
         cursor=answers.search_answer_by_id(answerid, connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
         answer_list=cursor.fetchall()
         if answer_list:
+            userid=current_user[0]["userid"]
             questionid=answer_list[0]["questionid"]
             question_cursor=question.search_question_by_questionid(questionid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             questions_list=question_cursor.fetchall()
-            if current_user[0]["userid"]==questions_list[0]["userid"]:
+            if userid ==questions_list[0]["userid"]:
                 answers.mark_prefered(answerid, True, connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 answer_cursor = answers.search_answer_by_questionid(questionid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 question_answer=answer_cursor.fetchall()
                 question_cursor=question.search_question_by_questionid(questionid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 new_question=question_cursor.fetchall()
                 return jsonify({"question":new_question[0],"answers":question_answer}),200
-            abort(403)
+            return jsonify({"warning":"permission denied"})
         return jsonify({"error":"answer not found"})
     except (Exception, psycopg2.DatabaseError) as e:
         return jsonify({"error":str(e)}),400#jsonify({"error": "request error please check your request body"}),400
