@@ -75,4 +75,4 @@ def login():
             return jsonify({"info":"no account found"}),404
         connection.close()
     except Exception as e:
-        return jsonify({"error": "bad request format"}),400
+        return jsonify({"error": str(e)}),400
