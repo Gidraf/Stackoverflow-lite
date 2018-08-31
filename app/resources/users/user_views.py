@@ -38,9 +38,9 @@ def register():
             current_user_email=email_cursor.fetchall()
             current_user_username=username_cursor.fetchall()
             if current_user_email:
-                return jsonify({"warning":"email in use"}),200
+                return jsonify({"warning":"email already in use"}),200
             elif current_user_username:
-                return jsonify({"warning": "username in use"}),200
+                return jsonify({"warning": "username already in use"}),200
             user.register_user(username,email,password,cursor=connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             return jsonify({"success":"user registered"}),201
         return jsonify({"error":"invalid username or email"}),400
