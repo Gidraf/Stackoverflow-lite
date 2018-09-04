@@ -2,6 +2,8 @@
 import json
 import unittest
 import time
+import psycopg2
+import psycopg2.extras
 from flask_jwt_extended import create_access_token
 from app.models.questions_model import Questions
 from app.models.user_model import Users
@@ -32,6 +34,16 @@ class TestQUestion(BaseTest):
             cursor=self.question.search_question_by_questionid(1,self.connection.cursor())
             find_question=cursor.fetchall()
             self.assertEqual(new_question["title"],find_question[0][1])
+
+    def test_search_question_by_string(self):
+        '''string search by name test'''
+        string = "my quetion"
+        cursor = self.question.search_question_by_name(string,self.connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+        question = cursor.fetchall()
+        print("*" * 20)
+        print (question)
+        print("*" * 20)
+        self.assertEqual(question[0]["title"],"my question")
 
     def test_question_delete(self):
         """
@@ -114,11 +126,13 @@ class TestQUestion(BaseTest):
 
     def test_fetch_specific_question(self):
         """fetch a specific question with login"""
-        question_data={"title":"this is my first question",
+        question_data = {"title":"this is my first question",
             "description":"this is just a description"}
-        url ="/api/v1/questions/1"
-        response=self.app.get(url,headers=self.headers)
+        url = "/api/v1/questions/1"
+        response = self.app.get(url,headers=self.headers)
         self.assertEqual(response.status_code,200)
+
+
 
     def test_fetch_specific_question_with_error(self):
         """fetch a specific question with login"""
