@@ -54,6 +54,9 @@ class BaseTest(unittest.TestCase):
         self.question.add_question(self.question_sample["title"],self.question_sample["description"],
                                     self.question_sample["time_created"],self.question_sample["userid"],
                                     self.connection.cursor())
+        self.question.add_question(self.question_sample["title"],self.question_sample["description"],
+                                    self.question_sample["time_created"],self.question_sample["userid"],
+                                    self.connection.cursor())
         answer_text="hello"
         time="now"
         vote=0
