@@ -40,6 +40,11 @@ class Questions(object):
         cursor.execute(sql,(questionid,))
         return cursor
 
+    def search_question_by_name(self,string_name, cursor):
+        """search question by string"""
+        sql="SELECT * FROM questions WHERE title ~ %s OR title = %s"
+        cursor.execute(sql,(string_name,))
+        return cursor
 
     def search_question_by_questionid(self,questionid,cursor):
         "search question by id"
