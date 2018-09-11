@@ -13,7 +13,7 @@ class Answers(object):
         sql="""
         CREATE TABLE IF NOT EXISTS answers(
         answerid SERIAL PRIMARY KEY UNIQUE NOT NULL,
-        answer_text TEXT NOT NULL,
+        answer_text TEXT UNIQUE NOT NULL,
         time_created TEXT NOT NULL,
         userid INTEGER NOT NULL,
         is_answer BOOLEAN,
@@ -34,14 +34,12 @@ class Answers(object):
         """
         cursor.execute(sql,(answer_text,time_created,userid, questionid,vote,is_answer))
 
-
     def update_answer(self, answer_text, answerid, cursor):
         """
         update answer details in the database
         """
         sql="UPDATE answers SET  answer_text=%s WHERE answerid=%s"
         self.cursor.execute(sql,(answer_text, answerid,))
-
 
     def search_answer_by_questionid(self,questionid, cursor):
         """
@@ -71,6 +69,6 @@ class Answers(object):
         """
         clear answer table
         """
-        sql="DROP TABLE IF EXISTS answers"
+        sql="DROP TABLE IF EXISTS answers;"
         cursor = connection.cursor()
         cursor.execute(sql)
