@@ -18,6 +18,23 @@ from . import QUESTION
 
 question=Questions()
 answer=Answers()
+
+def check_if_question_exists(title, connection):
+    """
+    check if the question already exists in database
+    using question name
+    """
+    try:
+        cursor = question.search_question_by_full_text(title,\
+        connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+        available_questions = cursor.fetchone()
+        if available_questions:
+            if title == available_questions["title"]:
+                return True
+        return False
+    except Exception as error:
+        raise error
+
 @QUESTION.route("/api/v1/questions", methods=["GET"])
 @jwt_required
 def home():
@@ -45,7 +62,7 @@ def get_question(question_id):
         new_question=cursor.fetchall()
         if new_question:
             return jsonify({"question":new_question[0]}),200
-        return jsonify({"error":"question not found"})
+        return jsonify({"error":"question not found"}),404
         abort(404)
         connection.close()
     except Exception as e:
@@ -58,18 +75,24 @@ def post_question():
     try:
         current_user = get_jwt_identity()
         connection = database_connection("development")
-        if not request.json or  not 'title' in request.json or not "description" in request.json :
-             return jsonify({"error":"Bad request format"}),400
-        userid=current_user[0]["userid"]
+        if not request.json:
+             return jsonify({"error":"request body can't be empty"}),400
+        if  not 'title' in request.json:
+             return jsonify({"error":"title not found"}),400
+        if not "description" in request.json :
+            return jsonify({"error":"description not found"}),400
+        userid=current_user["userid"]
         title= request.json['title']
         description = request.json['description']
         time_created = datetime.utcnow()
         if title.strip() and description.strip():
-            question.add_question(title,description,time_created,userid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-            return jsonify({"success":"question asked"}),201
-        return jsonify({"error":"bad request format"}),400
+            if not check_if_question_exists(title, connection):
+                question.add_question(title , description, time_created,userid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                return jsonify({"success":"question asked"}),201
+            return jsonify({"Failed":"question already exists"}),400
+        return jsonify({"error":"question body can't have an empty value"}),400
     except (Exception, psycopg2.DatabaseError) as e:
-        return jsonify({"error": "Bad request format"}),400
+        return jsonify({"error": str(e)}),400
 
 @QUESTION.route('/api/v1/update_question/<int:question_id>', methods=["PUT"])
 @jwt_required
@@ -84,7 +107,7 @@ def update_question(question_id):
         cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
         current_question=cursor.fetchall()
         if current_question:
-            userid=current_user[0]["userid"]
+            userid=current_user["userid"]
             title = request.json.get('title')
             description= request.json.get('description')
             if title.strip() and description.strip():
@@ -93,11 +116,11 @@ def update_question(question_id):
                     cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                     new_question=cursor.fetchall()
                     return jsonify({"question":new_question}),200
-                return jsonify({"warning":"your action cannot be completed because you don't have the right permission"})
+                return jsonify({"warning":"your action cannot be completed because you don't have the right permission"}),403
             return jsonify({"error":"bad request format"}),400
         return jsonify({"error":"no question found"}),404
     except Exception as error:
-        return jsonify({"error":"sorry your request cannot be processed"}),400
+        return jsonify({"error":str(error)}),400
 
 @QUESTION.route('/api/v1/delete_question/<int:question_id>', methods=["DELETE"])
 @jwt_required
