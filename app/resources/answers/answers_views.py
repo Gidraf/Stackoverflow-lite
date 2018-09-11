@@ -29,31 +29,31 @@ def question_view(questionid):
             cursor = answers.search_answer_by_questionid(questionid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             question_answers = cursor.fetchall()
             if question_answers:
-                return jsonify({"Answers":question_answers})
-            return jsonify({"error":"this question has not been answered before"})
+                return jsonify({"Answers":question_answers}),200
+            return jsonify({"error":"this question has not been answered before"}),404
         cursor=question.search_question_by_questionid(questionid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
         quiz=cursor.fetchall()
         if quiz:
-            if not request.json and "answer_text" not in request.json:
-                return ({"error":"request cannot be empty"})
+            if "answer_text" not in request.json:
+                return jsonify({"error":"answer_text can't be empty"}),400
             answer_text=request.json["answer_text"]
             if answer_text.strip():
                 time_created=datetime.utcnow()
                 vote=0
                 is_answer=False
-                userid=current_user[0]["userid"]
+                userid=current_user["userid"]
                 answers.add_answer(answer_text,time_created,userid,questionid,vote,is_answer,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 cursor = answers.search_answer_by_questionid(questionid, connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 answers_list = cursor.fetchall()
                 result={}
                 result["question"]=quiz[0]
                 result["answers"]=answers_list
-                return jsonify(result),200
+                return jsonify(result),201
             return jsonify({"error":"answer cannot be empty"}),400
         return jsonify({"error":"no question found"}),404
         connection.close()
     except (Exception, psycopg2.DatabaseError) as e:
-        return jsonify({"error":str(e)}) #jsonify({"error": "bad request format "}),400
+        return jsonify({"error":str(e)}),400
 
 @ANSWERS.route('/api/v1/prefered_answer/<int:answerid>', methods=["PATCH"])
 @jwt_required
@@ -65,7 +65,7 @@ def mark_prefered(answerid):
         cursor=answers.search_answer_by_id(answerid, connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
         answer_list=cursor.fetchall()
         if answer_list:
-            userid=current_user[0]["userid"]
+            userid=current_user["userid"]
             questionid=answer_list[0]["questionid"]
             question_cursor=question.search_question_by_questionid(questionid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             questions_list=question_cursor.fetchall()
@@ -76,7 +76,7 @@ def mark_prefered(answerid):
                 question_cursor=question.search_question_by_questionid(questionid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 new_question=question_cursor.fetchall()
                 return jsonify({"question":new_question[0],"answers":question_answer}),200
-            return jsonify({"warning":"your action cannot be completed because you don't have the right permission"})
-        return jsonify({"error":"answer not found"})
+            return jsonify({"warning":"your action cannot be completed because you don't have the right permission"}),403
+        return jsonify({"error":"answer not found"}),404
     except (Exception, psycopg2.DatabaseError) as e:
-        return jsonify({"error":"bad request format"}),400#jsonify({"error": "request error please check your request body"}),400
+        return jsonify({"error":str(e)}),400
