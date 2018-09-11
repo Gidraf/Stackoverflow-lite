@@ -1,21 +1,85 @@
-"test user table arguments"
-import json
 import unittest
-import time
-import psycopg2
+import json
 import psycopg2.extras
-from flask_jwt_extended import create_access_token
-from app.models.questions_model import Questions
-from app.models.user_model import Users
-from app.models import database_connection
-from app.resources.questions.questions import post_question
+from datetime import datetime
+from flask import url_for
+from flask import request
+from flask import jsonify
 from app import create_app
-from .base import BaseTest
+from app.models.user_model import Users
+from app.models.questions_model import Questions
+from app.models import database_connection
 
-class TestQUestion(BaseTest):
+class TestQUestion(unittest.TestCase):
     """
     test user table arguments
     """
+
+    def setUp(self):
+        """
+        setup database
+        setuo server
+        """
+        init_app=create_app("testing")
+        self.app = init_app.test_client()
+        self.app.testing = True
+        self.connection = database_connection("test")
+        self.user = Users()
+        self.user.create_user_table(self.connection)
+        self.question = Questions()
+        self.question.create_question_table(self.connection)
+        self.question_sample = {
+        "title":"my question",
+        "description":"this is my descriotion",
+        "time_created":datetime.utcnow(),
+        "userid":1
+        }
+        self.question_sample_two = {
+        "title":"another question of mine",
+        "description":"this is my descrioption",
+        "time_created":datetime.utcnow(),
+        "userid":2
+        }
+        self.user_sample={
+        "username":"wiliam",
+        "useremail":"gidraf@gmal.com",
+        "password":"Winners11"
+        }
+        self.user_sample_two={
+        "username":"orenja",
+        "useremail":"orenja@gmal.com",
+        "password":"Winners11"
+        }
+        self.question_data={"title":"this is my first question",
+            "description":"this is just a description"}
+        self.headers = {'Content-Type': "application/json"}
+        reg_url="/auth/register"
+        self.app.post(reg_url,data=json.dumps(self.user_sample),headers=self.headers)
+        self.app.post(reg_url,data=json.dumps(self.user_sample_two),headers=self.headers)
+        login_url="/auth/login"
+        login_response=self.app.post(login_url, data=json.dumps({
+                "username": "wiliam",
+                "password": "Winners11"
+                }),headers=self.headers)
+        token=login_response.json
+        self.headers={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
+        self.question.add_question(self.question_sample["title"],self.question_sample["description"],
+                                    self.question_sample["time_created"],self.question_sample["userid"],
+                                    self.connection.cursor())
+        self.question.add_question(self.question_sample_two["title"],self.question_sample["description"],
+                                    self.question_sample["time_created"],self.question_sample["userid"],
+                                    self.connection.cursor())
+        self.question.add_question("self.question_sample_two",self.question_sample["description"],
+                                    self.question_sample["time_created"],self.question_sample_two["userid"],
+                                    self.connection.cursor())
+
+    def tearDown(self):
+        """
+        tear down method
+        destroy datas saved on the database
+        """
+        self.user.clear_user_table(self.connection)
+        self.question.clear_question_table(self.connection)
 
     def test_question_update(self):
         """
@@ -37,13 +101,35 @@ class TestQUestion(BaseTest):
 
     def test_search_question_by_string(self):
         '''string search by name test'''
-        string = "my quetion"
+        string = "my "
         cursor = self.question.search_question_by_name(string,self.connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
         question = cursor.fetchall()
-        print("*" * 20)
-        print (question)
-        print("*" * 20)
         self.assertEqual(question[0]["title"],"my question")
+
+    def test_question_with_title_error(self):
+        """
+        user post question witj empty question api endpoints test
+        """
+        question_data={
+        "title":"",
+        "description":"fkjfkjdkfjejrof"
+        }
+
+        url= "/api/v1/add_question"
+        response=self.app.post(url,data = json.dumps(question_data), headers =self.headers)
+        self.assertEqual(response.status_code,400)
+
+    def test_question_with_descripption_error(self):
+        """
+        user post question witj empty question api endpoints test
+        """
+        question_data={
+        "title":"hhh",
+        "description":""
+        }
+        url= "/api/v1/add_question"
+        response=self.app.post(url,data = json.dumps(question_data), headers =self.headers)
+        self.assertEqual(response.status_code,400)
 
     def test_question_delete(self):
         """
@@ -61,16 +147,7 @@ class TestQUestion(BaseTest):
         fetch all question from the database
         """
         response = self.app.get("/api/v1/questions")
-        data = response.get_json()
         self.assertEqual(response.status_code,401)
-
-    def test_ask_question_api_without_login(self):
-        """
-        userr post question api endpoints test
-        """
-        url = "/api/v1/add_question"
-        response = self.app.post(url,data = json.dumps(self.question_sample), headers = self.headers)
-        self.assertEqual(response.status_code,201)
 
     def test_update_question_api_without_login(self):
         """
@@ -81,8 +158,8 @@ class TestQUestion(BaseTest):
         "title":self.question_sample["title"],
         "description":self.question_sample["description"]
         }
-        response = self.app.put(url,data = json.dumps(update_question),headers = self.headers)
-        self.assertEqual(response.status_code,200)
+        response = self.app.put(url,data = json.dumps(update_question),headers = {'Content-Type': "application/json"})
+        self.assertEqual(response.status_code,401)
 
     def test_delete_question_api(self):
         """
@@ -96,8 +173,12 @@ class TestQUestion(BaseTest):
         """
         userr post question api endpoints test
         """
+        question_data={
+        "title":"nnnnnnn",
+        "description":"fkjfkjdkfjejrof"
+        }
         url= "/api/v1/add_question"
-        response=self.app.post(url,data = json.dumps(self.question_data), headers =self.headers)
+        response=self.app.post(url,data = json.dumps(question_data), headers =self.headers)
         self.assertEqual(response.status_code,201)
 
     def test_ask_question_with_login_error(self):
@@ -105,13 +186,18 @@ class TestQUestion(BaseTest):
         userr post question api endpoints test
         """
         url= "/api/v1/add_question"
-        response=self.app.post(url,data = json.dumps(self.question_data), headers =self.headers)
-        self.assertEqual(response.status_code,201)
+        response=self.app.post(url,data = json.dumps(self.question_data), headers ={"Content-Type":"application/json"})
+        self.assertEqual(response.status_code,401)
 
-    def test_update_question_with_login_error(self):
+    def test_update_question_with_login(self):
         """update question with login"""
         url = "api/v1/update_question/1"
-        response = self.app.put(url,data = json.dumps(self.question_data),headers = self.headers)
+        new_question={
+        "title":"ghhhghg",
+        "description":"ffgfjgfj"
+        }
+        response = self.app.put(url,data = json.dumps(new_question),headers = self.headers)
+        self.assertEqual(response.status_code,200)
 
     def test_fetch_all_question_api_with_login(self):
         """
@@ -119,7 +205,6 @@ class TestQUestion(BaseTest):
         """
         question_data={"title":"this is my first question",
             "description":"this is just a description"}
-
         response=self.app.get("/api/v1/questions",headers=self.headers)
         data = response.get_json()
         self.assertEqual(response.status_code,200)
@@ -132,17 +217,14 @@ class TestQUestion(BaseTest):
         response = self.app.get(url,headers=self.headers)
         self.assertEqual(response.status_code,200)
 
-
-
-    def test_fetch_specific_question_with_error(self):
+    def test_fetch_specific_question_not_found(self):
         """fetch a specific question with login"""
-        url ="/api/v1/questions/1"
+        url ="/api/v1/questions/550000"
         response=self.app.get(url,headers=self.headers)
-        self.assertEqual(response.status_code,200)
+        self.assertEqual(response.status_code,404)
 
     def test_update_question_with_empty_body(self):
         """update question with login"""
-
         url = "api/v1/update_question/2"
         update_question = {
         "title":"",
@@ -150,3 +232,23 @@ class TestQUestion(BaseTest):
         }
         response = self.app.put(url,data = json.dumps(update_question),headers = self.headers)
         self.assertEqual(response.status_code,400)
+
+    def test_update_question_with_empty_description(self):
+        """update question with login"""
+        url = "api/v1/update_question/2"
+        update_question = {
+        "title":"ndndnf",
+        "description":""
+        }
+        response = self.app.put(url,data = json.dumps(update_question),headers = self.headers)
+        self.assertEqual(response.status_code,400)
+
+    def test_update_question_another_person_question(self):
+        """update question with login"""
+        url = "api/v1/update_question/3"
+        update_question = {
+        "title":"ndndnf",
+        "description":"jhjhjhj"
+        }
+        response = self.app.put(url,data = json.dumps(update_question),headers = self.headers)
+        self.assertEqual(response.status_code,403)
