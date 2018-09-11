@@ -10,7 +10,7 @@ class Questions(object):
         """
         sql="""CREATE TABLE IF NOT EXISTS questions(
         questionid SERIAL PRIMARY KEY UNIQUE NOT NULL,
-        title VARCHAR(60) NOT NULL,
+        title VARCHAR(120) UNIQUE NOT NULL,
         description VARCHAR(120) NOT NULL,
         time_created TEXT NOT NULL,
         userid INTEGER NOT NULL,
@@ -21,29 +21,41 @@ class Questions(object):
 
     def add_question(self, title, description, time_created,userid, cursor):
         "add question to the database in user table"
-        sql="""INSERT INTO questions(title,description,time_created,userid) VALUES(%s,%s,%s,%s)
-        """
-        cursor.execute(sql,(title,description,time_created, userid))
+        sql=""" INSERT INTO questions(title , description, time_created, userid) VALUES(%s, %s, %s, %s)
+            """
+        cursor.execute(sql,(title, description, time_created, userid))
         return cursor
 
     def update_question(self, title, description, questionid, cursor):
         """
         update question details in the database
         """
-        sql="UPDATE questions SET title=%s, description=%s WHERE questionid=%s;"
-        cursor.execute(sql,(title,description,questionid))
+        sql="UPDATE questions SET title = %s, description = %s WHERE questionid = %s;"
+        cursor.execute(sql,(title, description, questionid))
         return cursor
 
     def delete_question(self,questionid,cursor):
-        "delete question by id"
+        """
+        delete question by id
+        """
         sql="DELETE FROM questions WHERE questions.questionid = %s"
         cursor.execute(sql,(questionid,))
         return cursor
 
-    def search_question_by_name(self,string_name, cursor):
-        """search question by string"""
-        sql="SELECT * FROM questions WHERE title ~ %s OR title = %s"
-        cursor.execute(sql,(string_name,))
+    def search_question_by_full_text(self,title, cursor):
+        """
+        search question title full text in the database
+        """
+        sql="SELECT * FROM questions WHERE title = %s"
+        cursor.execute(sql,(title,))
+        return cursor
+
+    def search_question_by_name(self,title, cursor):
+        """
+        search question by string
+        """
+        sql="SELECT * FROM questions WHERE title ~ %s"
+        cursor.execute(sql,(title,))
         return cursor
 
     def search_question_by_questionid(self,questionid,cursor):
@@ -58,8 +70,8 @@ class Questions(object):
         cursor.execute(sql)
         return cursor
 
-    def clear_question_table(self,connection):
+    def clear_question_table(self, connection):
         "clear user table"
-        sql="""DROP TABLE questions CASCADE"""
+        sql="""DROP TABLE IF EXISTS questions CASCADE"""
         cursor = connection.cursor()
         cursor.execute(sql)
