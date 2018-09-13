@@ -75,8 +75,6 @@ def post_question():
     try:
         current_user = get_jwt_identity()
         connection = database_connection("development")
-        if not request.json:
-             return jsonify({"error":"request body can't be empty"}),400
         if  not 'title' in request.json:
              return jsonify({"error":"title not found"}),400
         if not "description" in request.json :
@@ -100,8 +98,9 @@ def update_question(question_id):
     '''edit question'''
     current_user = get_jwt_identity()
     connection=database_connection("development")
-    if not request.json or not 'title' in request.json \
-    or not 'description' in request.json:
+    if not 'title' in request.json:
+        return jsonify({"error":"no 'title' key found"}),400
+    if not 'description' in request.json:
         return jsonify({"error":"bad request format"}),400
     try:
         cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
@@ -112,12 +111,20 @@ def update_question(question_id):
             description= request.json.get('description')
             if title.strip() and description.strip():
                 if userid == current_question[0]["userid"]:
-                    question.update_question(title, description, question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                    cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                    new_question=cursor.fetchall()
-                    return jsonify({"question":new_question}),200
+                    available_question_cursor = question.search_question_by_full_text(title,\
+                    connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                    is_updated_question_available = available_question_cursor.fetchall()
+                    if not is_updated_question_available:
+                        question.update_question(title, description, question_id,\
+                        connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                        cursor=question.search_question_by_questionid(question_id,\
+                        connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                        new_question=cursor.fetchall()
+                        return jsonify({"question":new_question}),200
+                    return jsonify({"error":"question already exists"}),400
                 return jsonify({"warning":"your action cannot be completed because you don't have the right permission"}),403
             return jsonify({"error":"bad request format"}),400
+            connection.close()
         return jsonify({"error":"no question found"}),404
     except Exception as error:
         return jsonify({"error":str(error)}),400
@@ -132,7 +139,7 @@ def delete_question(question_id):
         cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
         delete_question=cursor.fetchall()
         if delete_question:
-            if current_user[0]["userid"] == delete_question[0]["userid"]:
+            if current_user["userid"] == delete_question[0]["userid"]:
                 if question.delete_question(question_id,connection.cursor()):
                     return jsonify({"success": " question deleted"}),200
                 return jsonify({"error": "no question found"})
