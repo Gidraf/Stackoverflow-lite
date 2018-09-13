@@ -114,7 +114,6 @@ class TestQUestion(unittest.TestCase):
         "title":"",
         "description":"fkjfkjdkfjejrof"
         }
-
         url= "/api/v1/add_question"
         response=self.app.post(url,data = json.dumps(question_data), headers =self.headers)
         self.assertEqual(response.status_code,400)
@@ -181,6 +180,28 @@ class TestQUestion(unittest.TestCase):
         response=self.app.post(url,data = json.dumps(question_data), headers =self.headers)
         self.assertEqual(response.status_code,201)
 
+    def test_ask_question_that_exist_api(self):
+        """
+        as a user I should be able to post a question
+        """
+        question_sample_two = {
+        "title":"another question of mine",
+        "description":"this is my descrioption"}
+        question_url = "api/v1/add_question"
+        response = self.app.post(question_url,data=json.dumps(question_sample_two),headers=self.headers)
+        self.assertEqual(response.status_code,400)
+
+    def test_update_question_that_exist_api(self):
+        """
+        as a user I should be able to post a question
+        """
+        question_sample_two = {
+        "title":"another question of mine",
+        "description":"this is my descrioption"}
+        question_url = "api/v1/update_question/1"
+        response = self.app.put(question_url,data=json.dumps(question_sample_two),headers=self.headers)
+        self.assertEqual(response.status_code,400)
+
     def test_ask_question_with_login_error(self):
         """
         userr post question api endpoints test
@@ -198,6 +219,16 @@ class TestQUestion(unittest.TestCase):
         }
         response = self.app.put(url,data = json.dumps(new_question),headers = self.headers)
         self.assertEqual(response.status_code,200)
+
+    def test_update_question_already_exists_with_login(self):
+        """update question with login"""
+        url = "api/v1/update_question/1"
+        new_question={
+        "title":"my question",
+        "description":"this is my descriotion"
+        }
+        response = self.app.put(url,data = json.dumps(new_question),headers = self.headers)
+        self.assertEqual(response.status_code,400)
 
     def test_fetch_all_question_api_with_login(self):
         """

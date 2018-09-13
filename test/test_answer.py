@@ -68,10 +68,12 @@ class TestAnswer(unittest.TestCase):
         self.app.post(question_url,data=json.dumps(self.question_sample),headers=self.headers)
         self.app.post(question_url,data=json.dumps(self.question_data),headers=self.headers)
         answer_url="/api/v1/answers/1"
-        self.answer_text="this is just an answer"
-        self.answer.add_answer(self.answer_text,datetime.utcnow(),1,1,0,False,self.connection.cursor())
-        self.app.post(answer_url,data=json.dumps(self.answer_text),headers=self.headers)
-        self.app.post(answer_url,data=json.dumps(self.answer_text),headers=self.headers)
+        answer_text="this is just an answer"
+        answer_text_two="this is answer"
+        self.answer.add_answer(answer_text_two,datetime.utcnow(),1,1,0,False,self.connection.cursor())
+        self.answer.add_answer(answer_text,datetime.utcnow(),1,1,0,False,self.connection.cursor())
+        #self.app.post(answer_url,data=json.dumps(self.answer_text),headers=self.headers)
+        #self.app.post(answer_url,data=json.dumps(self.answer_text),headers=self.headers)
 
     def tearDown(self):
         """
@@ -96,7 +98,7 @@ class TestAnswer(unittest.TestCase):
         test if user can answer
         """
         answer_text="hello"
-        url="/api/v1/prefered_answer/2"
+        url="/api/v1/prefered_answer/88"
         response=self.app.patch(url,data = json.dumps(answer_text), headers = self.headers)
         self.assertEqual(response.status_code,404)
 
@@ -109,7 +111,6 @@ class TestAnswer(unittest.TestCase):
                 "username": "orenja",
                 "password": "Winners11"
                 }),headers = self.headers)
-
         token=login_response.json
         header={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
         response=self.app.patch(url,data = json.dumps(answer_text), headers = header)
@@ -119,9 +120,9 @@ class TestAnswer(unittest.TestCase):
         """
         test should return true if the answer is successfully added to the database on server
         """
-        answer_text={"answer_text":"hello"}
+        answer={"answer_text":"some answer"}
         url="/api/v1/answers/1"
-        response=self.app.post(url,data = json.dumps(answer_text), headers = self.headers)
+        response=self.app.post(url,data = json.dumps(answer), headers = self.headers)
         self.assertEqual(response.status_code,201)
 
     def test_get_answers_to_a_question(self):
@@ -132,15 +133,108 @@ class TestAnswer(unittest.TestCase):
         response=self.app.get(url, headers = self.headers)
         self.assertEqual(response.status_code,200)
 
-    def test_get_answers_to_a_question_not_found(self):
+    def test_ask_question_that_exist_api(self):
         """
-        test should return 200 response code
+        as a user I should be able to post a question
         """
-        url="/api/v1/answers/88"
-        response=self.app.get(url, headers = self.headers)
+        question_url = "api/v1/add_question"
+        response = self.app.post(question_url,data=json.dumps(self.question_sample_two),headers=self.headers)
+        self.assertEqual(response.status_code,400)
+
+    def test_answer_upvote(self):
+        """
+        test answer upvote
+        """
+        url = "/api/v1/upvote/1"
+        response = self.app.patch(url, headers = self.headers)
+        self.assertEqual(response.status_code,200)
+
+    def test_downvote_answer(self):
+        """
+        test answer downvote
+        """
+        url = "/api/v1/downvote/2"
+        response = self.app.patch(url, headers = self.headers)
+        self.assertEqual(response.status_code,200)
+
+    def  test_upvote_answer_not_found(self):
+        """
+        test answer upvote with not found response status code
+        """
+        url = "api/v1/upvote/33"
+        response = self.app.patch(url, headers = self.headers)
         self.assertEqual(response.status_code,404)
 
-    def test_add_answer_to_question_not_foune(self):
+    def test_downvote_answer_not_found(self):
+        """
+        test answer donvote answer with not found response code
+        """
+        url = "/api/v1/downvote/88"
+        response = self.app.patch(url, headers = self.headers)
+        self.assertEqual(response.status_code,404)
+
+    def test_update_answer(self):
+        """
+        update anser to the database via client server
+        the result should be
+        """
+        answer_text={"answer_text":"hello ssss"}
+        url="api/v1/update_answer/1"
+        response=self.app.put(url,data=json.dumps(answer_text),headers=self.headers)
+        self.assertEqual(response.status_code,200)
+
+    def test_update_answer_that_exists(self):
+        """
+        update anser to the database via client server
+        the result should be
+        """
+        answer_text={"answer_text":"this is answer"}
+        url="/api/v1/update_answer/1"
+        response=self.app.put(url,data=json.dumps(answer_text),headers=self.headers)
+        self.assertEqual(response.status_code,400)
+
+    def test_delete_answer_api(self):
+        """
+        if the test pass the first answer of id 1 should have been deleted
+        """
+        url="api/v1/delete_answer/1"
+        response=self.app.delete(url,headers=self.headers)
+        self.assertEqual(response.status_code,200)
+
+    def test_delete_another_person_answer(self):
+        """
+        if this test pass then  a user can't delete another person answer
+        """
+        url=""
+        login_url="/auth/login"
+        login_response=self.app.post(login_url, data=json.dumps({
+                "username": "orenja",
+                "password": "Winners11"
+                }),headers = self.headers)
+        token=login_response.json
+        header={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
+        url="api/v1/delete_answer/1"
+        response=self.app.delete(url,headers=header)
+        self.assertEqual(response.status_code,403)
+
+    def test_update_another_person_answer(self):
+        """
+        if this test pass then  a user can't delete another person answer
+        """
+        url=""
+        login_url="/auth/login"
+        login_response=self.app.post(login_url, data=json.dumps({
+                "username": "orenja",
+                "password": "Winners11"
+                }),headers = self.headers)
+        token=login_response.json
+        header={"Authorization":"Bearer "+token["token"],'Content-Type': "application/json"}
+        answer_text={"answer_text":"hello ssss"}
+        url="/api/v1/update_answer/1"
+        response=self.app.put(url,data=json.dumps(answer_text),headers=header)
+        self.assertEqual(response.status_code,403)
+
+    def test_add_answer_to_question_not_found(self):
         """
         response should be 404
         """
