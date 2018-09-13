@@ -39,7 +39,27 @@ class Answers(object):
         update answer details in the database
         """
         sql="UPDATE answers SET  answer_text=%s WHERE answerid=%s"
-        self.cursor.execute(sql,(answer_text, answerid,))
+        cursor.execute(sql,(answer_text, answerid,))
+        return cursor
+
+    def delete_answer(self,answerid,cursor):
+        """
+        delete answer from answers table
+        """
+        sql="DELETE FROM answers WHERE answerid = %s"
+        cursor.execute(sql,(answerid,))
+
+    def upvote_dowvote_answer(self,answerid, status, cursor):
+        """
+        upvote or downvote an answer
+        """
+        sql = None
+        if status == "upvote":
+            sql="UPDATE answers SET votes = votes + 1 WHERE answerid = %s"
+        else:
+            sql="UPDATE answers SET votes = votes - 1 WHERE answerid = %s"
+        cursor.execute(sql,(answerid,))
+        return cursor
 
     def search_answer_by_questionid(self,questionid, cursor):
         """
@@ -47,6 +67,14 @@ class Answers(object):
         """
         sql="SELECT * FROM answers WHERE questionid = %s"
         cursor.execute(sql,(questionid,))
+        return cursor
+
+    def search_answer_by_string(self,answer_text, cursor):
+        """
+        search question  by string
+        """
+        sql="SELECT * FROM answers WHERE answer_text = %s"
+        cursor.execute(sql,(answer_text,))
         return cursor
 
     def mark_prefered(self, answerid, is_answer, cursor):
