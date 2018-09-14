@@ -14,25 +14,16 @@
           <img src="static/css/img/hamburger_icon.png" alt="">
         </a>
         <a href="#"><span>Stackoverflow-Lite</span></a>
-        <!--implement this on forum page  -->
-        <!--
-        <div class="search_form">
-          <form action="index.html" method="post">
-            <input type="search" name="search" placeholder="Search" value="">
-            <input id="search_btn" type="image" name="search" src="static/css/img/search_image.png" value="">
-          </form>
-        </div>
-      -->
         <div class="right_bar">
         <a href="index.html"><span>Forum</span></a>
         <a href="signin.html"> <span>Signin</span></a>
       </div>
       </div>
     </header>
-    <!--signup form-->
 
     <div class="signin_content">
-      <form class="signup_form" action="index.html" method="post">
+      <form action="https://stackoverflowgidraf.herokuapp.com/auth/register"
+       class="signup_form" onsubmit="register_user(event, this)" method="post">
         <fieldset>
           <legend>Signup</legend>
           <label for="username">Username</label>
@@ -52,12 +43,13 @@
           <input type="password" name="confirm_password" required value="" placeholder="Confirm Password">
           <br>
         </fieldset>
+        <span id="error" class="hide">error please check</span>
+        <br>
         <button type="submit" name="signup">Signup</button>
         <br>
         <span> Already have an account? <a href="signin.html">Signin here</a></span>
       </form>
-
     </div>
-
+  <script type="text/javascript" src="static/js/user_script.js"></script>
   </body>
 </html>

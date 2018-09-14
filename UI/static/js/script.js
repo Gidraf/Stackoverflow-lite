@@ -1,7 +1,6 @@
+var = window.location.href
 
 var question_modal =document.getElementById('question_modal')
-
-var isopen=false;
 
 var ask_question=document.getElementById('ask_question');
 

@@ -286,6 +286,11 @@ a
   color: ghostwhite
 }
 
+#error
+{
+  color: red;
+}
+
 .side_navbar a{
   padding: 10px;
   display: block;
@@ -604,7 +609,6 @@ h4{
    box-sizing: border-box;
    box-shadow: 1px 1px 1px ghostwhite;
  }
-
 
  .question_modal{
    display: block;

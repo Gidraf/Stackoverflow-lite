@@ -137,6 +137,12 @@ a
   float: left;
 }
 
+#error
+{
+  color: red;
+  font-size: 1vw;
+}
+
 /**format hambuger icon**/
 
 .logo img
