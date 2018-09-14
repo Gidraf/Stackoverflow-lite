@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Stackoverflow-Lite|Forum</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+  </head>
+  <body>
+    <!--Navigation bar-->
+    <header class="nav_header" >
+      <div class="logo">
+        <a href="#">
+          <img src="static/css/img/hamburger_icon.png" alt="">
+        </a>
+        <a href="#"><span>Stackoverflow-Lite</span></a>
+
+        <div class="right_bar">
+          <!--this forum button will act as refresh inside forum -->
+        <a href="profile.html"><span>Account</span></a>
+
+        <a  href="signin.html"> <span >Signout</span>
+
+         </a>
+        </div>
+
+
+
+      </div>
+      <div class="clear">
+
+      </div>
+    </header>
+    <div class="">
+
+      <a href="#">
+        <button id="ask_question" onclick="open_model()" type="button" name="ask_questin">Ask Question</button>
+      </a>
+      <!-- search bar field-->
+      <div class="search_form">
+        <form action="#">
+          <input type="search" name="search" placeholder="Search" value="">
+          <input id="search_btn" type="image" name="search" src="static/css/img/search_image.png" value="">
+        </form>
+      </div>
+    </div>
+
+  <div class="clear">
+  </div>
+    <!--signup form-->
+    <div class="side_navbar">
+      <a href="#">
+        <span>Home</span>
+      <img src="static/css/img/refresh_btn.png" alt="">
+      </a>
+
+      <a href="#">
+        <span>All Questions</span>
+      </a>
+
+      <a href="#">
+        <span>Hot questions</span>
+      </a>
+<!--
+      <a href="#">
+        <span>My questions</span>
+      </a>
+      <a href="#">
+        <span>My Answers</span>
+      </a>
+        -->
+    </div>
+    <div class="container">
+    <h2 id="forum_title">Recently Asked Questions</h2>
+    <div class="forum_content">
+      <div class="question_holder">
+      <a href="#">
+        <div class="user_image">
+          <img src="static/css/img/avatar.png" alt="">
+        </div>
+      </a>
+      <a href="#">
+        <span class="username">username</span>
+        <br>
+      </a>
+        <span class="question_numbers">0</span>
+        <span class="numbers_labels">votes</span>
+        <br>
+        <span class="time">2/2/2018 @ 11:00 am</span>
+        <div class="clear">
+
+        </div>
+        <a href="question.html">
+        <h3 class="question_header">I am a question click me to see my details</h3>
+      </a>
+      </div>
+      <div class="clear">
+
+      </div>
+
+      <div class="question_holder">
+      <a href="#">
+        <div class="user_image">
+          <img src="static/css/img/avatar.png" alt="">
+        </div>
+      </a>
+      <a href="#">
+        <span class="username">username</span>
+        <br>
+      </a>
+        <span class="question_numbers">0</span>
+        <span class="numbers_labels">votes</span>
+        <br>
+        <span class="time">2/2/2018 @ 11:00 am</span>
+        <div class="clear">
+
+        </div>
+        <a href="question.html">
+        <h3 class="question_header">I am a question click me to see my details</h3>
+      </a>
+      </div>
+      <div class="clear">
+
+      </div>
+
+      <div class="question_holder">
+      <a href="#">
+        <div class="user_image">
+          <img src="static/css/img/avatar.png" alt="">
+        </div>
+      </a>
+      <a href="#">
+        <span class="username">username</span>
+        <br>
+      </a>
+        <span class="question_numbers">0</span>
+        <span class="numbers_labels">votes</span>
+        <br>
+        <span class="time">2/2/2018 @ 11:00 am</span>
+        <div class="clear">
+
+        </div>
+        <a href="question.html">
+        <h3 class="question_header">I am a question click me to see my details</h3>
+      </a>
+      </div>
+      <div class="clear">
+
+      </div>
+      <div class="question_holder">
+      <a href="#">
+        <div class="user_image">
+          <img src="static/css/img/avatar.png" alt="">
+        </div>
+      </a>
+      <a href="#">
+        <span class="username">username</span>
+        <br>
+      </a>
+        <span class="question_numbers">0</span>
+        <span class="numbers_labels">votes</span>
+        <br>
+        <span class="time">2/2/2018 @ 11:00 am</span>
+        <div class="clear">
+
+        </div>
+        <a href="question.html">
+        <h3 class="question_header">I am a question click me to see my details</h3>
+      </a>
+      </div>
+      <div class="clear">
+
+      </div>
+      <div class="question_holder">
+      <a href="#">
+        <div class="user_image">
+          <img src="static/css/img/avatar.png" alt="">
+        </div>
+      </a>
+      <a href="#">
+        <span class="username">username</span>
+        <br>
+      </a>
+        <span class="question_numbers">0</span>
+        <span class="numbers_labels">votes</span>
+        <br>
+        <span class="time">2/2/2018 @ 11:00 am</span>
+        <div class="clear">
+
+        </div>
+        <a href="question.html">
+        <h3 class="question_header">I am a question click me to see my details</h3>
+      </a>
+      </div>
+      <div class="clear">
+
+      </div>
+      <div class="question_holder">
+      <a href="#">
+        <div class="user_image">
+          <img src="static/css/img/avatar.png" alt="">
+        </div>
+      </a>
+      <a href="#">
+        <span class="username">username</span>
+        <br>
+      </a>
+        <span class="question_numbers">0</span>
+        <span class="numbers_labels">votes</span>
+        <br>
+        <span class="time">2/2/2018 @ 11:00 am</span>
+        <div class="clear">
+
+        </div>
+        <a href="question.html">
+        <h3 class="question_header">I am a question click me to see my details</h3>
+      </a>
+      </div>
+      <div class="clear">
+
+      </div>
+      <div class="question_holder">
+      <a href="#">
+        <div class="user_image">
+          <img src="static/css/img/avatar.png" alt="">
+        </div>
+      </a>
+      <a href="#">
+        <span class="username">username</span>
+        <br>
+      </a>
+        <span class="question_numbers">0</span>
+        <span class="numbers_labels">votes</span>
+        <br>
+        <span class="time">2/2/2018 @ 11:00 am</span>
+        <div class="clear">
+
+        </div>
+        <a href="question.html">
+        <h3 class="question_header">I am a question click me to see my details</h3>
+      </a>
+      </div>
+      <div class="clear">
+
+      </div>
+      <div class="question_holder">
+      <a href="#">
+        <div class="user_image">
+          <img src="static/css/img/avatar.png" alt="">
+        </div>
+      </a>
+      <a href="#">
+        <span class="username">username</span>
+        <br>
+      </a>
+        <span class="question_numbers">0</span>
+        <span class="numbers_labels">votes</span>
+        <br>
+        <span class="time">2/2/2018 @ 11:00 am</span>
+        <div class="clear">
+
+        </div>
+        <a href="question.html">
+        <h3 class="question_header">I am a question click me to see my details</h3>
+      </a>
+      </div>
+      <div class="clear">
+
+      </div>
+
+      </div>
+
+      <!--impliment this to question details page-->
+      <!--
+      <p>question description this is a place where
+        user will describe his or her quaestion as they wait to be answered </p>
+      -->
+
+    </div>
+    <div class="">
+      <h4>Users</h4>
+    <div class="right_sidebar">
+
+      <div class="users">
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div id="question_modal" class="hide">
+      <form class="" action="index.html" method="post">
+        <fieldset>
+          <legend>Ask Question</legend>
+          <input type="text" name="title" placeholder="Questin title" value="">
+          <br>
+          <textarea name="name" rows="10" placeholder="Question description" cols="80"></textarea>
+        </fieldset>
+        <button id="ask" type="button" name="button">Ask</button>
+        <button id="cancel" onclick="close_modal()"  type="button" name="button">Cancel</button>
+      </form>
+    </div>
+    <script type="text/javascript" src="static/js/script.js">
+  </script>
+  </body>
+</html>

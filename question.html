@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Stackoverflow-Lite|Question_details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+
+  </head>
+  <body>
+    <!--Navigation bar-->
+    <header class="nav_header" >
+      <div class="logo">
+        <a href="#">
+          <img src="static/css/img/hamburger_icon.png" alt="">
+        </a>
+        <a href="#"><span>Stackoverflow-Lite</span></a>
+
+        <div class="right_bar">
+          <!--this forum button will act as refresh inside forum -->
+        <a href="index.html"><span>Forum</span></a>
+
+        <a  href="signin.html"> <span >Signout</span>
+
+         </a>
+        </div>
+
+
+
+      </div>
+      <div class="clear">
+
+      </div>
+    </header>
+    <div class="">
+
+        <button id="ask_question" onclick="open_model()" type="button" name="ask_question">Ask Question</button>
+
+
+      <!-- search bar field-->
+      <div class="search_form">
+        <form action="#" method="">
+          <input type="search" name="search" placeholder="Search" value="">
+          <input id="search_btn" type="image" name="search" src="static/css/img/search_image.png" value="">
+        </form>
+      </div>
+    </div>
+
+  <div class="clear">
+  </div>
+    <!--signup form-->
+    <div class="side_navbar">
+      <a href="index.html">
+        <span>Home</span>
+      <img src="static/css/img/refresh_btn.png" alt="">
+      </a>
+
+      <a href="#">
+        <span>All Questions</span>
+      </a>
+
+      <a href="#">
+        <span>Hot questions</span>
+      </a>
+<!--
+      <a href="#">
+        <span>My questions</span>
+      </a>
+      <a href="#">
+        <span>My Answers</span>
+      </a>
+        -->
+    </div>
+    <h2 id="question_title">consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</h2>
+    <div class="forum_content">
+      <div class="question_description">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </div>
+      <div class="clear">
+      </div>
+      <h4 id="answer_title">Answers</h4>
+      <div class="answer_holder">
+        <div class="answers_labels">
+        <a href="#">
+          <img src="static/css/img/avatar.png" alt="">
+          <span id="answer_username">Username</span>
+        </a>
+          <span id="votes">0 votes</span>
+          <div class="clear">
+
+          </div>
+          <span>22  Aug 2017 @ 11:000 am</span>
+          <div class="votes">
+              <a id="upvote" onclick="vote_upvote()" href="#">Upvote</a> <a onclick="vote_downvote()" id="downvote" href="#">Downvote</a>
+          </div>
+            </div>
+        <div class="clear">
+        </div>
+        <p id="answer">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+        <h4>Comments</h4>
+        <div class="comment_holder">
+          <div class="comment_labels">
+            <a id="comment_user" href="#">Username</a>
+            <span>22  Aug 2017 @ 11:000 am</span>
+
+        <p class="comment">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="comment_labels">
+          <a id="comment_user" href="#">Username</a>
+          <span>22  Aug 2017 @ 11:000 am</span>
+
+      <p class="comment">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </div>
+        <form class="" action="#" method="post">
+          <textarea name="name" rows="2" cols="0" placeholder="add a comment"></textarea>
+          <button type="button" name="button">Comment</button>
+        </form>
+      </div>
+      <div class="clear">
+      </div>
+
+
+    </div>
+    <!---answer form-->
+    <div class="answer_form">
+      <h3>Your answer</h3>
+      <form class="" action="index.html" method="post">
+        <textarea name="comment" rows="10" placeholder="your answer here" cols="80"></textarea>
+        <button type="button" name="answer_btn">Post Answer</button>
+      </form>
+    </div>
+  </div>
+  <!-- edit side bar--->
+    <div class="right_bar_container">
+      <a href="#">
+        <div class="user_image">
+          <img src="static/css/img/avatar.png" alt="">
+        </div>
+      </a>
+      <a href="#">
+        <span class="username">username</span>
+        <br>
+        <span class="question_numbers">0</span>
+        <span class="numbers_labels">votes</span>
+        <br>
+        <span class="time">2/2/2018 @ 11:00 am</span>
+      </a>
+
+    <div class="right_sidebar">
+
+      <div class="users">
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="user_holder">
+          <img src="static/css/img/avatar.png" alt="">
+          <a href="#">Username</a>
+          <span>0 questions</span>
+          <span>0 answers</span>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!--ask question form-->
+    <div id="question_modal" class="hide">
+      <form class="" action="index.html" method="post">
+        <fieldset>
+          <legend>Ask Question</legend>
+          <input type="text" name="title" placeholder="Questin title" value="">
+          <br>
+          <textarea name="name" rows="10" placeholder="Question description" cols="80"></textarea>
+        </fieldset>
+        <button id="ask" type="button" name="button">Ask</button>
+        <button id="cancel" onclick="close_modal()"  type="button" name="button">Cancel</button>
+      </form>
+    </div>
+    <script type="text/javascript" src="static/js/script.js">
+  </script>
+  </body>
+</html>
