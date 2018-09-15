@@ -1,5 +1,6 @@
 """parent file for the app"""
 from flask import Flask
+from flask_cors import CORS
 from app.resources.questions import QUESTION
 from .resources.users import users
 from .resources.answers import ANSWERS
@@ -11,6 +12,7 @@ from instance.config import secrets
 def create_app(config_name):
     """create APP"""
     APP=Flask(__name__, instance_relative_config=True)
+    CORS(APP)
     APP.config['JWT_SECRET_KEY'] = secrets
     jwt =JWTManager(APP)
     APP.register_blueprint(QUESTION)
