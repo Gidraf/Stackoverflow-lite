@@ -59,6 +59,15 @@ class Users(object):
         cursor.execute(sql,(useremail,))
         return cursor
 
+    def search_user_by_id(self,id, cursor):
+        """
+        search user by id
+        """
+        sql = "SELECT * FROM users WHERE userid = %s"
+        cursor.execute(sql, (id,))
+        return cursor
+
+
     def clear_user_table(self,connection):
         """
         clear everything in user table
