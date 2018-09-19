@@ -50,6 +50,14 @@ class Questions(object):
         cursor.execute(sql,(title,))
         return cursor
 
+    def search_question_userid(self, userid, cursor):
+        """
+        search question of a specific user
+        """
+        sql = "SELECT * FROM questions WHERE userid = userid"
+        cursor.execute(sql, (userid,))
+        return cursor
+
     def search_question_by_name(self,title, cursor):
         """
         search question by string
