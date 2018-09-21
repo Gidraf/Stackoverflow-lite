@@ -123,6 +123,6 @@ def get_user_questions(userid):
                 question_container ["questions"] = i
                 result.append(question_container)
             return jsonify ({"result":result}),200
-        return ({"error":"no question found"}),404
+        return jsonify({"error":"no question found"}),404
     except (Exception, psycopg2.DatabaseError) as error:
         return jsonify ({"error":str(error)}),400

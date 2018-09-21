@@ -133,12 +133,14 @@ def update_question(question_id):
                     available_question_cursor = question.search_question_by_full_text(title,\
                     connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                     is_updated_question_available = available_question_cursor.fetchall()
-                    question.update_question(title, description, question_id,\
-                    connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                    cursor=question.search_question_by_questionid(question_id,\
-                    connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                    new_question=cursor.fetchall()
-                    return jsonify({"question":new_question}),200
+                    if not is_updated_question_available:
+                        question.update_question(title, description, question_id,\
+                        connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                        cursor=question.search_question_by_questionid(question_id,\
+                        connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                        new_question=cursor.fetchall()
+                        return jsonify({"question":new_question}),200
+                    return jsonify({"error":"question already exist"}),400
                 return jsonify({"error":"your action cannot be completed because you don't have the right permission"}),403
             return jsonify({"error":"empty value cannot be submitted"}),400
             connection.close()

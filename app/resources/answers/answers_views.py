@@ -11,10 +11,12 @@ from flask import abort
 from flask import make_response
 from app.models.answers_model import Answers
 from app.models.questions_model import Questions
+from app.models.user_model import Users
 from app.models import database_connection
 from . import ANSWERS
 from flask_jwt_extended import jwt_required,get_jwt_identity
 
+users = Users()
 answers=Answers()
 question=Questions()
 @ANSWERS.route("/api/v1/answers/<int:questionid>", methods=["POST","GET"])
@@ -24,18 +26,22 @@ def question_view(questionid):
     current_user=get_jwt_identity()
     try:
         connection=database_connection("development")
-        if request.method == "GET":
-            """get answers to a specific question"""
-            cursor = answers.search_answer_by_questionid(questionid,\
-            connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-            question_answers = cursor.fetchall()
-            if question_answers:
-                return jsonify({"Answers":question_answers}),200
-            return jsonify({"error":"this question has not been answered before"}),404
-        cursor=question.search_question_by_questionid(questionid,\
+        question_cursor=question.search_question_by_questionid(questionid,\
         connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-        quiz=cursor.fetchall()
+        quiz=question_cursor.fetchall()
         if quiz:
+            if request.method == "GET":
+                """get answers to a specific question"""
+                cursor = answers.search_answer_by_questionid(questionid,\
+                connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                question_answers = cursor.fetchall()
+                if question_answers:
+                    for a in question_answers:
+                        user_cursor = users.search_user_by_id(a["userid"],\
+                        connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor) )
+                        username = user_cursor.fetchone()
+                        a["username"] = username["username"]
+                return jsonify({"question":quiz[0],"answers":question_answers}),200
             if "answer_text" not in request.json:
                 return jsonify({"error":"answer_text can't be empty"}),400
             answer_text=request.json["answer_text"]
@@ -64,7 +70,7 @@ def question_view(questionid):
     except (Exception, psycopg2.DatabaseError) as e:
         return jsonify({"error":str(e)}),400
 
-@ANSWERS.route('/api/v1/prefered_answer/<int:answerid>', methods=["PATCH"])
+@ANSWERS.route('/api/v1/mark_answer/<int:answerid>', methods=["PATCH"])
 @jwt_required
 def mark_prefered(answerid):
     """ mark answer as prefered"""
@@ -80,7 +86,7 @@ def mark_prefered(answerid):
             question_cursor=question.search_question_by_questionid(questionid,\
             connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             questions_list=question_cursor.fetchall()
-            if userid ==questions_list[0]["userid"]:
+            if userid == questions_list[0]["userid"]:
                 answers.mark_prefered(answerid, True, \
                 connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 answer_cursor = answers.search_answer_by_questionid(questionid,\
@@ -110,7 +116,7 @@ def delete_answer(answerid):
             question_cursor=question.search_question_by_questionid(answer["questionid"],\
             connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             questions_list=question_cursor.fetchall()
-            if current_user["userid"] == questions_list[0]["userid"]:
+            if current_user["userid"] == answers_list[0]["userid"]:
                 answers.delete_answer(answerid,\
                 connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 return jsonify({"success":"deleted"}),200
@@ -130,6 +136,8 @@ def update_answer(answerid):
         if not "answer_text" in request.json:
             return jsonify({"error":"'answer_text' key can't be found"}),400
         answer_text = request.json["answer_text"]
+        if not answer_text.strip():
+            return jsonify({"error":"answer text cannot be empty"}), 400
         cursor=answers.search_answer_by_id(answerid,\
         connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
         answer_list=cursor.fetchall()
@@ -138,7 +146,7 @@ def update_answer(answerid):
             question_cursor=question.search_question_by_questionid(answer["questionid"],\
             connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             questions_list=question_cursor.fetchall()
-            if current_user["userid"]== questions_list[0]["userid"]:
+            if current_user["userid"]== answer_list[0]["userid"]:
                 cursor=answers.search_answer_by_string(answer_text, \
                 connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 is_answer_updates_available=cursor.fetchall()
