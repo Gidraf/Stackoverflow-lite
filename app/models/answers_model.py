@@ -81,6 +81,7 @@ class Answers(object):
         """
         mark as answer
         """
+        cursor.execute("UPDATE answers SET is_answer = (false) where is_answer = true")
         sql="UPDATE answers SET is_answer = %s WHERE answerid = %s"
         cursor.execute(sql,(is_answer,answerid))
         return cursor
