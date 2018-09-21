@@ -10,8 +10,8 @@ class Questions(object):
         """
         sql="""CREATE TABLE IF NOT EXISTS questions(
         questionid SERIAL PRIMARY KEY UNIQUE NOT NULL,
-        title VARCHAR(120) UNIQUE NOT NULL,
-        description VARCHAR(120) NOT NULL,
+        title TEXT UNIQUE NOT NULL,
+        description TEXT NOT NULL,
         time_created TEXT NOT NULL,
         userid INTEGER NOT NULL,
         FOREIGN KEY (userid) REFERENCES users(userid) ON UPDATE CASCADE ON DELETE CASCADE
@@ -54,7 +54,7 @@ class Questions(object):
         """
         search question of a specific user
         """
-        sql = "SELECT * FROM questions WHERE userid = userid"
+        sql = "SELECT * FROM questions WHERE userid = %s"
         cursor.execute(sql, (userid,))
         return cursor
 
