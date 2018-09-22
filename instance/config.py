@@ -19,10 +19,10 @@ iparams={
 }
 
 params={
-"host":"ec2-174-129-35-61.compute-1.amazonaws.com",
-"database":"d52h1cvi93s8ea",
-"user":"eehfjmsffbxqln",
-"password":"7d442b7ff360c6bca04ed0b84798541706d134fddd2a60982d2d21d227601f54"
+"host":"ec2-54-83-27-165.compute-1.amazonaws.com",
+"database":"dfop10fcm7gpsb",
+"user":"asmofcrsrwrrtn",
+"password":"9927ce7e51a72de9bb4edb33dd675a73f884704ce8ae80cc08adcaaadf67c605"
 }
 
 
