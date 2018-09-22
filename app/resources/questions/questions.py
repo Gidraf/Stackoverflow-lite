@@ -42,6 +42,12 @@ def home():
     """show all questions"""
     try:
         connection=database_connection("development")
+        answers=Answers()
+        questions=Questions()
+        users=Users()
+        users.create_user_table(connection)
+        questions.create_question_table(connection)
+        answers.create_answer_table(connection)
         cursor = question.fetch_all_question(connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
         questions_list=cursor.fetchall()
         if questions_list:
@@ -61,7 +67,7 @@ def home():
                 question_container["answers"] = len(question_answer)
                 question_container ["questions"] = i
                 result.append(question_container)
-            return jsonify ({"result":result})
+            return jsonify ({"result":result}),200
         return jsonify ({"error":"No question found"}), 404
         abort(404)
         connection.close()
