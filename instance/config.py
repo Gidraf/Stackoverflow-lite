@@ -11,14 +11,14 @@ test_params={
 "password":""
 }
 
-params={
+iparams={
 "host":"localhost",
 "database":"stackoverflow",
 "user":"postgres",
 "password":""
 }
 
-iparams={
+params={
 "host":"ec2-54-225-76-201.compute-1.amazonaws.com",
 "database":"d8d0a31kom78qc",
 "user":"tpymuqbzuqpntj",
