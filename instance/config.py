@@ -11,18 +11,18 @@ test_params={
 "password":""
 }
 
-iparams={
+params={
 "host":"localhost",
 "database":"stackoverflow",
 "user":"postgres",
 "password":""
 }
 
-params={
-"host":"ec2-54-83-27-165.compute-1.amazonaws.com",
-"database":"db1lqjl8v56lo4",
-"user":"mggoditggdcyqf",
-"password":"e2687527460c8aa5a24b0c1de48792b96f78e59a3058092557fc223f49e06e8a"
+iparams={
+"host":"ec2-54-225-76-201.compute-1.amazonaws.com",
+"database":"d8d0a31kom78qc",
+"user":"tpymuqbzuqpntj",
+"password":"ee673df3c0c88bd0b0c278a5df066d89be40c079a5b7dd794f3ad3cb36cfc3bf"
 }
 
 
