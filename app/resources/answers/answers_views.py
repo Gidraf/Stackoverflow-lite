@@ -12,6 +12,7 @@ from flask import make_response
 from app.models.answers_model import Answers
 from app.models.questions_model import Questions
 from app.models.user_model import Users
+from app.models.votes_model import Votes
 from app.models import database_connection
 from . import ANSWERS
 from flask_jwt_extended import jwt_required,get_jwt_identity
@@ -19,6 +20,7 @@ from flask_jwt_extended import jwt_required,get_jwt_identity
 users = Users()
 answers=Answers()
 question=Questions()
+votes = Votes()
 @ANSWERS.route("/api/v1/answers/<int:questionid>", methods=["POST","GET"])
 @jwt_required
 def question_view(questionid):
@@ -157,6 +159,7 @@ def update_answer(answerid):
                 return jsonify({"error":"answer already exists"}),400
             return jsonify({"warning":"your action cannot be completed \
             because you don't have the right permission"}),403
+        return jsonify({"error":"no answer found"}), 404
         connection.close()
     except (Exception, psycopg2.DatabaseError) as e:
         return jsonify({"error":str(e)}),400
@@ -175,7 +178,7 @@ def upvote_answer(answerid):
         answer_list=cursor.fetchall()
         if answer_list:
             answer = answer_list[0]
-            answers.upvote_dowvote_answer(answerid, "upvote",\
+            votes.upvote_answer(answer["answerid"],answer["userid"],\
             connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             return jsonify({"success":"answer upvoted"}),200
         return jsonify({"error":"answer not found"}),404
@@ -197,7 +200,7 @@ def downvote_answer(answerid):
         answer_list=cursor.fetchall()
         if answer_list:
             answer = answer_list[0]
-            answers.upvote_dowvote_answer(answerid, "downvote",\
+            votes.downvote_answer(answer["answerid"], answer["userid"],\
             connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             return jsonify({"success":"answer downvoted"}),200
         return jsonify({"error":"answer not found"}),404

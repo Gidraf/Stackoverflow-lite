@@ -6,6 +6,8 @@ from flask import request
 from flask import jsonify
 from app import create_app
 from app.models.user_model import Users
+from app.models.comments_model import Comments
+from app.models.votes_model import Votes
 from app.models import database_connection
 class TestUser(unittest.TestCase):
     """
@@ -22,6 +24,8 @@ class TestUser(unittest.TestCase):
         self.connection = database_connection("test")
         self.user = Users()
         self.user.create_user_table(self.connection)
+        self.comment = Comments()
+        self.votes = Votes()
         self.user_sample={
         "username":"orenja",
         "useremail":"orenjagidraf@gmal.com",
@@ -37,6 +41,9 @@ class TestUser(unittest.TestCase):
         destroy datas saved on the database
         """
         self.user.clear_user_table(self.connection)
+        self.user.clear_user_table(self.connection)
+        self.comment.clear_comment_table(self.connection)
+        self.votes.clear_votes_table(self.connection)
 
     def test_registration_of_user_api(self):
         """

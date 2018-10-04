@@ -2,9 +2,11 @@
 from app import create_app
 from flask import make_response
 from flask import jsonify
+from app.models.comments_model import Comments
 from app.models.answers_model import Answers
 from app.models.questions_model import Questions
 from app.models.user_model import Users
+from app.models.votes_model import Votes
 from app.models import database_connection
 
 
@@ -46,6 +48,10 @@ def Ini_init_database():
     answers=Answers()
     questions=Questions()
     users=Users()
+    comment = Comments()
+    votes = Votes()
+    votes.create_votes_table(connection)
+    comment.create_comment_table(connection)
     users.create_user_table(connection)
     questions.create_question_table(connection)
     answers.create_answer_table(connection)

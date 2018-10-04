@@ -31,6 +31,7 @@ class Answers(object):
         add answer to the database in user table
         """
         sql="""INSERT INTO answers(answer_text,time_created,userid, questionid,votes,is_answer) VALUES(%s,%s,%s,%s,%s,%s)
+        RETURNING answerid
         """
         cursor.execute(sql,(answer_text,time_created,userid, questionid,vote,is_answer))
 
@@ -98,6 +99,6 @@ class Answers(object):
         """
         clear answer table
         """
-        sql="DROP TABLE IF EXISTS answers;"
+        sql="DROP TABLE IF EXISTS answers CASCADE;"
         cursor = connection.cursor()
         cursor.execute(sql)

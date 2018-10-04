@@ -12,6 +12,8 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models.questions_model import Questions
 from app.models.user_model import Users
 from app.models.answers_model import Answers
+from app.models.comments_model import Comments
+from app.models.votes_model import Votes
 from app.models import database_connection
 from instance.config import secrets
 from . import QUESTION
@@ -20,6 +22,8 @@ from . import QUESTION
 users = Users()
 question = Questions()
 answer = Answers()
+comment = Comments()
+votes = Votes()
 
 def check_if_question_exists(title, connection):
     """
@@ -48,6 +52,8 @@ def home():
         users.create_user_table(connection)
         questions.create_question_table(connection)
         answers.create_answer_table(connection)
+        comment.create_comment_table(connection)
+        votes.create_votes_table(connection)
         cursor = question.fetch_all_question(connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
         questions_list=cursor.fetchall()
         if questions_list:
