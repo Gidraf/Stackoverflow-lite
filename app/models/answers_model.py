@@ -17,7 +17,6 @@ class Answers(object):
         time_created TEXT NOT NULL,
         userid INTEGER NOT NULL,
         is_answer BOOLEAN,
-        votes BIGINT,
         FOREIGN KEY (userid) REFERENCES users(userid) ON UPDATE CASCADE ON DELETE CASCADE,
         questionid INTEGER NOT NULL,
         FOREIGN KEY (questionid) REFERENCES questions(questionid) ON UPDATE CASCADE ON DELETE CASCADE
@@ -26,14 +25,18 @@ class Answers(object):
         cursor = connection.cursor()
         cursor.execute(sql)
 
-    def add_answer(self, answer_text,time_created,userid, questionid,vote,is_answer, cursor):
+    def add_answer(self, answer_text,time_created,userid, questionid,is_answer, cursor):
         """
         add answer to the database in user table
         """
-        sql="""INSERT INTO answers(answer_text,time_created,userid, questionid,votes,is_answer) VALUES(%s,%s,%s,%s,%s,%s)
-        RETURNING answerid
+        sql="""
+        INSERT INTO answers(answer_text,time_created,userid, questionid,is_answer) VALUES(%s,%s,%s,%s,%s)
         """
-        cursor.execute(sql,(answer_text,time_created,userid, questionid,vote,is_answer))
+        cursor.execute(sql,(answer_text,time_created,userid, questionid,is_answer))
+        get_added_answer_sql = """SELECT * FROM answers WHERE answer_text = %s """
+        cursor.execute(get_added_answer_sql,(answer_text,))
+        current_answer = cursor.fetchone()
+        return current_answer["answerid"]
 
     def update_answer(self, answer_text, answerid, cursor):
         """
@@ -66,9 +69,12 @@ class Answers(object):
         """
         search answer by questionid
         """
-        sql="SELECT * FROM answers WHERE questionid = %s"
+        sql="""SELECT username, answerid, answer_text, time_created,
+        users.userid, is_answer,questionid  FROM users
+         INNER JOIN answers ON users.userid = answers.userid WHERE
+        answers.questionid = %s"""
         cursor.execute(sql,(questionid,))
-        return cursor
+        return cursor.fetchall()
 
     def search_answer_by_string(self,answer_text, cursor):
         """

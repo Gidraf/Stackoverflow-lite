@@ -41,6 +41,17 @@ def check_if_question_exists(title, connection):
     except Exception as error:
         raise error
 
+def update_this_question(question_id, question, title,description,connection):
+    """
+    should update question
+    """
+    question.update_question(title, description, question_id,\
+    connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+    cursor=question.search_question_by_questionid(question_id,\
+    connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+    new_question=cursor.fetchall()
+    return jsonify({"question":new_question}),200
+
 @QUESTION.route("/api/v1/questions", methods=["GET"])
 def home():
     """show all questions"""
@@ -57,23 +68,12 @@ def home():
         cursor = question.fetch_all_question(connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
         questions_list=cursor.fetchall()
         if questions_list:
-            result = []
-            for q, i in enumerate(questions_list, start = 0):
-                question_container = {}
-                question_owners = {}
-                answers_length = {}
-                questions_asked = {}
-                user_cursor = users.search_user_by_id(questions_list[q]["userid"],\
-                connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                user = user_cursor.fetchone()
-                answer_cursor = answer.search_answer_by_questionid(questions_list[q]["questionid"],\
-                connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                question_answer = answer_cursor.fetchall()
-                question_container["user"] =  user["username"]
-                question_container["answers"] = len(question_answer)
-                question_container ["questions"] = i
-                result.append(question_container)
-            return jsonify ({"result":result}),200
+            for q in questions_list:
+                answer_list  = answer.search_answer_by_questionid(q["questionid"], connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor))
+                if answer_list:
+                    q["answers"] = len(answer_list)
+                q["answers"] = len(answer_list)
+            return jsonify ({"result":questions_list}),200
         return jsonify ({"error":"No question found"}), 404
         abort(404)
         connection.close()
@@ -86,17 +86,18 @@ def get_question(question_id):
     '''get a specific question'''
     current_user = get_jwt_identity()
     try:
-        connection=database_connection("development")
-
+        connection = database_connection("development")
         cursor=question.search_question_by_questionid(question_id,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-        new_question=cursor.fetchall()
+        new_question=cursor.fetchone()
         if new_question:
-            return jsonify({"question":new_question[0]}),200
+            answers_list = answer.search_answer_by_questionid(new_question["questionid"],\
+            connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor))
+            return jsonify({"question":new_question,"answers":answers_list}),200
         return jsonify({"error":"question not found"}),404
         abort(404)
         connection.close()
     except Exception as e:
-        return jsonify({"error": "request error please check your request body"}),400
+        return jsonify({"error":str(e)}),400
 
 @QUESTION.route('/api/v1/add_question', methods=["POST"])
 @jwt_required
@@ -112,7 +113,7 @@ def post_question():
         userid=current_user["userid"]
         title= request.json['title']
         description = request.json['description']
-        time_created = datetime.utcnow()
+        time_created = "{:%B %d, %Y}".format(datetime.utcnow())
         if title.strip() and description.strip():
             if not check_if_question_exists(title, connection):
                 question.add_question(title , description, time_created,userid,connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
@@ -135,24 +136,21 @@ def update_question(question_id):
     try:
         cursor=question.search_question_by_questionid(question_id,\
         connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-        current_question=cursor.fetchall()
+        current_question = cursor.fetchall()
         if current_question:
-            userid=current_user["userid"]
+            userid = current_user["userid"]
             title = request.json.get('title')
             description= request.json.get('description')
             if title.strip() and description.strip():
                 if userid == current_question[0]["userid"]:
                     available_question_cursor = question.search_question_by_full_text(title,\
                     connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                    is_updated_question_available = available_question_cursor.fetchall()
-                    if not is_updated_question_available:
-                        question.update_question(title, description, question_id,\
-                        connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                        cursor=question.search_question_by_questionid(question_id,\
-                        connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                        new_question=cursor.fetchall()
-                        return jsonify({"question":new_question}),200
-                    return jsonify({"error":"question already exist"}),400
+                    is_updated_question_available = available_question_cursor.fetchone()
+                    if is_updated_question_available:
+                        if is_updated_question_available["questionid"] == question_id:
+                            return update_this_question(question_id, question,title, description, connection)
+                        return jsonify({"error":"question already exist"}),400
+                    return update_this_question(question_id, question, title, description, connection)
                 return jsonify({"error":"your action cannot be completed because you don't have the right permission"}),403
             return jsonify({"error":"empty value cannot be submitted"}),400
             connection.close()

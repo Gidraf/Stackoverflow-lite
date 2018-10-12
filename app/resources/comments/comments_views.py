@@ -29,6 +29,7 @@ def add_comment(answerid):
     """
     route for adding comment to an answer
     """
+    current_user = get_jwt_identity()
     connection = None
     try:
         connection = database_connection("development")
@@ -36,7 +37,7 @@ def add_comment(answerid):
             return jsonify({"error":"please include answer_text"}), 400
         comment_text = request.json["comment_text"]
         if comment_text.strip():
-            comments.add_comment(comment_text,answerid, connection.cursor())
+            comments.add_comment(comment_text,answerid,current_user["userid"], connection.cursor())
             return jsonify ({"success":"comment posted"}), 201
         return jsonify({"error":"comment can't be empty"}), 400
     except Exception as error:

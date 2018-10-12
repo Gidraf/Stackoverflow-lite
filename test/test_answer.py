@@ -35,6 +35,7 @@ class TestAnswer(unittest.TestCase):
         self.answer.create_answer_table(self.connection)
         self.comments = Comments()
         self.votes = Votes()
+        self.votes.create_votes_table(self.connection)
         self.question_sample = {
         "title":"my question",
         "description":"this is my descriotion",

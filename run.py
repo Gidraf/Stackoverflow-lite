@@ -50,11 +50,11 @@ def Ini_init_database():
     users=Users()
     comment = Comments()
     votes = Votes()
-    votes.create_votes_table(connection)
-    comment.create_comment_table(connection)
     users.create_user_table(connection)
     questions.create_question_table(connection)
     answers.create_answer_table(connection)
+    votes.create_votes_table(connection)
+    comment.create_comment_table(connection)
 
 if __name__=="__main__":
     """run the file"""

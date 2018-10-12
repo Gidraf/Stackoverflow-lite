@@ -68,13 +68,18 @@ class Questions(object):
 
     def search_question_by_questionid(self,questionid,cursor):
         "search question by id"
-        sql="SELECT * FROM questions WHERE questionid = %s"
+        sql="""SELECT username, questionid, title, description,
+        time_created,users.userid
+        FROM users INNER JOIN questions
+        ON users.userid = questions.userid WHERE questions.questionid = %s"""
         cursor.execute(sql,(questionid,))
         return cursor
 
     def fetch_all_question(self, cursor):
         "fetchall questions"
-        sql = "SELECT * FROM questions"
+        sql = """SELECT username, questionid, title, description, time_created,
+        users.userid FROM users INNER JOIN questions
+        ON users.userid = questions.userid """
         cursor.execute(sql)
         return cursor
 

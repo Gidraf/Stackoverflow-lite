@@ -32,6 +32,7 @@ class TestQUestion(unittest.TestCase):
         self.user.create_user_table(self.connection)
         self.question = Questions()
         self.question.create_question_table(self.connection)
+        self.answers.create_answer_table(self.connection)
         self.comments = Comments()
         self.votes = Votes()
         self.question_sample = {
@@ -89,7 +90,8 @@ class TestQUestion(unittest.TestCase):
         "title":"this is my edited quiz",
         "description":"this is my edited description"
         }
-        cursor=self.question.search_question_by_questionid(1,self.connection.cursor())
+        cursor=self.question.search_question_by_questionid(1,\
+        self.connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
         find_question=cursor.fetchall()
         if find_question:
             self.question.update_question(new_question["title"],
@@ -97,7 +99,7 @@ class TestQUestion(unittest.TestCase):
                                             1,self.connection.cursor())
             cursor=self.question.search_question_by_questionid(1,self.connection.cursor())
             find_question=cursor.fetchall()
-            self.assertEqual(new_question["title"],find_question[0][1])
+            self.assertEqual(new_question["title"],find_question[0][2])
 
     def test_search_question_by_string(self):
         '''string search by name test'''
@@ -244,7 +246,7 @@ class TestQUestion(unittest.TestCase):
         """fetch a specific question with login"""
         question_data = {"title":"this is my first question",
             "description":"this is just a description"}
-        url = "/api/v1/questions/1"
+        url = "/api/v1/questions/2"
         response = self.app.get(url,headers=self.headers)
         self.assertEqual(response.status_code,200)
 

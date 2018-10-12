@@ -101,7 +101,5 @@ class TestComments(unittest.TestCase):
         }
         url = "/api/v1/add_comment/2"
         cursor = self.answer.search_answer_by_id(1, self.connection.cursor())
-        print(cursor.fetchall())
         response = self.app.post(url,data = json.dumps(data),headers = self.headers)
-        print (response.json)
         self.assertEqual(response.status_code,201)

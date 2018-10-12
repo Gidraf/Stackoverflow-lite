@@ -115,9 +115,8 @@ def get_user_questions(userid):
                 user_cursor = user.search_user_by_id(userid,\
                 connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 user_name = user_cursor.fetchone()
-                answer_cursor = answer.search_answer_by_questionid(user_questions[q]["questionid"],\
+                question_answer = answer.search_answer_by_questionid(user_questions[q]["questionid"],\
                 connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                question_answer = answer_cursor.fetchall()
                 question_container["user"] =  user_name["username"]
                 question_container["answers"] = len(question_answer)
                 question_container ["questions"] = i

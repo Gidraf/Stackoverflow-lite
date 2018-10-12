@@ -21,6 +21,7 @@ users = Users()
 answers=Answers()
 question=Questions()
 votes = Votes()
+
 @ANSWERS.route("/api/v1/answers/<int:questionid>", methods=["POST","GET"])
 @jwt_required
 def question_view(questionid):
@@ -34,15 +35,14 @@ def question_view(questionid):
         if quiz:
             if request.method == "GET":
                 """get answers to a specific question"""
-                cursor = answers.search_answer_by_questionid(questionid,\
+                question_answers = answers.search_answer_by_questionid(questionid,\
                 connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                question_answers = cursor.fetchall()
                 if question_answers:
                     for a in question_answers:
-                        user_cursor = users.search_user_by_id(a["userid"],\
-                        connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor) )
-                        username = user_cursor.fetchone()
-                        a["username"] = username["username"]
+                        for a in question_answers:
+                            votes_cursor = votes.search_votes_by_answerid (a["answerid"],\
+                            connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                            a["votes"] = votes_cursor.fetchall()
                 return jsonify({"question":quiz[0],"answers":question_answers}),200
             if "answer_text" not in request.json:
                 return jsonify({"error":"answer_text can't be empty"}),400
@@ -53,18 +53,16 @@ def question_view(questionid):
                 is_answer_available  = answer_cursor.fetchone()
                 if not is_answer_available:
                     time_created=datetime.utcnow()
-                    vote=0
                     is_answer=False
                     userid=current_user["userid"]
-                    answers.add_answer(answer_text,time_created,userid,questionid,vote,is_answer,\
+                    answerid = answers.add_answer(answer_text,time_created,userid,questionid,is_answer,\
                     connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                    cursor = answers.search_answer_by_questionid(questionid,\
+                    answers_list = answers.search_answer_by_questionid(questionid,\
                      connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                    answers_list = cursor.fetchall()
                     result={}
                     result["question"] = quiz[0]
                     result["answers"] = answers_list
-                    return jsonify(result),201
+                    return jsonify(result), 201
                 return jsonify({"error":"answer already exists"}), 400
             return jsonify({"error":"answer cannot be empty"}),400
         return jsonify({"error":"no question found"}),404
@@ -91,9 +89,8 @@ def mark_prefered(answerid):
             if userid == questions_list[0]["userid"]:
                 answers.mark_prefered(answerid, True, \
                 connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                answer_cursor = answers.search_answer_by_questionid(questionid,\
+                question_answer = answers.search_answer_by_questionid(questionid,\
                 connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                question_answer=answer_cursor.fetchall()
                 question_cursor=question.search_question_by_questionid(questionid,\
                 connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 new_question=question_cursor.fetchall()
@@ -145,18 +142,22 @@ def update_answer(answerid):
         answer_list=cursor.fetchall()
         if answer_list:
             answer = answer_list[0]
-            question_cursor=question.search_question_by_questionid(answer["questionid"],\
+            question_cursor = question.search_question_by_questionid(answer["questionid"],\
             connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-            questions_list=question_cursor.fetchall()
-            if current_user["userid"]== answer_list[0]["userid"]:
+            questions_list = question_cursor.fetchall()
+            if current_user["userid"] == answer["userid"]:
                 cursor=answers.search_answer_by_string(answer_text, \
                 connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                is_answer_updates_available=cursor.fetchall()
-                if not is_answer_updates_available:
-                    answers.update_answer(answer_text,answerid,\
-                    connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-                    return jsonify({"success":"answer updated"}),200
-                return jsonify({"error":"answer already exists"}),400
+                is_answer_updates_available=cursor.fetchone()
+                if is_answer_updates_available:
+                    if is_answer_updates_available["answerid"] == answerid:
+                        answers.update_answer(answer_text,answerid,\
+                        connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                        return jsonify({"success":"answer updated"}),200
+                    return jsonify({"error":"answer already exists"}),400
+                answers.update_answer(answer_text,answerid,\
+                connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                return jsonify({"success":"answer updated"})
             return jsonify({"warning":"your action cannot be completed \
             because you don't have the right permission"}),403
         return jsonify({"error":"no answer found"}), 404
@@ -178,9 +179,19 @@ def upvote_answer(answerid):
         answer_list=cursor.fetchall()
         if answer_list:
             answer = answer_list[0]
-            votes.upvote_answer(answer["answerid"],answer["userid"],\
+            current_vote = votes.search_user_vote(answerid,current_user["userid"],\
+            connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor))
+            if current_vote:
+                if current_vote["upvote"]:
+                    return jsonify({"error":"answer can't be upvoted twice"}), 400
+                votes.upvote_answer(answerid, answer["userid"], \
+                connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+                return jsonify({"success":"answer upvoted"}), 200
+            votes.add_answers_votes(answerid, answer["userid"], current_user["userid"],connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+            votes.upvote_answer(answerid, answer["userid"], \
             connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             return jsonify({"success":"answer upvoted"}),200
+            return jsonify({"error":"vote can't be found"}), 404
         return jsonify({"error":"answer not found"}),404
         connection.close()
     except (Exception, psycopg2.DatabaseError) as e:
@@ -200,10 +211,28 @@ def downvote_answer(answerid):
         answer_list=cursor.fetchall()
         if answer_list:
             answer = answer_list[0]
-            votes.downvote_answer(answer["answerid"], answer["userid"],\
+            votes.downvote_answer(answerid, answer["userid"],\
             connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
             return jsonify({"success":"answer downvoted"}),200
         return jsonify({"error":"answer not found"}),404
         connection.close()
     except (Exception, psycopg2.DatabaseError) as e:
         return jsonify({"error":str(e)}),400
+
+@ANSWERS.route("/api/v1/votes/<int:answerid>", methods=["GET"])
+@jwt_required
+def get_answers_votes(answerid):
+    """
+    should return answers votes based on the answerid passed in
+    """
+    connection = None
+    try:
+        connection = database_connection("development")
+        cursor = votes.search_votes_by_answerid(answerid, \
+        connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor))
+        answer_votes = cursor.fetchall()
+        if answer_votes:
+            return jsonify({"votes":answer_votes}), 200
+        return jsonify({"error":"no votes found"}), 404
+    except Exception as error:
+        return jsonify({"error":str(error)}), 400
