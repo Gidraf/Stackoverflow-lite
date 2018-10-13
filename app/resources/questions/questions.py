@@ -180,3 +180,25 @@ def delete_question(question_id):
     except (Exception,psycopg2.DatabaseError) as error:
         return jsonify({"error": str(error)}),400
     connection.close()
+
+@QUESTION.route('/api/v1/search_question', methods=['POST'])
+def search_question():
+    """
+    function to search question
+    """
+    connection = None
+    try:
+        connection = database_connection("development")
+        if not "search_text" in request.json:
+            return jsonify({"error":"please include search_text in your request body"})
+        title = request.json["search_text"]
+        question_list = question.search_question_by_name(title,\
+        connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+        if question_list:
+            return jsonify({"result":question_list}), 200
+        return jsonify({"error":"No question found, check on your spelling"}), 404
+    except Exception as error:
+        return jsonify({"error":str(error)}),400
+    finally:
+        if connection:
+            connection.close()

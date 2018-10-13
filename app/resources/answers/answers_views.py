@@ -52,7 +52,7 @@ def question_view(questionid):
                 connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
                 is_answer_available  = answer_cursor.fetchone()
                 if not is_answer_available:
-                    time_created=datetime.utcnow()
+                    time_created="{:%B %d, %Y}".format(datetime.utcnow())
                     is_answer=False
                     userid=current_user["userid"]
                     answerid = answers.add_answer(answer_text,time_created,userid,questionid,is_answer,\

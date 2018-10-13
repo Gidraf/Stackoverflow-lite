@@ -62,9 +62,11 @@ class Questions(object):
         """
         search question by string
         """
-        sql="SELECT * FROM questions WHERE title ~ %s"
-        cursor.execute(sql,(title,))
-        return cursor
+        sql="""SELECT username, questionid, title, description, time_created,
+        users.userid FROM users INNER JOIN questions
+        ON users.userid = questions.userid WHERE title ~ %s OR description ~ %s  """
+        cursor.execute(sql,(title,title))
+        return cursor.fetchall()
 
     def search_question_by_questionid(self,questionid,cursor):
         "search question by id"
@@ -79,7 +81,7 @@ class Questions(object):
         "fetchall questions"
         sql = """SELECT username, questionid, title, description, time_created,
         users.userid FROM users INNER JOIN questions
-        ON users.userid = questions.userid """
+        ON users.userid = questions.userid  """
         cursor.execute(sql)
         return cursor
 

@@ -3,10 +3,8 @@ python:
 env:
   global:
     - CC_TEST_REPORTER_ID=a2a3e6dcf3fba0e0e5e1dc29e45c63413dab61df356289745179742a91755f9f
-    - export DATABASE = "stackoverflow"
-    - export LOCALHOST = "localhost"
-    - export USERNAME = "postgres"
-    - export PASSWORD = "password"
+    - DATABASE_URL="dbname='stackoverflow', host='localhost', user='postgres', password='password'"
+
 services:
   - postgresql
 

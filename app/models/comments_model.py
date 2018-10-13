@@ -1,7 +1,7 @@
 """
 this module contains comments class model
 """
-import datetime
+from datetime import datetime
 
 class Comments(object):
     """
@@ -29,7 +29,7 @@ class Comments(object):
         add comment to database
         """
         sql = """INSERT INTO comments(comment_text, answerid, comment_time, userid) VALUES(%s, %s, %s, %s)"""
-        cursor.execute(sql,(comment_text, answerid, datetime.datetime.utcnow(), userid))
+        cursor.execute(sql,(comment_text, answerid, "{:%B %d, %Y}".format(datetime.utcnow()), userid))
         return cursor
 
     def search_comment_by_answerid(self, answerid, cursor):
