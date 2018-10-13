@@ -196,7 +196,7 @@ def search_question():
         connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
         if question_list:
             return jsonify({"result":question_list}), 200
-        return jsonify({"error":"No question found, check on your spelling"}), 404
+        return jsonify({"error":"No question found"}), 404
     except Exception as error:
         return jsonify({"error":str(error)}),400
     finally:
