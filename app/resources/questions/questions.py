@@ -192,11 +192,13 @@ def search_question():
         if not "search_text" in request.json:
             return jsonify({"error":"please include search_text in your request body"})
         title = request.json["search_text"]
-        question_list = question.search_question_by_name(title,\
-        connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
-        if question_list:
-            return jsonify({"result":question_list}), 200
-        return jsonify({"error":"No question found"}), 404
+        if title.strip():
+            question_list = question.search_question_by_name(title,\
+            connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor))
+            if question_list:
+                return jsonify({"result":question_list}), 200
+            return jsonify({"error":"No question found"}), 404
+        return jsonify({"error":"empty characters cannot be searched"}), 400
     except Exception as error:
         return jsonify({"error":str(error)}),400
     finally:

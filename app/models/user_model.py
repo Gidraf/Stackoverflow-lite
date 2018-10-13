@@ -47,7 +47,7 @@ class Users(object):
         """
         search user by username
         """
-        sql="SELECT * FROM users WHERE username=%s"
+        sql="SELECT * FROM users WHERE UPPER(username) = UPPER(%s)"
         cursor.execute(sql,(username,))
         return cursor
 
