@@ -58,7 +58,7 @@ def get_comments(answerid):
         cursor = comments.search_comment_by_answerid(answerid, connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor))
         answer_comments = cursor.fetchall()
         if answer_comments:
-            return jsonify({answer_comments}), 200
+            return jsonify({"comments":answer_comments}), 200
         return jsonify({"error":"no comment found"}), 404
     except Exception as error:
         return jsonify({"error":str(error)}), 400
