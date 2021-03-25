@@ -49,7 +49,7 @@ pytest-xdist==1.22.5
 python-coveralls==2.9.1
 python-usernames==0.2.2
 pytz==2018.5
-PyYAML==3.13
+PyYAML==5.4
 requests==2.19.1
 scandir==1.9.0
 singledispatch==3.4.0.3
